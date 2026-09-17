@@ -1,3 +1,3 @@
 export default function RegisterForm() {
-  return <div>RegisterForm</div>;
+  return <div className="container">RegisterForm</div>;
 }

@@ -69,7 +69,7 @@
   --popover-foreground: oklch(0.147 0.004 49.3);
 
   /* Brand / primary action */
-  --primary: oklch(0.214 0.009 43.1);
+  --primary: oklch(46.777% 0.12569 257.483);
   --primary-foreground: oklch(0.986 0.002 67.8);
 
   /* Secondary controls */
@@ -183,7 +183,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 p-0 m-0 box-border;
   }
 
   html {
@@ -198,4 +198,31 @@
     background: var(--primary);
     color: var(--primary-foreground);
   }
+}
+
+@layer components {
+  .errorMessage {
+    @apply mt-4 text-sm font-medium text-destructive bg-destructive/5 p-3 rounded-xl border border-destructive/20;
+  }
+
+  .form {
+    @apply flex flex-col gap-4
+  }
+
+  .container {
+    @apply w-full max-w-5xl mx-auto py-4 px-2 md:px-4 min-h-screen;
+  }
+
+  .backdrop {
+    @apply fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4
+  }
+
+  .modal { 
+    @apply bg-card border border-border rounded-2xl max-w-md w-full max-h-[80vh] flex flex-col shadow-xl
+  }
+
+  .title {
+    @apply text-xl font-semibold tracking-tighter
+  }
+ 
 }

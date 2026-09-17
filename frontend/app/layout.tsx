@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans, Playfair_Display } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Noto_Sans,
+  Playfair_Display,
+} from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/common/Appsidebar";
 
-const playfairDisplayHeading = Playfair_Display({subsets:['latin'],variable:'--font-heading'});
+const playfairDisplayHeading = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'});
+const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +35,64 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const defaultLinks = [{ name: "Projects", href: "/dashboard" }];
+
+  const authLinks = [{ name: "Settings", href: "/settings" }];
+  const guestLinks = [
+    { name: "Login", href: "/login" },
+    { name: "Register", href: "/register" },
+  ];
+  const footerLinks = [
+    {
+      title: "Product",
+      links: [
+        { name: "Dashboard", href: "/dashboard" },
+        { name: "Features", href: "/features" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { name: "About", href: "/about" },
+        { name: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { name: "Privacy", href: "/privacy" },
+        { name: "Terms", href: "/terms" },
+      ],
+    },
+  ];
+  const isAuth = true;
+  const links = isAuth
+    ? defaultLinks.concat(authLinks)
+    : defaultLinks.concat(guestLinks);
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", notoSans.variable, playfairDisplayHeading.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        notoSans.variable,
+        playfairDisplayHeading.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SidebarProvider defaultOpen={false}>
+          <div className="w-screen">
+            <Header links={links} />
+
+            {children}
+            <AppSidebar links={links} />
+            <Footer groups={footerLinks} />
+          </div>
+        </SidebarProvider>
+      </body>
     </html>
   );
 }
