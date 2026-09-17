@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from src.features.auth import user_routes
 
 
 def create_app():
@@ -7,7 +8,9 @@ def create_app():
     return app
 
 
-def create_routes(app):
-    @app.get("/")
+def create_routes(app: FastAPI):
+    @app.get("/health")
     def home():
-        return {"mmessage": "Hello World"}
+        return {"message": "Ok"}
+
+    app.include_router(user_routes.router)
