@@ -53,9 +53,5 @@ def login_user(user_in: UserLogin, db: Session = Depends(get_db)):
 
 
 @router.get("/me")
-def check_auth():
-    try:
-        user: User = Depends(user_service.get_current_user)
-    except AppError as err:
-        raise HTTPException(status_code=err.status_code, detail=err.message)
+def check_auth(user: User = Depends(user_service.get_current_user)):
     return user
