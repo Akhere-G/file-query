@@ -1,10 +1,13 @@
 "use server";
 import { cookies } from "next/headers";
 
-export const baseUrl: string = process.env.BASE_URL!;
+export async function getApiBaseUrl() {
+  const baseUrl = process.env.BASE_URL;
+  if (!baseUrl) {
+    throw new Error("BASE_URL is undefined");
+  }
 
-if (!baseUrl) {
-  throw new Error("Base URL is undefined");
+  return baseUrl;
 }
 
 export async function attachToken() {

@@ -1,6 +1,9 @@
 "use server";
-import { baseUrl } from "@/lib/api";
 import { cookies } from "next/headers";
+
+import { getApiBaseUrl } from "@/lib/api";
+import { ActionResult, getErrorMessage, parseResponse } from "@/lib/apiUtils";
+import { AuthResponse } from "../types";
 
 async function saveCookie(token: string) {
   const cookieStore = await cookies();
@@ -13,39 +16,47 @@ async function saveCookie(token: string) {
     path: "/",
   });
 }
-export async function login(email: string, password: string) {
-  const response = await fetch(`${baseUrl}/api/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.detail);
+
+async function authenticate(
+  path: "/api/auth/login" | "/api/auth/register",
+  body: Record<string, string>,
+): Promise<ActionResult> {
+  try {
+    const response = await fetch(`${await getApiBaseUrl()}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const result = await parseResponse<AuthResponse>(response);
+
+    if (!result.success) return result;
+
+    await saveCookie(result.data.access_token);
+
+    return { success: true };
+  } catch {
+    return {
+      success: false,
+      message: getErrorMessage(null),
+      details: null,
+    };
   }
-  await saveCookie(data.access_token);
-  return { success: true };
+}
+
+export async function login(
+  email: string,
+  password: string,
+): Promise<ActionResult> {
+  return authenticate("/api/auth/login", { email, password });
 }
 
 export async function register(
   email: string,
   password: string,
   username: string,
-) {
-  const response = await fetch(`${baseUrl}/api/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password, username }),
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.detail);
-  }
-  await saveCookie(data.access_token);
-
-  return { success: true };
+): Promise<ActionResult> {
+  return authenticate("/api/auth/register", { email, password, username });
 }
