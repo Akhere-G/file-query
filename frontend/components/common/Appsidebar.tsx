@@ -13,12 +13,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { logout } from "@/features/auth/api/authApi";
 
 interface AppSidebarProps {
   links: { name: string; href: string; icon?: React.ReactNode }[];
+  isAuth: boolean;
 }
-export function AppSidebar({ links }: AppSidebarProps) {
+export function AppSidebar({ links, isAuth }: AppSidebarProps) {
   const pathname = usePathname();
+
+  async function logoutFn() {
+    await logout();
+    window.location.reload();
+  }
 
   return (
     <Sidebar collapsible="offcanvas" side="right">
@@ -42,7 +49,7 @@ export function AppSidebar({ links }: AppSidebarProps) {
                   >
                     <Link
                       href={href}
-                      className={`flex items-center gap-2 hover:text-primary ${pathname === href ? "text-primary" : ""}`}
+                      className={` w-100 h-100 -mx-3 px-3 flex items-center gap-2 hover:text-primary ${pathname === href ? "text-primary" : ""}`}
                     >
                       {Icon}
                       <span>{name}</span>
@@ -50,6 +57,14 @@ export function AppSidebar({ links }: AppSidebarProps) {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              {isAuth && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton className="px-3" onClick={logoutFn}>
+                    Log out
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -60,3 +60,8 @@ export async function register(
 ): Promise<ActionResult> {
   return authenticate("/api/auth/register", { email, password, username });
 }
+
+export async function logout() {
+  const cookieStore = await cookies();
+  cookieStore.delete("access_token");
+}

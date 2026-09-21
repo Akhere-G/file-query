@@ -3,12 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "../ui/sidebar";
+import { Button } from "../ui/button";
+import { logout } from "@/features/auth/api/authApi";
 
 interface HeaderProps {
   links: { name: string; href: string }[];
+  isAuth: boolean;
 }
-export default function Header({ links }: HeaderProps) {
+export default function Header({ links, isAuth }: HeaderProps) {
   const pathname = usePathname();
+
+  async function logoutFn() {
+    await logout();
+    window.location.reload();
+  }
 
   return (
     <header className="border-b bg-card">
@@ -35,6 +43,13 @@ export default function Header({ links }: HeaderProps) {
                 </Link>
               </li>
             ))}
+            {isAuth && (
+              <li>
+                <Button variant="ghost" className="p-0" onClick={logoutFn}>
+                  Log out
+                </Button>
+              </li>
+            )}
           </ul>
         </nav>
 
