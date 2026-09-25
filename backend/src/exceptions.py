@@ -10,3 +10,13 @@ class AppError(Exception):
 class InvalidCredentialsError(AppError):
     status_code = 401
     default_message = "Invalid credentials."
+
+
+class NotFoundError(AppError):
+    status_code = 404
+    default_message = "The item you were looking for was not found"
+
+
+class BadRequestError(AppError):
+    status_code = 400
+    default_message = "Bad request"
