@@ -27,6 +27,12 @@ class Project(Base):
         order_by="File.created_at",
         passive_deletes=True,
     )
+    messages: Mapped[list["Message"]] = relationship(  # noqa: F821 # type: ignore
+        back_populates="project",
+        cascade="all, delete-orphan",
+        order_by="Message.created_at",
+        passive_deletes=True,
+    )
 
 
 class File(Base):
@@ -59,3 +65,8 @@ class Chunk(Base):
     content: Mapped[str] = mapped_column(Text)
     embedding: Mapped[list[float] | None] = mapped_column(Vector(1536), nullable=True)
     file: Mapped["File"] = relationship(back_populates="chunks")
+    messages: Mapped[list["Message"]] = relationship(  # noqa: F821 # type: ignore
+        back_populates="chunk",
+        order_by="Message.created_at",
+        passive_deletes=True,
+    )

@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 def create_app():
     app = FastAPI()
     create_exception_handlers(app)
+    register_models()
     create_routes(app)
     return app
 
@@ -39,6 +40,12 @@ def create_exception_handlers(app: FastAPI):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={"detail": "Something went wrong. Please try again."},
         )
+
+
+def register_models():
+    from src.features.auth.user_model import User
+    from src.features.chat.message_model import Message, MessageOwner
+    from src.features.files.file_model import Chunk, File, Project
 
 
 def create_routes(app: FastAPI):

@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from src.database import Base
 from src.features.auth.user_model import User
+from src.features.files.file_model import Project, File, Chunk
+from src.features.chat.message_model import Message, MessageOwner
 
 load_dotenv()
 
