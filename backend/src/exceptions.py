@@ -20,3 +20,8 @@ class NotFoundError(AppError):
 class BadRequestError(AppError):
     status_code = 400
     default_message = "Bad request"
+
+
+class NotAuthorisedError(AppError):
+    status_code = 403
+    default_message = "Not authorised"

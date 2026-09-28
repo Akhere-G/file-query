@@ -1,4 +1,5 @@
 import enum
+from uuid import uuid4
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import Enum, ForeignKey, Integer, String, Text
@@ -21,7 +22,7 @@ class Project(Base):
         Integer, ForeignKey("users.id", ondelete="CASCADE")
     )
     user: Mapped["User"] = relationship(back_populates="projects")  # type: ignore  # noqa: F821
-    files: Mapped["File"] = relationship(
+    files: Mapped[list["File"]] = relationship(
         back_populates="project",
         cascade="all, delete-orphan",
         order_by="File.created_at",
@@ -44,13 +45,15 @@ class File(Base):
     status: Mapped[FileStatus] = mapped_column(
         Enum(FileStatus), default=FileStatus.pending
     )
-    storage_key: Mapped[str] = mapped_column(String(255), unique=True)
+    storage_key: Mapped[str] = mapped_column(
+        String(255), unique=True, default=lambda: str(uuid4())
+    )
     project_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("projects.id", ondelete="CASCADE")
     )
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
     project: Mapped["Project"] = relationship(back_populates="files")
-    chunks: Mapped["Chunk"] = relationship(
+    chunks: Mapped[list["Chunk"]] = relationship(
         back_populates="file",
         cascade="all, delete-orphan",
         order_by="Chunk.created_at",
