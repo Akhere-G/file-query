@@ -1,4 +1,4 @@
-import os
+from uuid import uuid4
 
 import boto3
 from botocore.config import Config
@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session, selectinload
 from src.exceptions import BadRequestError, NotFoundError
 from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
+from src.settings import settings
 
 max_user_storage = 1024 * 1024 * 1024 * 2
 
@@ -20,8 +21,8 @@ def convert_storage_to_GB(value: int):
 max_user_storage_str = f"{convert_storage_to_GB(max_user_storage)} GB"
 
 load_dotenv()
-region_name = os.getenv("region_name", "")
-bucket_name = os.getenv("bucket_name", "")
+region_name = settings.AWS_REGION
+bucket_name = settings.AWS_BUCKET_NAME
 
 
 def get_s3_client():
@@ -134,6 +135,7 @@ def create_file(db: Session, project_id: int, file_in: FileCreate):
         mime_type=file_in.mime_type,
         size=file_in.size,
         project_id=project_id,
+        storage_key=f"projects/{project_id}/files/{uuid4()}",
     )
     db.add(new_file)
     db.commit()
@@ -153,6 +155,7 @@ def create_files(
             mime_type=file.mime_type,
             size=file.size,
             project_id=project_id,
+            storage_key=f"projects/{project_id}/files/{uuid4()}",
         )
         upload_size += file.size
 
@@ -176,7 +179,7 @@ def get_presigned_post(files: list[File], expiration: int | None = 60 * 15):
                 Params={"Bucket": bucket_name, "Key": file.storage_key},
                 ExpiresIn=expiration,
             )
-            urls.append({"id": file.id, "object_name": file.storage_key, "url": url})
+            urls.append({"id": file.id, "key": file.storage_key, "url": url})
         return urls
     except ClientError as e:
         print(e)

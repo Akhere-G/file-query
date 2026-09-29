@@ -8,7 +8,7 @@ const ProjectSidebar = () => {
   const noProjects = !projects || projects.length == 0;
   return (
     <div className="min-w-30 p-4 inset-shadow-sm">
-      <h2 className="title text-xl">Files</h2>
+      <h2 className="title text-xl">Projects</h2>
       {noProjects && (
         <div className="text-sm py-12">
           <h3>No projects yet</h3>

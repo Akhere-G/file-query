@@ -17,5 +17,5 @@ export async function attachToken() {
   if (token) {
     return `Bearer ${token}`;
   }
-  return undefined;
+  throw new Error("You must log in to continue");
 }

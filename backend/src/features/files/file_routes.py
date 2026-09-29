@@ -1,13 +1,33 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import NotAuthorisedError, NotFoundError
+from src.exceptions import BadRequestError, NotAuthorisedError, NotFoundError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
 from src.features.files import file_service
-from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
+from src.features.files.file_schema import (
+    ConfirmUploadRequest,
+    FileCreate,
+    FileResponse,
+)
 
-router = APIRouter(prefix="api/files", tags=["Files"])
+router = APIRouter(prefix="/api/files", tags=["Files"])
+
+
+@router.get("", response_model=FileResponse)
+def get_files(
+    project_id: int | None = None,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    if not project_id:
+        return BadRequestError("Project is is missing!")
+
+    project = file_service.get_project(db, project_id)
+    if project.user_id != user.id:
+        raise NotAuthorisedError("You must own this project to view its files")
+
+    return file_service.get_files(db, project_id)
 
 
 @router.post(
@@ -28,7 +48,7 @@ def upload_files(
             raise NotAuthorisedError("You are not allowed to upload to this project")
 
     files = file_service.create_files(db, user.id, project_id, files_in)
-    return file_service.get_presigned_post(files)
+    return {"files": file_service.get_presigned_post(files), "projectId": project_id}
 
 
 @router.post("/confirm")

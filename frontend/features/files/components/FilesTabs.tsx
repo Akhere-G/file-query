@@ -13,10 +13,18 @@ import {
 } from "@/components/ui/attachment";
 import { Upload, X, File as FileIcon } from "lucide-react";
 import { getFileIcon, getSizeStr } from "../utils";
+import { confirmUploads, uploadFiles } from "../server-actions";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { sendFilesToS3 } from "../actions";
 
 const files: FileType[] = [];
 
 const FilesTabs = () => {
+  const [isPending, setIsPending] = useState(false);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const projectId = searchParams.get("projectId");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragEnter, setIsDragEnter] = useState(false);
 
@@ -65,6 +73,39 @@ const FilesTabs = () => {
     setUploadedFiles((files) => files.filter((_, i) => i !== index));
   };
 
+  async function handleUpload() {
+    if (!uploadedFiles) {
+      return;
+    }
+    setIsPending(true);
+    try {
+      const res = await uploadFiles(
+        uploadedFiles,
+        projectId ? Number(projectId) : undefined,
+      );
+
+      if (!res.success) {
+        throw new Error(res.message ?? "Something went wrong...");
+      }
+
+      const presignedFiles = res.data.files;
+      const s3res = await sendFilesToS3(presignedFiles, uploadedFiles);
+
+      await confirmUploads(s3res);
+      setUploadedFiles([]);
+      if (!projectId) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("projectId", String(res.data.projectId));
+        const path = pathname + "?" + params.toString();
+        router.push(path);
+      }
+    } catch (err) {
+      // TODO: show errors above input for errors with details, otherwise, create toast
+      console.error("error!!", err);
+    } finally {
+      setIsPending(false);
+    }
+  }
   return (
     <div
       className="flex h-full flex-col gap-6 p-6"
@@ -202,7 +243,11 @@ const FilesTabs = () => {
             })}
           </div>
 
-          <Button className="w-full">
+          <Button
+            className="w-full"
+            onClick={handleUpload}
+            disabled={isPending}
+          >
             Upload {uploadedFiles.length}{" "}
             {uploadedFiles.length === 1 ? "file" : "files"}
           </Button>
