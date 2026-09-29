@@ -46,4 +46,4 @@ class FileResponse(FileBase):
 
 class ConfirmUploadRequest(BaseModel):
     id: int
-    error: str | None
+    error: str | None = None
