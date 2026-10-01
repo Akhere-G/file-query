@@ -5,6 +5,7 @@ from src.exceptions import BadRequestError, NotAuthorisedError, NotFoundError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
 from src.features.files import file_service
+from src.features.files.file_processing_service import enqueue_files
 from src.features.files.file_schema import (
     ConfirmUploadRequest,
     FileCreate,
@@ -68,5 +69,5 @@ def confirm_uploads(
             raise NotAuthorisedError("Not allowed to edit this file")
 
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
-    # start background task to create embeddings
+    enqueue_files(files)
     return files
