@@ -60,6 +60,22 @@ export async function confirmUploads(results: FileUploadStatus[]) {
   return data;
 }
 
+export async function viewFileContent(fileId: number) {
+  const baseUrl = await getApiBaseUrl();
+
+  const response = await fetch(`${baseUrl}/api/files/${fileId}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: await attachToken(),
+    },
+  });
+
+  const data = await parseResponse<{ file: ProjectFile; url: string }>(
+    response,
+  );
+  return data;
+}
+
 export async function deleteFile(fileId: number) {
   const baseUrl = await getApiBaseUrl();
 

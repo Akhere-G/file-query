@@ -27,10 +27,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { deleteFile } from "../server-actions";
+import { deleteFile, viewFileContent } from "../server-actions";
 import { toast } from "@/components/ui/toast";
 
-type ModalState = "view" | "delete" | null;
+type ModalState = "delete" | null;
 
 export default function FileCard({ file }: { file: ProjectFile }) {
   const [modalState, setModalState] = useState<ModalState>(null);
@@ -48,6 +48,15 @@ export default function FileCard({ file }: { file: ProjectFile }) {
       }
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const viewFileAction = async () => {
+    const res = await viewFileContent(file.id);
+    if (res.success) {
+      window.open(res.data.url, "_blank", "noopener,noreferrer");
+    } else {
+      toast.add({ title: "Could not view file", type: "error" });
     }
   };
   return (
@@ -71,7 +80,7 @@ export default function FileCard({ file }: { file: ProjectFile }) {
                 <DropdownMenuItem onClick={() => setModalState("delete")}>
                   Delete
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setModalState("view")}>
+                <DropdownMenuItem onClick={viewFileAction}>
                   View
                 </DropdownMenuItem>
               </DropdownMenuGroup>

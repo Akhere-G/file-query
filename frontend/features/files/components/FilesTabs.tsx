@@ -26,7 +26,6 @@ interface FileTabsProps {
 }
 
 const FilesTabs = ({ files }: FileTabsProps) => {
-  console.log(files);
   const [isPending, setIsPending] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
     {},

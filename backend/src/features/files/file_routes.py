@@ -9,10 +9,27 @@ from src.features.files.file_processing_service import enqueue_files
 from src.features.files.file_schema import (
     ConfirmUploadRequest,
     FileCreate,
+    FileResponse,
 )
 from src.features.project import project_service
 
 router = APIRouter(prefix="/api/files", tags=["Files"])
+
+
+@router.get("/{file_id}")
+def get_file(
+    file_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+
+    file = file_service.get_file(db, file_id)
+    if file.project.user_id != user.id:
+        raise NotAuthorisedError("Not allowed to delete this file")
+
+    url = file_service.view_file_content(db, file_id)
+
+    return {"file": FileResponse.model_validate(file), "url": url}
 
 
 @router.post(
