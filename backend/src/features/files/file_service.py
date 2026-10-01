@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
@@ -33,44 +31,6 @@ def get_s3_client():
     )
 
     return s3_client
-
-
-def get_projects(db: Session, user_id: int):
-    stmt = select(Project).where(Project.user_id == user_id)
-    return db.execute(stmt).scalars().all()
-
-
-def get_project(db: Session, project_id: int):
-    stmt = select(Project).where(Project.id == project_id)
-    project = db.execute(stmt).scalar_one_or_none()
-    if not project:
-        raise NotFoundError("Project not found")
-    return project
-
-
-def create_project(db: Session, user_id: int, name: str):
-    new_project = Project(name=name, user_id=user_id)
-    db.add(new_project)
-    db.commit()
-    return new_project
-
-
-def delete_project(db: Session, project_id: int):
-    project = get_project(db, project_id)
-    if not project:
-        raise NotFoundError("Project not found")
-    db.delete(project)
-    db.commit()
-    return project_id
-
-
-def update_project(db: Session, project_id: int, new_name: str):
-    project = get_project(db, project_id)
-    if not project:
-        raise NotFoundError("Project not found")
-    project.name = new_name
-    db.commit()
-    return project
 
 
 def get_files(db: Session, project_id: int):
@@ -135,7 +95,7 @@ def create_file(db: Session, project_id: int, file_in: FileCreate):
         mime_type=file_in.mime_type,
         size=file_in.size,
         project_id=project_id,
-        storage_key=f"projects/{project_id}/files/{uuid4()}",
+        storage_key=File.create_storage_key(project_id),
     )
     db.add(new_file)
     db.commit()
@@ -155,7 +115,7 @@ def create_files(
             mime_type=file.mime_type,
             size=file.size,
             project_id=project_id,
-            storage_key=f"projects/{project_id}/files/{uuid4()}",
+            storage_key=File.create_storage_key(project_id),
         )
         upload_size += file.size
 
@@ -221,20 +181,6 @@ def confirm_uploads(
 
     db.commit()
     return successful_uploads
-
-
-def add_embbedding(db: Session, file_id: int):
-    file = get_file(db, file_id)
-    if file.status == FileStatus.pending:
-        raise BadRequestError("Cannot create on unuploaded file")
-    if file.status == FileStatus.processed:
-        raise BadRequestError("Embeddings already created")
-    if file.status == FileStatus.error:
-        raise BadRequestError(f"There is an error with this file: {file.error}")
-
-    # TODO: Extract text
-    # TODO: Create Chunks
-    # TODO: Create embeddings
 
 
 def delete_file(db: Session, file_id: int):

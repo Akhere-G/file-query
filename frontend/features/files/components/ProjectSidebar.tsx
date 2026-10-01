@@ -1,13 +1,19 @@
 "use client";
 
+import { Project } from "@/features/project/types";
 import Link from "next/link";
-import { Project } from "../types";
 
-const projects: Project[] = [];
-const ProjectSidebar = () => {
+const ProjectSidebar = ({
+  projects,
+  currentProjectId,
+}: {
+  projects: Project[];
+  currentProjectId: number;
+}) => {
   const noProjects = !projects || projects.length == 0;
+  console.log(projects, currentProjectId);
   return (
-    <div className="min-w-30 p-4 inset-shadow-sm">
+    <div className="min-w-30  p-2 inset-shadow-sm">
       <h2 className="title text-xl">Projects</h2>
       {noProjects && (
         <div className="text-sm py-12">
@@ -15,9 +21,13 @@ const ProjectSidebar = () => {
         </div>
       )}
       {!noProjects && (
-        <div>
+        <div className="max-w-[30vw] truncate overflow-x-clip mt-4 text-sm ">
           {projects.map((project) => (
-            <Link key={project.id} href={`/projects?id=${project.id}`}>
+            <Link
+              className={`px-2 py-1 w-full truncate text-ellipsis  rounded-md hover:pointer ${project.id === currentProjectId ? "bg-secondary" : ""}`}
+              key={project.id}
+              href={`/dashboard?projectId=${project.id}`}
+            >
               {project.name}
             </Link>
           ))}

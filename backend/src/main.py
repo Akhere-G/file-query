@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from src.exceptions import AppError
 from src.features.auth import user_routes
 from src.features.files import file_routes
+from src.features.project import project_routes
 
 logger = logging.getLogger(__name__)
 
@@ -56,3 +57,4 @@ def create_routes(app: FastAPI):
 
     app.include_router(user_routes.router)
     app.include_router(file_routes.router)
+    app.include_router(project_routes.router)

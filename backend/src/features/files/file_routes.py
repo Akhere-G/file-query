@@ -11,6 +11,7 @@ from src.features.files.file_schema import (
     FileCreate,
     FileResponse,
 )
+from src.features.project import project_service
 
 router = APIRouter(prefix="/api/files", tags=["Files"])
 
@@ -24,7 +25,7 @@ def get_files(
     if not project_id:
         return BadRequestError("Project is is missing!")
 
-    project = file_service.get_project(db, project_id)
+    project = project_service.get_project(db, project_id)
     if project.user_id != user.id:
         raise NotAuthorisedError("You must own this project to view its files")
 
@@ -41,10 +42,10 @@ def upload_files(
     project_id: int | None = None,
 ):
     if project_id is None:
-        project = file_service.create_project(db, user.id, "New Project")
+        project = project_service.create_project(db, user.id, "New Project")
         project_id = project.id
     else:
-        project = file_service.get_project(db, project_id)
+        project = project_service.get_project(db, project_id)
         if project.user_id != user.id:
             raise NotAuthorisedError("You are not allowed to upload to this project")
 

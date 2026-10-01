@@ -1,11 +1,34 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ChatTab from "@/features/files/components/ChatTab.tsx";
-import FilesTab from "@/features/files/components/FilesTabs.tsx";
-import ProjectSidebar from "@/features/files/components/ProjectSidebar.tsx";
-export default function DashboardPage() {
+import ChatTab from "@/features/files/components/ChatTab";
+import FilesTab from "@/features/files/components/FilesTabs";
+import ProjectSidebar from "@/features/files/components/ProjectSidebar";
+import { getProjects } from "@/features/project/server-actions";
+import { Project } from "@/features/project/types";
+
+// TODO: fetch projects from backend
+// TODO: fetch current project if searchParam has projectId
+// TODO: redirect if no project with that id is found
+// TODO: display all projects and highlight current project
+// TODO: display files for project
+
+interface DashboardPageProps {
+  searchParams: Promise<{ projectId?: string }>;
+}
+export default async function DashboardPage({
+  searchParams,
+}: DashboardPageProps) {
+  const projectId = (await searchParams).projectId;
+
+  const res = await getProjects();
+
+  const projects = res.success ? res.data : [];
+
   return (
     <div className="min-h-[90vh] flex">
-      <ProjectSidebar />
+      <ProjectSidebar
+        projects={projects}
+        currentProjectId={Number(projectId ?? 0)}
+      />
       <Tabs className="w-full flex-1">
         <TabsList className="bg-primary-foreground w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="chat">
