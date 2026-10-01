@@ -19,12 +19,14 @@ import {
   AttachmentMedia,
   AttachmentTitle,
 } from "@/components/ui/attachment";
+import { toast } from "@/components/ui/toast";
 
 interface FileTabsProps {
   files: ProjectFile[];
 }
 
 const FilesTabs = ({ files }: FileTabsProps) => {
+  console.log(files);
   const [isPending, setIsPending] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
     {},
@@ -112,8 +114,9 @@ const FilesTabs = ({ files }: FileTabsProps) => {
         router.push(path);
       }
     } catch (err) {
-      // TODO: show errors above input for errors with details, otherwise, create toast
-      console.error("error!!", err);
+      if (err instanceof Error) {
+        toast.add({ title: err.message, type: "error" });
+      }
     } finally {
       setIsPending(false);
     }
@@ -181,7 +184,7 @@ const FilesTabs = ({ files }: FileTabsProps) => {
             </Button>
 
             <p className="mt-3 text-xs text-muted-foreground">
-              PDF, DOCX, TXT, PNG, JPG up to 10MB
+              PDF, DOCX, TXT files up to 500MB
             </p>
           </>
         )}

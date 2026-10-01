@@ -3,6 +3,7 @@
 import { attachToken, getApiBaseUrl } from "@/lib/api";
 import { FileUploadStatus, ProjectFile, UploadFileResponse } from "./types";
 import { parseResponse } from "@/lib/apiUtils";
+import { revalidatePath } from "next/cache";
 
 export async function getFiles(projectId: number) {
   const url = getApiBaseUrl();
@@ -39,7 +40,7 @@ export async function uploadFiles(files: File[], projectId?: number) {
   });
 
   const data = await parseResponse<UploadFileResponse>(response);
-
+  revalidatePath("/dashboard");
   return data;
 }
 
@@ -54,7 +55,7 @@ export async function confirmUploads(results: FileUploadStatus[]) {
       Authorization: await attachToken(),
     },
   });
-
+  revalidatePath("/dashboard");
   const data = await parseResponse<ProjectFile[]>(response);
   return data;
 }
@@ -69,7 +70,7 @@ export async function deleteFile(fileId: number) {
       Authorization: await attachToken(),
     },
   });
-
+  revalidatePath("/dashboard");
   const data = await parseResponse<number>(response);
   return data;
 }

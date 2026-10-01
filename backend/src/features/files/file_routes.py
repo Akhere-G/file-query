@@ -55,3 +55,15 @@ def confirm_uploads(
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
     enqueue_files(files)
     return files
+
+
+@router.delete("/{file_id:int}")
+def delete_file(
+    file_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    file = file_service.get_file(db, file_id)
+    if file.project.user_id != user.id:
+        raise NotAuthorisedError("Not allowed to delete this file")
+    return file_service.delete_file(db, file_id)

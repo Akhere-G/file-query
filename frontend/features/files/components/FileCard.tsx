@@ -34,13 +34,20 @@ type ModalState = "view" | "delete" | null;
 
 export default function FileCard({ file }: { file: ProjectFile }) {
   const [modalState, setModalState] = useState<ModalState>(null);
-  const [isDeleting, setIsDeleting] = useState();
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const deleteFileAction = async () => {
-    const res = await deleteFile(file.id);
-    if (res.success) {
-      toast.add({ title: "Deleted file" });
-    } else {
-      toast.add({ title: "Could not delete file", type: "error" });
+    setIsDeleting(true);
+    try {
+      const res = await deleteFile(file.id);
+      if (res.success) {
+        toast.add({ title: "Deleted file" });
+        setModalState(null);
+      } else {
+        toast.add({ title: "Could not delete file", type: "error" });
+      }
+    } finally {
+      setIsDeleting(false);
     }
   };
   return (
@@ -86,7 +93,9 @@ export default function FileCard({ file }: { file: ProjectFile }) {
           </DialogHeader>
           <DialogFooter className="flex gap-4">
             <DialogClose>Cancel</DialogClose>
-            <Button>Delete</Button>
+            <Button onClick={deleteFileAction} disabled={isDeleting}>
+              Delete
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

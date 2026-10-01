@@ -189,7 +189,7 @@ def delete_file(db: Session, file_id: int):
     status = file.status
     db.delete(file)
     db.commit()
-    if status == FileStatus.processed:
+    if status in [FileStatus.processing, FileStatus.processed]:
         s3_client = get_s3_client()
         s3_client.delete_object(Bucket=bucket_name, Key=storage_key)
     return file_id
