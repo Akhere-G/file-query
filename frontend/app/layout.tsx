@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Noto_Sans,
-  Playfair_Display,
-} from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans, Quicksand } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Header from "@/components/common/Header";
@@ -13,9 +8,10 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/common/Appsidebar";
 import { cookies } from "next/headers";
 
-const playfairDisplayHeading = Playfair_Display({
+const playfairDisplayHeading = Quicksand({
   subsets: ["latin"],
   variable: "--font-heading",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });

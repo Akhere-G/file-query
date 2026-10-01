@@ -4,10 +4,10 @@ import { attachToken, getApiBaseUrl } from "@/lib/api";
 import { FileUploadStatus, ProjectFile, UploadFileResponse } from "./types";
 import { parseResponse } from "@/lib/apiUtils";
 
-export async function getFiles(projectId?: number) {
+export async function getFiles(projectId: number) {
   const url = getApiBaseUrl();
 
-  const response = await fetch(`${url}/api/files?project_id=${projectId}`, {
+  const response = await fetch(`${url}/api/projects/${projectId}/files`, {
     headers: {
       "Content-Type": "application:json",
       Authorization: await attachToken(),

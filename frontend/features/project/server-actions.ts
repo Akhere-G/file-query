@@ -23,7 +23,7 @@ export async function getProject(projectId: number) {
   const res = await fetch(`${baseUrl}/api/projects/${projectId}`, {
     headers: {
       "Content-Type": "application/json",
-      Authentication: await attachToken(),
+      Authorization: await attachToken(),
     },
   });
 

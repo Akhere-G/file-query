@@ -2,8 +2,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChatTab from "@/features/files/components/ChatTab";
 import FilesTab from "@/features/files/components/FilesTabs";
 import ProjectSidebar from "@/features/files/components/ProjectSidebar";
-import { getProjects } from "@/features/project/server-actions";
+import { getProject, getProjects } from "@/features/project/server-actions";
 import { Project } from "@/features/project/types";
+import { redirect } from "next/navigation";
 
 // TODO: fetch projects from backend
 // TODO: fetch current project if searchParam has projectId
@@ -22,6 +23,16 @@ export default async function DashboardPage({
   const res = await getProjects();
 
   const projects = res.success ? res.data : [];
+  let project: Project | null = null;
+
+  if (projectId) {
+    const projectRes = await getProject(Number(projectId));
+    project = projectRes.data;
+
+    if ([404, 403].includes(projectRes.status)) {
+      redirect("/dashboard", "replace");
+    }
+  }
 
   return (
     <div className="min-h-[90vh] flex">
@@ -42,7 +53,7 @@ export default async function DashboardPage({
           <ChatTab />
         </TabsContent>
         <TabsContent value="files">
-          <FilesTab />
+          <FilesTab files={project?.files ?? []} />
         </TabsContent>
       </Tabs>
     </div>

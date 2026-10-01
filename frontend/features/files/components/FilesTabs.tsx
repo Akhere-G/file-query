@@ -1,9 +1,17 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { File as FileType } from "../types";
+import { ProjectFile } from "../types";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+
+import { Upload, X } from "lucide-react";
+import { getFileIcon, getSizeStr } from "../utils";
+import { confirmUploads, uploadFiles } from "../server-actions";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { sendFilesToS3 } from "../actions";
+
+import FileCard from "./FileCard";
 import {
   Attachment,
   AttachmentContent,
@@ -11,15 +19,12 @@ import {
   AttachmentMedia,
   AttachmentTitle,
 } from "@/components/ui/attachment";
-import { Upload, X, File as FileIcon } from "lucide-react";
-import { getFileIcon, getSizeStr } from "../utils";
-import { confirmUploads, uploadFiles } from "../server-actions";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { sendFilesToS3 } from "../actions";
 
-const files: FileType[] = [];
+interface FileTabsProps {
+  files: ProjectFile[];
+}
 
-const FilesTabs = () => {
+const FilesTabs = ({ files }: FileTabsProps) => {
   const [isPending, setIsPending] = useState(false);
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -118,24 +123,13 @@ const FilesTabs = () => {
         <div>
           <h2 className="mb-3 text-sm font-medium">Your files</h2>
 
-          <div className="space-y-2">
+          <div className="space-y-2 flex flex-wrap gap-2">
             {files.map((file) => (
-              <Attachment key={file.id}>
-                <AttachmentMedia>
-                  <FileIcon className="size-5" />
-                </AttachmentMedia>
-
-                <AttachmentContent>
-                  <AttachmentTitle className="truncate">
-                    {file.name}
-                  </AttachmentTitle>
-                </AttachmentContent>
-              </Attachment>
+              <FileCard key={file.id} file={file} />
             ))}
           </div>
         </div>
       )}
-
       <div
         className={`
           flex min-h-64 flex-col items-center justify-center rounded-xl

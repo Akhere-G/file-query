@@ -9,8 +9,14 @@ export type FastApiValidationError = {
 export type FieldErrors = Record<string, string[]>;
 
 export type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; message: string | null; details: FieldErrors | null };
+  | { success: true; data: T; status: number }
+  | {
+      success: false;
+      data: null;
+      message: string | null;
+      details: FieldErrors | null;
+      status: number;
+    };
 
 export type ActionResult =
   | { success: true }
@@ -73,11 +79,18 @@ export async function parseResponse<T>(
       success: false,
       message: FALLBACK_ERROR_MESSAGE,
       details: null,
+      data: null,
+      status: response.status,
     };
   }
 
   if (response.ok) {
-    return { success: true, data: body as T };
+    return {
+      success: true,
+      data: body as T,
+
+      status: response.status,
+    };
   }
 
   const detail =
@@ -90,5 +103,7 @@ export async function parseResponse<T>(
     success: false,
     message: details ? null : getErrorMessage(detail),
     details,
+    data: null,
+    status: response.status,
   };
 }

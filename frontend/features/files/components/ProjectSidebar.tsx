@@ -11,7 +11,6 @@ const ProjectSidebar = ({
   currentProjectId: number;
 }) => {
   const noProjects = !projects || projects.length == 0;
-  console.log(projects, currentProjectId);
   return (
     <div className="min-w-30  p-2 inset-shadow-sm">
       <h2 className="title text-xl">Projects</h2>

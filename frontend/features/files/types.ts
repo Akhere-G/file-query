@@ -1,10 +1,3 @@
-export interface File {
-  id: number;
-  name: string;
-  url: string;
-  thumbnail: string;
-}
-
 export interface UploadFileResponse {
   files: {
     id: number;
