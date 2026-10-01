@@ -45,9 +45,7 @@ class File(Base):
     status: Mapped[FileStatus] = mapped_column(
         Enum(FileStatus), default=FileStatus.pending
     )
-    storage_key: Mapped[str] = mapped_column(
-        String(255), unique=True, default=lambda: str(uuid4())
-    )
+    storage_key: Mapped[str] = mapped_column(String(255), unique=True)
     project_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("projects.id", ondelete="CASCADE")
     )
@@ -59,6 +57,10 @@ class File(Base):
         order_by="Chunk.created_at",
         passive_deletes=True,
     )
+
+    @staticmethod
+    def create_storage_key(project_id: int):
+        return f"projects/{project_id}/files/{uuid4()}"
 
 
 class Chunk(Base):

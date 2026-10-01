@@ -4,6 +4,8 @@ import logging
 import boto3
 from sqlalchemy import select
 from src.database import get_db
+from src.features.auth.user_model import User
+from src.features.chat.message_model import Message
 from src.features.files.embedding_service import generate_embedding
 from src.features.files.file_model import Chunk, File, FileStatus
 from src.features.files.file_service import get_s3_client
@@ -96,7 +98,7 @@ def get_file(db, file_id: int) -> File:
         logger.warning("File %s has already been processed", file_id)
         return file
 
-    if file.status != FileStatus.processing:
+    if file.status not in [FileStatus.processing, FileStatus.error]:
         raise ValueError(
             f"File {file_id} cannot be processed in its current state: {file.status}"
         )
@@ -130,6 +132,7 @@ def process_embeddings(file_id: int, chunks: list[str]):
         db.add_all(chunk_records)
 
         file.status = FileStatus.processed
+        file.error = None
         db.commit()
 
     except Exception:
@@ -138,6 +141,7 @@ def process_embeddings(file_id: int, chunks: list[str]):
         if file:
             try:
                 file.status = FileStatus.error
+                file.error = "Could not process file"
                 db.commit()
             except Exception:
                 db.rollback()
