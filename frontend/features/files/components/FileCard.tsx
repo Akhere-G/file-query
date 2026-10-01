@@ -1,3 +1,4 @@
+"use client";
 import {
   Attachment,
   AttachmentActions,
@@ -26,12 +27,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { deleteFile } from "../server-actions";
+import { toast } from "@/components/ui/toast";
 
 type ModalState = "view" | "delete" | null;
 
 export default function FileCard({ file }: { file: ProjectFile }) {
   const [modalState, setModalState] = useState<ModalState>(null);
-
+  const [isDeleting, setIsDeleting] = useState();
+  const deleteFileAction = async () => {
+    const res = await deleteFile(file.id);
+    if (res.success) {
+      toast.add({ title: "Deleted file" });
+    } else {
+      toast.add({ title: "Could not delete file", type: "error" });
+    }
+  };
   return (
     <>
       <Attachment key={file.id}>

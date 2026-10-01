@@ -26,6 +26,9 @@ interface FileTabsProps {
 
 const FilesTabs = ({ files }: FileTabsProps) => {
   const [isPending, setIsPending] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
+    {},
+  );
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -84,12 +87,16 @@ const FilesTabs = ({ files }: FileTabsProps) => {
     }
     setIsPending(true);
     try {
+      setErrorMessages({});
       const res = await uploadFiles(
         uploadedFiles,
         projectId ? Number(projectId) : undefined,
       );
 
       if (!res.success) {
+        setErrorMessages(
+          res.details ?? { general: ["Something went wrong..."] },
+        );
         throw new Error(res.message ?? "Something went wrong...");
       }
 
@@ -198,6 +205,15 @@ const FilesTabs = ({ files }: FileTabsProps) => {
               {uploadedFiles.length === 1 ? "file" : "files"}
             </span>
           </div>
+          {Object.keys(errorMessages).length > 0 && (
+            <div className="bg-destructive/10 text-destructive p-4 rounded border border-destructive/50">
+              {Object.entries(errorMessages).map(([k, v], i) => (
+                <p key={k}>
+                  File {i + 1}: {v}
+                </p>
+              ))}
+            </div>
+          )}
 
           <div className="space-y-2">
             {uploadedFiles.map((file, index) => {

@@ -186,8 +186,10 @@ def confirm_uploads(
 def delete_file(db: Session, file_id: int):
     file = get_file(db, file_id)
     storage_key = file.storage_key
+    status = file.status
     db.delete(file)
     db.commit()
-    s3_client = get_s3_client()
-    s3_client.delete_object(Bucket=bucket_name, Key=storage_key)
+    if status == FileStatus.processed:
+        s3_client = get_s3_client()
+        s3_client.delete_object(Bucket=bucket_name, Key=storage_key)
     return file_id

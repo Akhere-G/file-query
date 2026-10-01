@@ -5,7 +5,7 @@ import ProjectSidebar from "@/features/files/components/ProjectSidebar";
 import { getProject, getProjects } from "@/features/project/server-actions";
 import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
-
+import { Toaster } from "@/components/ui/toast";
 // TODO: fetch projects from backend
 // TODO: fetch current project if searchParam has projectId
 // TODO: redirect if no project with that id is found
@@ -55,6 +55,7 @@ export default async function DashboardPage({
         <TabsContent value="files">
           <FilesTab files={project?.files ?? []} />
         </TabsContent>
+        <Toaster />
       </Tabs>
     </div>
   );

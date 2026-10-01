@@ -58,3 +58,18 @@ export async function confirmUploads(results: FileUploadStatus[]) {
   const data = await parseResponse<ProjectFile[]>(response);
   return data;
 }
+
+export async function deleteFile(fileId: number) {
+  const baseUrl = await getApiBaseUrl();
+
+  const response = await fetch(`${baseUrl}/api/files/${fileId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: await attachToken(),
+    },
+  });
+
+  const data = await parseResponse<number>(response);
+  return data;
+}

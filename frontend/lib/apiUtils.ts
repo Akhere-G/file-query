@@ -52,7 +52,6 @@ function getFieldErrors(detail: unknown): FieldErrors | null {
   const details: FieldErrors = {};
   for (const error of detail) {
     if (!isFastApiValidationError(error)) continue;
-
     const field = getFieldName(error.loc);
     details[field] ??= [];
     details[field].push(error.msg);

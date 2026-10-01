@@ -4,12 +4,12 @@ from src.schemas import BaseModel
 
 max_file_size = 1024 * 1024 * 500
 max_user_storage = 1024 * 1024 * 1024 * 2
-accepted_mime_types = [
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "text/plain",
-    "application/pdf",
-]
+accepted_mime_types = {
+    # "application/msword" : ".docx",
+    # "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".doc",
+    "text/plain": ".txt",
+    # "application/pdf": ".pdf",
+}
 
 
 class FileBase(BaseModel):
@@ -28,7 +28,9 @@ class FileBase(BaseModel):
     @classmethod
     def validate_mime_type(cls, v):
         if v not in accepted_mime_types:
-            raise ValueError(f"Files must one of {', '.join(accepted_mime_types)}")
+            raise ValueError(
+                f"Files must one of {', '.join(accepted_mime_types.values())}"
+            )
         return v
 
 
