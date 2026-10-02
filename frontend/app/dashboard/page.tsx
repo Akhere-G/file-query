@@ -50,7 +50,7 @@ export default async function DashboardPage({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="chat">
-          <ChatTab />
+          <ChatTab messages={project?.messages ?? []} />
         </TabsContent>
         <TabsContent value="files">
           <FilesTab files={project?.files ?? []} />

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.schemas import BaseModel
 
 
@@ -6,9 +8,10 @@ class MessageBase(BaseModel):
 
 
 class MessageResponse(MessageBase):
-    id: str
+    id: int
     project_id: int
     owner: str
+    created_at: datetime
     # chunks: list["Chunk"]
 
 
