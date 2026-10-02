@@ -25,7 +25,7 @@ def get_file(
 
     file = file_service.get_file(db, file_id)
     if file.project.user_id != user.id:
-        raise NotAuthorisedError("Not allowed to delete this file")
+        raise NotAuthorisedError("Not allowed to view this file")
 
     url = file_service.view_file_content(db, file_id)
 
