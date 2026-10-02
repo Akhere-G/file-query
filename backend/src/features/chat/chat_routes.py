@@ -8,7 +8,7 @@ from src.features.project import project_service
 from src.exceptions import NotAuthorisedError
 from src.features.chat.chat_schema import MessageCreate, MessageResponse
 
-router = APIRouter(prefix="/api/project/{project_id}/chat", tags=["Chat"])
+router = APIRouter(prefix="/api/projects/{project_id}/messages", tags=["Chat"])
 
 
 @router.get("", response_model=list[MessageResponse])
@@ -18,7 +18,7 @@ def get_chat_messages(
     db: Session = Depends(get_db),
 ):
     project = project_service.get_project(db, project_id)
-    if project.id != user.id:
+    if project.user_id != user.id:
         raise NotAuthorisedError("You must own this project to see its messages")
 
     return chat_service.get_messages(db, project_id)
@@ -32,7 +32,7 @@ def send_chat_messsage(
     db: Session = Depends(get_db),
 ):
     project = project_service.get_project(db, project_id)
-    if project.id != user.id:
+    if project.user_id != user.id:
         raise NotAuthorisedError("You must own this project to see its messages")
     message_response = chat_service.send_user_message(
         db, user.id, project_id, message.content

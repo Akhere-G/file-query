@@ -8,7 +8,7 @@ const ProjectSidebar = ({
   currentProjectId,
 }: {
   projects: Project[];
-  currentProjectId: number;
+  currentProjectId: number | null;
 }) => {
   const noProjects = !projects || projects.length == 0;
   return (

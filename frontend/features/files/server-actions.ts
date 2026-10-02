@@ -6,11 +6,11 @@ import { parseResponse } from "@/lib/apiUtils";
 import { revalidatePath } from "next/cache";
 
 export async function getFiles(projectId: number) {
-  const url = getApiBaseUrl();
+  const url = await getApiBaseUrl();
 
   const response = await fetch(`${url}/api/projects/${projectId}/files`, {
     headers: {
-      "Content-Type": "application:json",
+      "Content-Type": "application/json",
       Authorization: await attachToken(),
     },
   });

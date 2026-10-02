@@ -18,7 +18,8 @@ interface DashboardPageProps {
 export default async function DashboardPage({
   searchParams,
 }: DashboardPageProps) {
-  const projectId = (await searchParams).projectId;
+  const params = await searchParams;
+  const projectId = params.projectId ? Number(params.projectId) : null;
 
   const res = await getProjects();
 
@@ -36,10 +37,7 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-[90vh] flex">
-      <ProjectSidebar
-        projects={projects}
-        currentProjectId={Number(projectId ?? 0)}
-      />
+      <ProjectSidebar projects={projects} currentProjectId={projectId} />
       <Tabs className="w-full flex-1">
         <TabsList className="bg-primary-foreground w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="chat">
@@ -50,7 +48,7 @@ export default async function DashboardPage({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="chat">
-          <ChatTab messages={project?.messages ?? []} />
+          <ChatTab projectId={projectId} messages={project?.messages ?? []} />
         </TabsContent>
         <TabsContent value="files">
           <FilesTab files={project?.files ?? []} />
