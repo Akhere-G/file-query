@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from src.exceptions import AppError
 from src.features.auth import user_routes
+from src.features.chat import chat_routes
 from src.features.files import file_routes
 from src.features.project import project_routes
 
@@ -46,7 +47,7 @@ def create_exception_handlers(app: FastAPI):
 
 def register_models():
     from src.features.auth.user_model import User
-    from src.features.chat.message_model import Message, MessageOwner, Citation
+    from src.features.chat.message_model import Citation, Message, MessageOwner
     from src.features.files.file_model import Chunk, File, Project
 
 
@@ -58,3 +59,4 @@ def create_routes(app: FastAPI):
     app.include_router(user_routes.router)
     app.include_router(file_routes.router)
     app.include_router(project_routes.router)
+    app.include_router(chat_routes.router)
