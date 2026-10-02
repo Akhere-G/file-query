@@ -19,8 +19,21 @@ class Message(Base):
     project_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("projects.id", ondelete="CASCADE")
     )
-    reference_id: Mapped[int | None] = mapped_column(
-        Integer, ForeignKey("chunks.id", ondelete="SET NULL"), nullable=True
-    )
     project: Mapped["Project"] = relationship(back_populates="messages")
-    chunk: Mapped["Chunk | None"] = relationship(back_populates="messages")
+    chunks: Mapped[list["Chunk"]] = relationship(
+        secondary="citations",
+        back_populates="messages",
+        order_by="Chunk.created_at",
+    )
+
+
+class Citation(Base):
+    __tablename__ = "citations"
+    message_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("messages.id", ondelete="CASCADE"),
+        primary_key=True,
+    )
+    chunk_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("chunks.id", ondelete="CASCADE"), primary_key=True
+    )

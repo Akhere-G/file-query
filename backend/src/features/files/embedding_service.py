@@ -20,3 +20,15 @@ def generate_embedding(text: str) -> list[float]:
     result = json.loads(response["body"].read())
 
     return result["embedding"]
+
+
+def get_response(text: str) -> str:
+    client = get_bedrock_client()
+
+    response = client.converse(
+        modelId=settings.BEDROCK_CHAT_MODEL_ID,
+        messages=[{"role": "user", "content": [{"text": text}]}],
+        inferenceConfig={"maxTokens": 1000, "temperature": 0.2},
+    )
+
+    return response["output"]["message"]["content"][0]["text"]

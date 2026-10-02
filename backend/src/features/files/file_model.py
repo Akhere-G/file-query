@@ -71,7 +71,7 @@ class Chunk(Base):
     embedding: Mapped[list[float] | None] = mapped_column(Vector(1024), nullable=True)
     file: Mapped["File"] = relationship(back_populates="chunks")
     messages: Mapped[list["Message"]] = relationship(  # noqa: F821 # type: ignore
-        back_populates="chunk",
+        secondary="citations",
+        back_populates="chunks",
         order_by="Message.created_at",
-        passive_deletes=True,
     )

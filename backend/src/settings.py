@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
     SQS_QUEUE_URL: str
+    BEDROCK_CHAT_MODEL_ID: str
     model_config = SettingsConfigDict(env_file=".env")
 
 

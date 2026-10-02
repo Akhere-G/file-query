@@ -46,7 +46,7 @@ def create_exception_handlers(app: FastAPI):
 
 def register_models():
     from src.features.auth.user_model import User
-    from src.features.chat.message_model import Message, MessageOwner
+    from src.features.chat.message_model import Message, MessageOwner, Citation
     from src.features.files.file_model import Chunk, File, Project
 
 
