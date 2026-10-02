@@ -40,15 +40,15 @@ export default async function DashboardPage({
       <ProjectSidebar projects={projects} currentProjectId={projectId} />
       <Tabs className="w-full flex-1">
         <TabsList className="bg-primary-foreground w-full flex justify-start">
-          <TabsTrigger className="max-w-30" value="chat">
-            Chat
-          </TabsTrigger>
           <TabsTrigger className="max-w-30" value="files">
             Files
           </TabsTrigger>
+          <TabsTrigger className="max-w-30" value="chat">
+            Chat
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="chat">
-          <ChatTab projectId={projectId} messages={project?.messages ?? []} />
+          <ChatTab projectId={projectId} />
         </TabsContent>
         <TabsContent value="files">
           <FilesTab files={project?.files ?? []} />

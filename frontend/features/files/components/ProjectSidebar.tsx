@@ -12,7 +12,7 @@ const ProjectSidebar = ({
 }) => {
   const noProjects = !projects || projects.length == 0;
   return (
-    <div className="min-w-30  p-2 inset-shadow-sm">
+    <div className="w-35  p-2 inset-shadow-sm">
       <h2 className="title text-xl">Projects</h2>
       {noProjects && (
         <div className="text-sm py-12">
@@ -31,6 +31,11 @@ const ProjectSidebar = ({
             </Link>
           ))}
         </div>
+      )}
+      {currentProjectId && (
+        <Link className="text-sm pl-1 pt-4 block " href={`/dashboard`}>
+          Start new project
+        </Link>
       )}
     </div>
   );

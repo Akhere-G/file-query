@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from src.exceptions import AppError
@@ -16,6 +17,7 @@ def create_app():
     app = FastAPI()
     create_exception_handlers(app)
     register_models()
+    configure_app(app)
     create_routes(app)
     return app
 
@@ -49,6 +51,16 @@ def register_models():
     from src.features.auth.user_model import User
     from src.features.chat.message_model import Citation, Message, MessageOwner
     from src.features.files.file_model import Chunk, File, Project
+
+
+def configure_app(app: FastAPI):
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_credentials=True,
+        allow_headers=["*"],
+        allow_methods=["*"],
+    )
 
 
 def create_routes(app: FastAPI):

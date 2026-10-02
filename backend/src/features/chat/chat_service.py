@@ -5,9 +5,34 @@ from src.features.files.embedding_service import generate_embedding, get_respons
 from src.features.files.file_model import Chunk, File
 
 
-def get_messages(db: Session, project_id: int):
-    stmt = select(Message).where(Message.project_id == project_id)
-    return db.execute(stmt).scalars().all()
+def get_messages(
+    db: Session,
+    project_id: int,
+    before_id: int | None = None,
+    limit: int = 30,
+):
+    limit = max(0, min(limit, 30))
+    stmt = (
+        select(Message)
+        .where(Message.project_id == project_id)
+        .order_by(Message.id.desc())
+        .limit(limit + 1)
+    )
+
+    if before_id is not None:
+        stmt = stmt.where(Message.id < before_id)
+
+    messages = db.execute(stmt).scalars().all()
+
+    has_more = len(messages) > limit
+
+    messages = messages[:limit]
+
+    return {
+        "messages": list(reversed(messages)),
+        "has_more": has_more,
+        "next_cursor": messages[-1].id if has_more else None,
+    }
 
 
 def send_user_message(db: Session, user_id: int, project_id: int, content: str):

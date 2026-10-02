@@ -19,3 +19,9 @@ export async function attachToken() {
   }
   throw new Error("You must log in to continue");
 }
+
+export async function getToken() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("access_token")?.value;
+  return token;
+}

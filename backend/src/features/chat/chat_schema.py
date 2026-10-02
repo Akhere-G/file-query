@@ -17,3 +17,10 @@ class MessageResponse(MessageBase):
 
 class MessageCreate(MessageBase):
     pass
+
+
+class PaginatedMessages(BaseModel):
+    messages: list[MessageResponse]
+    has_more: bool
+    next_cursor: int | None
+
