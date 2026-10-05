@@ -34,7 +34,7 @@ def get_project(
 def create_project(db: Session, user_id: int, name: str):
     new_project = Project(name=name, user_id=user_id)
     db.add(new_project)
-    # db.commit()
+    db.flush()
     return new_project
 
 

@@ -3,6 +3,7 @@ export interface UploadFileResponse {
     id: number;
     key: string;
     url: string;
+    fields: Record<string, string>;
   }[];
   projectId: number;
 }

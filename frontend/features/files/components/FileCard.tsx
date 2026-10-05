@@ -52,6 +52,14 @@ export default function FileCard({ file }: { file: ProjectFile }) {
   };
 
   const viewFileAction = async () => {
+    if (file.status === "error") {
+      toast.add({
+        title:
+          "There was a problem with uploading this file. Please delete and reupload.",
+        type: "error",
+      });
+      return;
+    }
     const res = await viewFileContent(file.id);
     if (res.success) {
       window.open(res.data.url, "_blank", "noopener,noreferrer");
@@ -61,7 +69,15 @@ export default function FileCard({ file }: { file: ProjectFile }) {
   };
   return (
     <>
-      <Attachment key={file.id}>
+      <Attachment
+        key={file.id}
+        className={
+          file.status === "error"
+            ? "border-red-500 bg-red-100 text-red-900"
+            : undefined
+        }
+        title="There was a problem with uploading this file. Please delete and reupload."
+      >
         <AttachmentMedia>
           <FileIcon className="size-5" />
         </AttachmentMedia>

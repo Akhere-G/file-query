@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from src.database import get_db
 from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
@@ -23,13 +23,15 @@ def get_file(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-
+    print("here")
     file = file_service.get_file(db, file_id)
+    print("file", file.name, file.status, file.error)
+
     if file.project.user_id != user.id:
         raise NotAuthorisedError("Not allowed to view this file")
 
     url = file_service.view_file_content(db, file_id)
-
+    print("url", url)
     return {"file": FileResponse.model_validate(file), "url": url}
 
 
@@ -40,6 +42,7 @@ def get_file(
 )
 def upload_files(
     files_in: list[FileCreate],
+    request: Request,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
     project_id: int | None = None,

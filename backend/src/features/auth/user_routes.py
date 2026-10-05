@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from src.database import get_db
@@ -12,7 +12,9 @@ router = APIRouter(prefix="/api/auth", tags=["Users"])
 
 @limiter.limit("20/hour")
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
-def register_user(user_in: UserCreate, db: Session = Depends(get_db)) -> Token:
+def register_user(
+    user_in: UserCreate, request: Request, db: Session = Depends(get_db)
+) -> Token:
     existing_user = user_service.get_user_by_email(db, email=user_in.email)
     if existing_user:
         raise HTTPException(
@@ -27,7 +29,9 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)) -> Token:
 @limiter.limit("20/hour")
 @router.post("/token", response_model=Token, status_code=status.HTTP_200_OK)
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+    request: Request,
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
 ) -> Token:
     user = user_service.get_user_by_email(db, email=form_data.username)
     if not user or not user_service.check_password_hash(
@@ -43,7 +47,9 @@ def login(
 
 @limiter.limit("20/hour")
 @router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
-def login_user(user_in: UserLogin, db: Session = Depends(get_db)) -> Token:
+def login_user(
+    user_in: UserLogin, request: Request, db: Session = Depends(get_db)
+) -> Token:
     existing_user = user_service.get_user_by_email(db, email=user_in.email)
 
     if not existing_user or not user_service.check_password_hash(
@@ -59,5 +65,7 @@ def login_user(user_in: UserLogin, db: Session = Depends(get_db)) -> Token:
 
 @limiter.limit("20/hour")
 @router.get("/me", response_model=User, status_code=status.HTTP_200_OK)
-def check_auth(user: UserModel = Depends(user_service.get_current_user)) -> UserModel:
+def check_auth(
+    request: Request, user: UserModel = Depends(user_service.get_current_user)
+) -> UserModel:
     return user

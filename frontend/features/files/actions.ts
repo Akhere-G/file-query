@@ -6,12 +6,17 @@ export async function sendFilesToS3(
   return Promise.all(
     presignedFiles.map(async (file, i) => {
       try {
+        const formData = new FormData();
+
+        Object.entries(file.fields).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+
+        formData.append("file", files[i]);
+
         const response = await fetch(file.url, {
-          method: "PUT",
-          body: files[i],
-          headers: {
-            "Content-Type": files[i].type,
-          },
+          method: "POST",
+          body: formData,
         });
 
         return {

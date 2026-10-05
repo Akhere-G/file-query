@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from src.database import get_db
 from src.exceptions import NotAuthorisedError, TooManyRequestsError
@@ -36,6 +36,7 @@ def get_chat_messages(
 def send_chat_messsage(
     project_id: int,
     message: MessageCreate,
+    request: Request,
     user: User = Depends(user_service.get_current_user),
     db: Session = Depends(get_db),
 ):

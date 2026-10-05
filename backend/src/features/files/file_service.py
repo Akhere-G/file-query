@@ -134,12 +134,26 @@ def get_presigned_post(files: list[File], expiration: int | None = 60 * 15):
     urls = []
     try:
         for file in files:
-            url = s3_client.generate_presigned_url(
-                ClientMethod="put_object",
-                Params={"Bucket": bucket_name, "Key": file.storage_key},
+            post = s3_client.generate_presigned_post(
+                Bucket=bucket_name,
+                Key=file.storage_key,
+                Fields={
+                    "Content-Type": file.mime_type,
+                },
+                Conditions=[
+                    {"Content-Type": file.mime_type},
+                    ["content-length-range", file.size, file.size],
+                ],
                 ExpiresIn=expiration,
             )
-            urls.append({"id": file.id, "key": file.storage_key, "url": url})
+            urls.append(
+                {
+                    "id": file.id,
+                    "key": file.storage_key,
+                    "url": post["url"],
+                    "fields": post["fields"],
+                }
+            )
         return urls
     except ClientError as e:
         print(e)
