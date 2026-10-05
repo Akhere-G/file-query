@@ -7,7 +7,7 @@ from src.features.auth.user_model import User
 from src.features.files import file_service
 from src.features.files.file_schema import FileResponse
 from src.features.project import project_service
-from src.features.project.project_schema import ProjectResponse
+from src.features.project.project_schema import ProjectResponse, RenameProjectRequest
 
 router = APIRouter(prefix="/api/projects", tags=["Projects"])
 
@@ -47,3 +47,28 @@ def get_files(
         raise NotAuthorisedError("You must own this project to view its files")
 
     return file_service.get_files(db, project_id)
+
+
+@router.patch("/{project_id:int}", response_model=ProjectResponse)
+def rename_project(
+    project_id: int,
+    body: RenameProjectRequest,
+    user: User = Depends(user_service.get_current_user),
+    db: Session = Depends(get_db),
+):
+    project = project_service.get_project(db, project_id)
+    if project.user_id != user.id:
+        raise NotAuthorisedError("You cannot modify this project")
+    return project_service.update_project(db, project_id, body.name)
+
+
+@router.delete("/{project_id:int}")
+def delete_project(
+    project_id: int,
+    user: User = Depends(user_service.get_current_user),
+    db: Session = Depends(get_db),
+):
+    project = project_service.get_project(db, project_id)
+    if project.user_id != user.id:
+        raise NotAuthorisedError("You cannot delete this project")
+    return {"id": project_service.delete_project(db, project_id)}

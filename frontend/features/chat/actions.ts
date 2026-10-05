@@ -14,9 +14,7 @@ export async function getMessages(
   if (nextCursor) {
     params.set("before_id", String(nextCursor));
   }
-  console.log("here", baseUrl);
   const token = await attachToken();
-  console.log("herer", token);
   const response = await fetch(
     `${baseUrl}/api/projects/${projectId}/messages?${params.toString()}`,
     {

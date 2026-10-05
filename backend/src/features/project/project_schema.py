@@ -7,6 +7,10 @@ class ProjectBase(BaseModel):
     name: str
 
 
+class RenameProjectRequest(BaseModel):
+    name: str
+
+
 class ProjectResponse(ProjectBase):
     id: int
     files: list[FileResponse]

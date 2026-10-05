@@ -1,7 +1,9 @@
 import json
 import logging
+from typing import TypedDict
 
 import boto3
+from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
 from src.database import get_db
 from src.features.auth.user_model import User
@@ -18,16 +20,17 @@ EXTRACTION_METHODS = {
 }
 
 
-def get_sqs_client():
+def get_sqs_client() -> SQSClient:
     return boto3.client(
         "sqs",
         region_name=settings.AWS_REGION,
-    )
+    )  # type: ignore
 
 
 def enqueue_files(files: list[File]):
+    if settings.ENVIRONMENT != "production":
+        return
     sqs = get_sqs_client()
-
     for file in files:
         sqs.send_message(
             QueueUrl=settings.SQS_QUEUE_URL,
@@ -42,7 +45,13 @@ def enqueue_files(files: list[File]):
         )
 
 
-def process_file(job):
+class FileJob(TypedDict):
+    file_id: int
+    storage_key: str
+    mime_type: str
+
+
+def process_file(job: FileJob):
     file_bytes = download_file(job["storage_key"])
     text = extract_text(file_bytes, job["mime_type"])
     chunks = chunk_text(text)

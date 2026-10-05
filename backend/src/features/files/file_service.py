@@ -2,12 +2,14 @@ import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
+from mypy_boto3_s3.client import S3Client
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 from src.exceptions import BadRequestError, NotFoundError
 from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
 from src.settings import settings
+
 
 max_user_storage = 1024 * 1024 * 1024 * 2
 
@@ -23,14 +25,14 @@ region_name = settings.AWS_REGION
 bucket_name = settings.AWS_BUCKET_NAME
 
 
-def get_s3_client():
+def get_s3_client() -> S3Client:
     s3_client = boto3.client(
         "s3",
         region_name=region_name,
         config=Config(signature_version="s3v4", s3={"addressing_style": "virtual"}),
     )
 
-    return s3_client
+    return s3_client  # type: ignore
 
 
 def get_files(db: Session, project_id: int):
@@ -130,6 +132,7 @@ def create_files(
 
 
 def get_presigned_post(files: list[File], expiration: int | None = 60 * 15):
+    expiration = expiration or (60 * 15)
     s3_client = get_s3_client()
     urls = []
     try:
@@ -157,7 +160,7 @@ def get_presigned_post(files: list[File], expiration: int | None = 60 * 15):
         return urls
     except ClientError as e:
         print(e)
-        raise e
+        raise
 
 
 def confirm_uploads(
@@ -206,4 +209,5 @@ def delete_file(db: Session, file_id: int):
     if status in [FileStatus.processing, FileStatus.processed]:
         s3_client = get_s3_client()
         s3_client.delete_object(Bucket=bucket_name, Key=storage_key)
+
     return file_id
