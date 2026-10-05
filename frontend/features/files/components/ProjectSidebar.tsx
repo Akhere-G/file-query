@@ -20,7 +20,7 @@ const ProjectSidebar = ({
         </div>
       )}
       {!noProjects && (
-        <div className="max-w-[30vw] truncate overflow-x-clip mt-4 text-sm ">
+        <div className="max-w-[30vw] truncate overflow-x-clip mt-4 text-sm flex flex-col">
           {projects.map((project) => (
             <Link
               className={`px-2 py-1 w-full truncate text-ellipsis  rounded-md hover:pointer ${project.id === currentProjectId ? "bg-secondary" : ""}`}
