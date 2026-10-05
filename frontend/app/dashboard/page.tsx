@@ -6,11 +6,6 @@ import { getProject, getProjects } from "@/features/project/server-actions";
 import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toast";
-// TODO: fetch projects from backend
-// TODO: fetch current project if searchParam has projectId
-// TODO: redirect if no project with that id is found
-// TODO: display all projects and highlight current project
-// TODO: display files for project
 
 interface DashboardPageProps {
   searchParams: Promise<{ projectId?: string }>;

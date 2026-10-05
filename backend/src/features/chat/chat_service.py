@@ -1,17 +1,33 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from src.features.chat.message_model import Citation, Message, MessageOwner
 from src.features.files.embedding_service import generate_embedding, get_response
-from src.features.files.file_model import Chunk, File
+from src.features.files.file_model import Chunk, File, Project
+
+MAX_MONTHLY_MESSAGES = 40
+
+
+def get_messages_this_month(db: Session, user_id: int):
+    stmt = (
+        select(func.count(Message.id))
+        .join(Project, Message.project_id == Project.id)
+        .where(
+            Project.user_id == user_id,
+            Message.owner == MessageOwner.user,
+            Message.created_at >= func.date_trunc("month", func.now()),
+        )
+    )
+
+    return db.execute(stmt).scalar_one()
 
 
 def get_messages(
     db: Session,
     project_id: int,
     before_id: int | None = None,
-    limit: int = 30,
+    limit: int | None = 30,
 ):
-    limit = max(0, min(limit, 30))
+    limit = max(0, min(limit or 30, 30))
     stmt = (
         select(Message)
         .where(Message.project_id == project_id)

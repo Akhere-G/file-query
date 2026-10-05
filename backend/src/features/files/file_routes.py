@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import NotAuthorisedError, NotFoundError
+from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
 from src.features.files import file_service
@@ -12,6 +12,7 @@ from src.features.files.file_schema import (
     FileResponse,
 )
 from src.features.project import project_service
+from src.limiter import limiter
 
 router = APIRouter(prefix="/api/files", tags=["Files"])
 
@@ -32,6 +33,8 @@ def get_file(
     return {"file": FileResponse.model_validate(file), "url": url}
 
 
+# TODO: rate limit based on no. projects and 20/hour
+@limiter.limit("20/hour")
 @router.post(
     "",
 )
@@ -42,6 +45,11 @@ def upload_files(
     project_id: int | None = None,
 ):
     if project_id is None:
+        projects = project_service.get_projects(db, user.id)
+        if len(projects) >= project_service.MAX_PROJECTS_PER_USER:
+            raise TooManyRequestsError(
+                f"Free accounts can only have up to {project_service.MAX_PROJECTS_PER_USER} projects"
+            )
         project = project_service.create_project(db, user.id, "New Project")
         project_id = project.id
     else:

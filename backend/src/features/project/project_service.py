@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session, selectinload
 from src.exceptions import NotFoundError
 from src.features.files.file_model import Project
 
+MAX_PROJECTS_PER_USER = 3
+
 
 def get_projects(db: Session, user_id: int):
     stmt = select(Project).where(Project.user_id == user_id)
@@ -32,7 +34,7 @@ def get_project(
 def create_project(db: Session, user_id: int, name: str):
     new_project = Project(name=name, user_id=user_id)
     db.add(new_project)
-    db.commit()
+    # db.commit()
     return new_project
 
 

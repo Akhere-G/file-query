@@ -5,13 +5,13 @@ from src.database import get_db
 from src.features.auth import user_service
 from src.features.auth.user_model import User as UserModel
 from src.features.auth.user_schema import Token, User, UserCreate, UserLogin
+from src.limiter import limiter
 
 router = APIRouter(prefix="/api/auth", tags=["Users"])
 
 
-@router.post(
-    "/register", response_model=Token, status_code=status.HTTP_201_CREATED
-)
+@limiter.limit("20/hour")
+@router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 def register_user(user_in: UserCreate, db: Session = Depends(get_db)) -> Token:
     existing_user = user_service.get_user_by_email(db, email=user_in.email)
     if existing_user:
@@ -24,6 +24,7 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db)) -> Token:
     return user_service.get_access_token(user.email)
 
 
+@limiter.limit("20/hour")
 @router.post("/token", response_model=Token, status_code=status.HTTP_200_OK)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
@@ -40,6 +41,7 @@ def login(
     return user_service.get_access_token(user.email)
 
 
+@limiter.limit("20/hour")
 @router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
 def login_user(user_in: UserLogin, db: Session = Depends(get_db)) -> Token:
     existing_user = user_service.get_user_by_email(db, email=user_in.email)
@@ -55,6 +57,7 @@ def login_user(user_in: UserLogin, db: Session = Depends(get_db)) -> Token:
     return user_service.get_access_token(existing_user.email)
 
 
+@limiter.limit("20/hour")
 @router.get("/me", response_model=User, status_code=status.HTTP_200_OK)
 def check_auth(user: UserModel = Depends(user_service.get_current_user)) -> UserModel:
     return user

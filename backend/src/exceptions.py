@@ -25,3 +25,8 @@ class BadRequestError(AppError):
 class NotAuthorisedError(AppError):
     status_code = 403
     default_message = "Not authorised"
+
+
+class TooManyRequestsError(AppError):
+    status_code = 429
+    default_message = "Too many requests"

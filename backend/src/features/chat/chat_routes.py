@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import NotAuthorisedError
+from src.exceptions import NotAuthorisedError, TooManyRequestsError
 from src.features.auth import user_service
 from src.features.auth.user_model import User
 from src.features.chat import chat_service
@@ -11,6 +11,7 @@ from src.features.chat.chat_schema import (
     PaginatedMessages,
 )
 from src.features.project import project_service
+from src.limiter import limiter
 
 router = APIRouter(prefix="/api/projects/{project_id}/messages", tags=["Chat"])
 
@@ -30,6 +31,7 @@ def get_chat_messages(
     return chat_service.get_messages(db, project_id, before_id=before_id, limit=limit)
 
 
+@limiter.limit("30/hour")
 @router.post("", response_model=MessageResponse)
 def send_chat_messsage(
     project_id: int,
@@ -40,6 +42,12 @@ def send_chat_messsage(
     project = project_service.get_project(db, project_id)
     if project.user_id != user.id:
         raise NotAuthorisedError("You must own this project to see its messages")
+
+    total_message_this_month = chat_service.get_messages_this_month(db, user.id)
+    if total_message_this_month > chat_service.MAX_MONTHLY_MESSAGES:
+        raise TooManyRequestsError(
+            f"Free accounts can only send {chat_service.MAX_MONTHLY_MESSAGES} per month."
+        )
     message_response = chat_service.send_user_message(
         db, user.id, project_id, message.content
     )
