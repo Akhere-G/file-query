@@ -1,0 +1,68 @@
+name: Build and Push Images
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-north-1
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push frontend
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t $REGISTRY/filequery-frontend:$IMAGE_TAG \
+            ./frontend
+
+          docker push \
+            $REGISTRY/filequery-frontend:$IMAGE_TAG
+
+      - name: Build and push backend
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t $REGISTRY/filequery-backend:$IMAGE_TAG \
+            ./backend
+
+          docker push \
+            $REGISTRY/filequery-backend:$IMAGE_TAG
+
+      - name: Build and push embedding worker
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -t $REGISTRY/file-embedding-worker:$IMAGE_TAG \
+            -f ./backend/embedding_worker.Dockerfile \
+            ./backend
+
+          docker push \
+            $REGISTRY/file-embedding-worker:$IMAGE_TAG
