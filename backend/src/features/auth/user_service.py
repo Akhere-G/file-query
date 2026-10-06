@@ -1,4 +1,3 @@
-import os
 from datetime import datetime, timedelta, timezone
 
 import jwt
@@ -11,15 +10,16 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from src.database import get_db
 from src.exceptions import InvalidCredentialsError
+from src.settings import settings
 
 from .user_model import User
 from .user_schema import Token, UserCreate
 
 load_dotenv()
 
-SECRET_KEY: str = os.getenv("SECRET_KEY", "")
-ALGORITHM: str = os.getenv("ALGORITHM", "")
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 if not ALGORITHM:
     raise ValueError("Env variables are not present: ALGORITHM")

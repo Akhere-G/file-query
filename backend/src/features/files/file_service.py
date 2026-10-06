@@ -10,7 +10,6 @@ from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
 from src.settings import settings
 
-
 max_user_storage = 1024 * 1024 * 1024 * 2
 
 

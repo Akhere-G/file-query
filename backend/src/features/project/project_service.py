@@ -5,8 +5,6 @@ from src.features.files.file_model import FileStatus, Project
 from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
-MAX_PROJECTS_PER_USER = 3
-
 
 def get_projects(db: Session, user_id: int):
     stmt = select(Project).where(Project.user_id == user_id)

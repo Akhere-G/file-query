@@ -1,16 +1,10 @@
-import os
 from datetime import datetime, timezone
 
-from dotenv import load_dotenv
 from sqlalchemy import DateTime, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from src.settings import settings
 
-load_dotenv()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    raise ValueError("Env variables are not present: DATABASE_URL")
+DATABASE_URL = settings.DATABASE_URL
 
 
 class Base(DeclarativeBase):

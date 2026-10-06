@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 from src.features.chat.message_model import Citation, Message, MessageOwner
 from src.features.files.embedding_service import generate_embedding, get_response
 from src.features.files.file_model import Chunk, File, Project
-
-MAX_MONTHLY_MESSAGES = 40
+from src.settings import settings
 
 
 def get_messages_this_month(db: Session, user_id: int):
@@ -93,7 +92,7 @@ def get_relevant_chunks(db: Session, project_id: int, message: str, limit: int =
         .join(File, Chunk.file_id == File.id)
         .where(File.project_id == project_id)
         .order_by(Chunk.embedding.cosine_distance(query_embedding))
-        .limit(limit)
+        .limit(settings.RAG_TOP_K)
     )
     chunks = db.execute(stmt).scalars().all()
 

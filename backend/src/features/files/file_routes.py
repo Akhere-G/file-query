@@ -53,9 +53,9 @@ def upload_files(
 ):
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
-        if len(projects) >= project_service.MAX_PROJECTS_PER_USER:
+        if len(projects) >= settings.MAX_PROJECTS_PER_USER:
             raise TooManyRequestsError(
-                f"Free accounts can only have up to {project_service.MAX_PROJECTS_PER_USER} projects"
+                f"Free accounts can only have up to {settings.MAX_PROJECTS_PER_USER} projects"
             )
         project = project_service.create_project(db, user.id, "New Project")
         project_id = project.id

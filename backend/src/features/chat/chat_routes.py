@@ -12,6 +12,7 @@ from src.features.chat.chat_schema import (
 )
 from src.features.project import project_service
 from src.limiter import limiter
+from src.settings import settings
 
 router = APIRouter(prefix="/api/projects/{project_id}/messages", tags=["Chat"])
 
@@ -45,9 +46,9 @@ def send_chat_messsage(
         raise NotAuthorisedError("You must own this project to see its messages")
 
     total_message_this_month = chat_service.get_messages_this_month(db, user.id)
-    if total_message_this_month > chat_service.MAX_MONTHLY_MESSAGES:
+    if total_message_this_month > settings.MAX_MONTHLY_MESSAGES:
         raise TooManyRequestsError(
-            f"Free accounts can only send {chat_service.MAX_MONTHLY_MESSAGES} per month."
+            f"Free accounts can only send {settings.MAX_MONTHLY_MESSAGES} per month."
         )
     message_response = chat_service.send_user_message(
         db, user.id, project_id, message.content

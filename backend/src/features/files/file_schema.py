@@ -1,9 +1,11 @@
 from pydantic import field_validator
 from src.features.files.file_model import FileStatus
 from src.schemas import BaseModel
+from src.settings import settings
 
-max_file_size = 1024 * 1024 * 500
-max_user_storage = 1024 * 1024 * 1024 * 2
+MAX_FILE_SIZE = settings.MAX_FILE_SIZE
+MAX_USER_STORAGE = settings.MAX_USER_STORAGE
+
 accepted_mime_types = {
     "application/msword": ".docx",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".doc",
@@ -22,7 +24,7 @@ class FileBase(BaseModel):
     @field_validator("size")
     @classmethod
     def validate_size(cls, v):
-        if v >= max_file_size:
+        if v >= MAX_FILE_SIZE:
             raise ValueError("Files must be less than 500mb")
         return v
 
