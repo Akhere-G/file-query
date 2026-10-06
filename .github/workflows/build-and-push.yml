@@ -1,9 +1,12 @@
-name: Build and Push Images
+name: Build and Push Embedding Worker
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/build-and-push.yml"
 
 permissions:
   id-token: write
@@ -29,30 +32,6 @@ jobs:
       - name: Login to ECR
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push frontend
-        env:
-          REGISTRY: ${{ steps.ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build \
-            -t $REGISTRY/filequery-frontend:$IMAGE_TAG \
-            ./frontend
-
-          docker push \
-            $REGISTRY/filequery-frontend:$IMAGE_TAG
-
-      - name: Build and push backend
-        env:
-          REGISTRY: ${{ steps.ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build \
-            -t $REGISTRY/filequery-backend:$IMAGE_TAG \
-            ./backend
-
-          docker push \
-            $REGISTRY/filequery-backend:$IMAGE_TAG
 
       - name: Build and push embedding worker
         env:
