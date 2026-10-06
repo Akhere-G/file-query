@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.orm import Session
 from src.database import get_db
 from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
 from src.features.files import file_service
-from src.features.files.file_processing_service import enqueue_files
+from src.features.files.file_processing_service import (
+    enqueue_files,
+    process_files_locally,
+)
 from src.features.files.file_schema import (
     ConfirmUploadRequest,
     FileCreate,
@@ -13,6 +16,7 @@ from src.features.files.file_schema import (
 )
 from src.features.project import project_service
 from src.limiter import limiter
+from src.settings import settings
 
 router = APIRouter(prefix="/api/files", tags=["Files"])
 
@@ -23,15 +27,12 @@ def get_file(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    print("here")
     file = file_service.get_file(db, file_id)
-    print("file", file.name, file.status, file.error)
 
     if file.project.user_id != user.id:
         raise NotAuthorisedError("Not allowed to view this file")
 
     url = file_service.view_file_content(db, file_id)
-    print("url", url)
     return {"file": FileResponse.model_validate(file), "url": url}
 
 
@@ -67,6 +68,7 @@ def upload_files(
 @router.post("/confirm")
 def confirm_uploads(
     confirmed_files: list[ConfirmUploadRequest],
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
@@ -81,7 +83,10 @@ def confirm_uploads(
             raise NotAuthorisedError("Not allowed to edit this file")
 
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
-    enqueue_files(files)
+    if settings.ENVIRONMENT == "production":
+        enqueue_files(files)
+    else:
+        background_tasks.add_task(process_files_locally, files)
     return files
 
 

@@ -28,8 +28,6 @@ def get_sqs_client() -> SQSClient:
 
 
 def enqueue_files(files: list[File]):
-    if settings.ENVIRONMENT != "production":
-        return
     sqs = get_sqs_client()
     for file in files:
         sqs.send_message(
@@ -37,7 +35,6 @@ def enqueue_files(files: list[File]):
             MessageBody=json.dumps(
                 {
                     "file_id": file.id,
-                    "project_id": file.project_id,
                     "storage_key": file.storage_key,
                     "mime_type": file.mime_type,
                 }
@@ -60,6 +57,21 @@ def process_file(job: FileJob):
         file_id=job["file_id"],
         chunks=chunks,
     )
+
+
+def process_files_locally(files: list[File]):
+    for file in files:
+        try:
+            process_file(
+                {
+                    "file_id": file.id,
+                    "storage_key": file.storage_key,
+                    "mime_type": file.mime_type,
+                }
+            )
+        except Exception as err:
+            logger.error(f"Could not process file: {file.id}. Error: {err}")
+            raise
 
 
 def download_file(storage_key: str) -> bytes:

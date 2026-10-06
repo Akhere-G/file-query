@@ -65,7 +65,7 @@ def configure_app(app: FastAPI):
         allow_methods=["*"],
     )
     app.state.limiter = limiter
-    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore
 
 
 def create_routes(app: FastAPI):
@@ -77,3 +77,6 @@ def create_routes(app: FastAPI):
     app.include_router(file_routes.router)
     app.include_router(project_routes.router)
     app.include_router(chat_routes.router)
+
+
+app = create_app()

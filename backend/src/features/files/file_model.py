@@ -5,6 +5,7 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy import Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
+from src.settings import settings
 
 
 class FileStatus(enum.Enum):
@@ -60,7 +61,7 @@ class File(Base):
 
     @staticmethod
     def create_storage_key(project_id: int):
-        return f"projects/{project_id}/files/{uuid4()}"
+        return f"filequery/{settings.ENVIRONMENT}/projects/{project_id}/files/{uuid4()}"
 
 
 class Chunk(Base):
