@@ -1,9 +1,10 @@
 import csv
 import io
+import re
 import subprocess
 from typing import cast
 
-import fitz
+import pymupdf
 import pymupdf4llm
 from docx import Document
 
@@ -27,21 +28,28 @@ def extract_csv(file: bytes) -> str:
     return "\n\n".join(rows)
 
 
-def extract_pdf(file: bytes) -> str:
-    document = fitz.open(stream=file, filetype="pdf")
+def clean_text(text: str) -> str:
+    text = re.sub(r"(?<=\w)\n(?=\w)", "", text)
 
-    text = cast(
-        str,
-        pymupdf4llm.to_markdown(
-            document,
-            write_images=False,
-            embed_images=False,
-        ),
-    )
+    text = re.sub(r"[ \t]+", " ", text)
 
-    document.close()
+    text = re.sub(r"\n{3,}", "\n\n", text)
 
     return text.strip()
+
+
+def extract_pdf(file: bytes) -> str:
+    with pymupdf.open(stream=file, filetype="pdf") as document:
+        text = cast(
+            str,
+            pymupdf4llm.to_markdown(
+                document,
+                write_images=False,
+                embed_images=False,
+            ),
+        )
+
+    return clean_text(text)
 
 
 def extract_docx(file: bytes) -> str:

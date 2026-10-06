@@ -1,8 +1,13 @@
+import enum
 import json
 import logging
 from typing import TypedDict
 
 import boto3
+from langchain_text_splitters import (
+    MarkdownHeaderTextSplitter,
+    RecursiveCharacterTextSplitter,
+)
 from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
 from src.database import get_db
@@ -15,6 +20,21 @@ from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
 logger = logging.getLogger(__name__)
+
+
+class SplitType(enum.Enum):
+    markdown = "markdown"
+    text = "text"
+
+
+mime_types = {
+    "application/msword": SplitType.text,
+    "text/plain": SplitType.text,
+    "text/csv": SplitType.text,
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": SplitType.markdown,
+    "application/pdf": SplitType.markdown,
+    "text/markdown": SplitType.markdown,
+}
 
 
 def get_sqs_client() -> SQSClient:
@@ -84,18 +104,17 @@ def download_file(storage_key: str) -> bytes:
     return response["Body"].read()
 
 
-def chunk_text(
+def chunk_file(
     text: str,
-    chunk_size: int = 500,
-    offset: int = 100,
+    mime_type: str,
 ) -> list[str]:
-    chunks = []
-    step = chunk_size - offset
 
-    for i in range(0, len(text), step):
-        chunks.append(text[i : i + chunk_size])
-
-    return chunks
+    if mime_types.get(mime_type) == SplitType.markdown:
+        return chunk_markdown(text)
+    if mime_types.get(mime_type) == SplitType.text:
+        return chunk_text(text)
+    logger.warning(f"Default text chunking selected. File has mime type: {mime_type}")
+    return chunk_text(text)
 
 
 def get_file(db, file_id: int) -> File:
@@ -115,6 +134,49 @@ def get_file(db, file_id: int) -> File:
         )
 
     return file
+
+
+def chunk_text(
+    text: str,
+    chunk_size: int = 1500,
+    chunk_overlap: int = 200,
+) -> list[str]:
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+
+    return splitter.split_text(text)
+
+
+def chunk_markdown(
+    text: str,
+    chunk_size: int = 1500,
+    chunk_overlap: int = 200,
+) -> list[str]:
+    header_splitter = MarkdownHeaderTextSplitter(
+        headers_to_split_on=[
+            ("#", "Header 1"),
+            ("##", "Header 2"),
+            ("###", "Header 3"),
+            ("####", "Header 4"),
+        ],
+        strip_headers=False,
+    )
+
+    sections = header_splitter.split_text(text)
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+
+    chunks = []
+
+    for section in sections:
+        chunks.extend(splitter.split_text(section.page_content))
+
+    return chunks
 
 
 def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:

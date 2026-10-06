@@ -1,9 +1,18 @@
+import logging
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from src.features.chat.message_model import Citation, Message, MessageOwner
-from src.features.files.embedding_service import generate_embedding, get_response
+from src.features.files.embedding_service import (
+    generate_embedding,
+    get_response,
+    rewrite_query,
+)
 from src.features.files.file_model import Chunk, File, Project
 from src.settings import settings
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def get_messages_this_month(db: Session, user_id: int):
@@ -50,10 +59,40 @@ def get_messages(
     }
 
 
+def get_recent_conversation(
+    db: Session,
+    project_id: int,
+    limit: int = 10,
+) -> str:
+    stmt = (
+        select(Message)
+        .where(Message.project_id == project_id)
+        .order_by(Message.id.desc())
+        .limit(limit)
+    )
+
+    messages = db.scalars(stmt).all()
+
+    messages = list(messages)
+
+    messages.reverse()
+
+    return "\n".join(
+        f"{message.owner.value}: {message.content}" for message in messages
+    )
+
+
 def send_user_message(db: Session, user_id: int, project_id: int, content: str):
+    conversation = get_recent_conversation(db, project_id)
     create_message(db, project_id, MessageOwner.user, content)
-    chunks = get_relevant_chunks(db, project_id, content)
+
+    search_query = rewrite_query(
+        content,
+        conversation,
+    )
+    chunks = get_relevant_chunks(db, project_id, search_query)
     response = get_ai_response(content, chunks)
+    response = response or "Sorry, I could not answer your question."
     ai_message = create_message(
         db, project_id, MessageOwner.assistant, response, chunks
     )
@@ -87,16 +126,22 @@ def create_message(
 
 def get_relevant_chunks(db: Session, project_id: int, message: str, limit: int = 5):
     query_embedding = generate_embedding(message)
+    distance = Chunk.embedding.cosine_distance(query_embedding)
+    similarity = (1 - distance).label("similarity")
+
     stmt = (
-        select(Chunk)
+        select(Chunk, similarity)
         .join(File, Chunk.file_id == File.id)
-        .where(File.project_id == project_id)
-        .order_by(Chunk.embedding.cosine_distance(query_embedding))
+        .where(
+            File.project_id == project_id
+            # similarity >= settings.RAG_SIMILARITY_THRESHOLD,
+        )
+        .order_by(distance)
         .limit(settings.RAG_TOP_K)
     )
-    chunks = db.execute(stmt).scalars().all()
+    results = db.execute(stmt).all()
 
-    return list(chunks)
+    return [chunk for [chunk, _] in results]
 
 
 def get_ai_response(content: str, chunks: list[Chunk]):

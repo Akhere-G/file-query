@@ -26,7 +26,7 @@ def generate_embedding(text: str) -> list[float]:
     return result["embedding"]
 
 
-def get_response(text: str) -> str:
+def get_response(text: str) -> str | None:
     client = get_bedrock_client()
 
     response = client.converse(
@@ -51,4 +51,35 @@ def get_response(text: str) -> str:
             return block["text"]
 
     logger.warning("Bedrock response did not contain text: %s", response)
-    return "Sorry, I could not answer your question."
+    return None
+
+
+def rewrite_query(
+    message: str,
+    conversation: str,
+) -> str:
+    prompt = f"""
+You rewrite user questions into standalone search queries for document retrieval.
+
+Use the conversation only to resolve ambiguity or missing context.
+
+Rules:
+- Use the conversation to resolve references and ambiguity.
+- You may use facts explicitly stated in previous user or assistant messages.
+- Do not introduce new facts that are not established in the conversation.
+- Resolve references such as "it", "they", "that", and "the other one" using the conversation when possible.
+- If the question is already clear and standalone, return it unchanged.
+- If the conversation does not provide enough information to resolve an ambiguous question, return the original question unchanged.
+- Do not answer the question.
+- Return only the rewritten search query.
+
+Conversation:
+{conversation}
+
+User question:
+{message}
+
+Search query:
+"""
+
+    return (get_response(prompt) or message).strip()

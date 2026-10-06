@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     BEDROCK_CHAT_MODEL_ID: str
     REDIS_URI: str
     FRONTEND_URL: str = "http://localhost:8000"
-    RAG_SIMILARITY_THRESHOLD: float = 0.5
+    RAG_SIMILARITY_THRESHOLD: float = 0.29
     RAG_TOP_K: int = 5
     MAX_MONTHLY_MESSAGES: int = 40
     MAX_PROJECTS_PER_USER: int = 3
