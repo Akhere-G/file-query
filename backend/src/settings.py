@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SQS_QUEUE_URL: str
     BEDROCK_CHAT_MODEL_ID: str
     REDIS_URI: str
+    FRONTEND_URL: str = "http://localhost:8000"
     model_config = SettingsConfigDict(env_file=".env")
 
 

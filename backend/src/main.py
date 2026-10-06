@@ -12,6 +12,7 @@ from src.features.chat import chat_routes
 from src.features.files import file_routes
 from src.features.project import project_routes
 from src.limiter import limiter
+from src.settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ def register_models():
 def configure_app(app: FastAPI):
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000"],
+        allow_origins=["http://localhost:3000", settings.FRONTEND_URL],
         allow_credentials=True,
         allow_headers=["*"],
         allow_methods=["*"],
