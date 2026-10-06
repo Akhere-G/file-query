@@ -1,11 +1,15 @@
 import json
+import logging
 
 import boto3
+from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
 from src.settings import settings
 
+logger = logging.getLogger(__name__)
 
-def get_bedrock_client():
-    return boto3.client("bedrock-runtime", region_name=settings.AWS_REGION)
+
+def get_bedrock_client() -> BedrockRuntimeClient:
+    return boto3.client("bedrock-runtime", region_name=settings.AWS_REGION)  # type: ignore
 
 
 def generate_embedding(text: str) -> list[float]:
@@ -30,5 +34,21 @@ def get_response(text: str) -> str:
         messages=[{"role": "user", "content": [{"text": text}]}],
         inferenceConfig={"maxTokens": 1000, "temperature": 0.2},
     )
+    usage = response["usage"]
 
-    return response["output"]["message"]["content"][0]["text"]
+    logger.info(
+        "Bedrock usage: input=%s, output=%s, total=%s",
+        usage["inputTokens"],
+        usage["outputTokens"],
+        usage["totalTokens"],
+    )
+
+    message = response["output"].get("message", {})
+    content = message.get("content", [])
+
+    for block in content:
+        if "text" in block:
+            return block["text"]
+
+    logger.warning("Bedrock response did not contain text: %s", response)
+    return "Sorry, I could not answer your question."

@@ -1,3 +1,4 @@
+import io
 import json
 import logging
 from typing import TypedDict
@@ -9,15 +10,12 @@ from src.database import get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding
+from src.features.files.file_extraction_service import extract_file
 from src.features.files.file_model import Chunk, File, FileStatus
 from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
 logger = logging.getLogger(__name__)
-
-EXTRACTION_METHODS = {
-    "text/plain": lambda file: file.decode("utf-8"),
-}
 
 
 def get_sqs_client() -> SQSClient:
@@ -51,7 +49,7 @@ class FileJob(TypedDict):
 
 def process_file(job: FileJob):
     file_bytes = download_file(job["storage_key"])
-    text = extract_text(file_bytes, job["mime_type"])
+    text = extract_file(file_bytes, job["mime_type"])
     chunks = chunk_text(text)
 
     process_embeddings(
@@ -85,18 +83,6 @@ def download_file(storage_key: str) -> bytes:
     )
 
     return response["Body"].read()
-
-
-def extract_text(file: bytes, mime_type: str) -> str:
-    logger.info(f"extracting file text: {mime_type}")
-
-    extraction_method = EXTRACTION_METHODS.get(mime_type)
-
-    if not extraction_method:
-        logger.error(f"Method not supported for extracting file text: {mime_type}")
-        raise ValueError(f"Unsupported file type: {mime_type}")
-
-    return extraction_method(file)
 
 
 def chunk_text(

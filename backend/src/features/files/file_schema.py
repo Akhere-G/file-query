@@ -5,10 +5,12 @@ from src.schemas import BaseModel
 max_file_size = 1024 * 1024 * 500
 max_user_storage = 1024 * 1024 * 1024 * 2
 accepted_mime_types = {
-    # "application/msword" : ".docx",
-    # "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".doc",
+    "application/msword": ".docx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".doc",
     "text/plain": ".txt",
-    # "application/pdf": ".pdf",
+    "application/pdf": ".pdf",
+    "text/csv": ".csv",
+    "text/markdown": ".md",
 }
 
 
