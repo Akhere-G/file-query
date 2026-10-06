@@ -19,6 +19,9 @@ from src.limiter import limiter
 from src.settings import settings
 
 router = APIRouter(prefix="/api/files", tags=["Files"])
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @router.get("/{file_id}")
@@ -84,8 +87,10 @@ def confirm_uploads(
 
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
     if settings.ENVIRONMENT == "production":
+        logger.info("enqueuing files")
         enqueue_files(files)
     else:
+        logger.info("local file processing")
         background_tasks.add_task(process_files_locally, files)
     return files
 

@@ -30,6 +30,7 @@ def get_sqs_client() -> SQSClient:
 def enqueue_files(files: list[File]):
     sqs = get_sqs_client()
     for file in files:
+        logger.info(f"enqueuing file: {file.id}")
         sqs.send_message(
             QueueUrl=settings.SQS_QUEUE_URL,
             MessageBody=json.dumps(
@@ -75,6 +76,7 @@ def process_files_locally(files: list[File]):
 
 
 def download_file(storage_key: str) -> bytes:
+    logger.info(f"downloading file: {storage_key}")
     s3 = get_s3_client()
 
     response = s3.get_object(
@@ -86,9 +88,12 @@ def download_file(storage_key: str) -> bytes:
 
 
 def extract_text(file: bytes, mime_type: str) -> str:
+    logger.info(f"extracting file text: {mime_type}")
+
     extraction_method = EXTRACTION_METHODS.get(mime_type)
 
     if not extraction_method:
+        logger.error(f"Method not supported for extracting file text: {mime_type}")
         raise ValueError(f"Unsupported file type: {mime_type}")
 
     return extraction_method(file)
@@ -139,6 +144,8 @@ def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:
 
 
 def process_embeddings(file_id: int, chunks: list[str]):
+    logger.warning(f"processing file: {file_id}")
+
     db = next(get_db())
     file = None
 
@@ -146,6 +153,9 @@ def process_embeddings(file_id: int, chunks: list[str]):
         file = get_file(db, file_id)
 
         if file.status == FileStatus.processed:
+            logger.warning(
+                f"Trying to process file that's already processed: {file_id}"
+            )
             return
 
         chunk_records = create_chunks(file_id, chunks)
@@ -156,9 +166,11 @@ def process_embeddings(file_id: int, chunks: list[str]):
         file.error = None
         db.commit()
 
-    except Exception:
+    except Exception as err:
         db.rollback()
 
+        logger.error(f"Error processing file: {file_id}")
+        logger.error(f"Processing error for {file_id}: {err}")
         if file:
             try:
                 file.status = FileStatus.error
