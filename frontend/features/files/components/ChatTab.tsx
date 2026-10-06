@@ -12,9 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { sendMessage as sendMessageAction } from "@/features/chat/server-actions";
+import {
+  getMessages,
+  sendMessage as sendMessageAction,
+} from "@/features/chat/server-actions";
 import { toast } from "@/components/ui/toast";
-import { getMessages } from "@/features/chat/actions";
 
 const PAGE_SIZE = 20;
 const LOAD_MORE_THRESHOLD_PX = 50;
