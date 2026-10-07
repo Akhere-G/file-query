@@ -10,6 +10,7 @@ import { LoginSchema, loginSchema } from "../authSchema";
 import FormInput from "@/components/common/FormInput";
 import { getErrorMessage } from "@/lib/apiUtils";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [formError, setFormError] = useState<string | null>(null);
@@ -73,6 +74,9 @@ export default function LoginForm() {
             {...register("password")}
             description={formState.errors.password?.message}
           />
+          <Link className="-mt-4" href="/register">
+            Don&apos;t have an account yet?
+          </Link>
 
           <Button type="submit" disabled={formState.isSubmitting}>
             {formState.isSubmitting ? "Logging in..." : "Login"}

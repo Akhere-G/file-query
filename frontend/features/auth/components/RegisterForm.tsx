@@ -3,6 +3,8 @@
 import { register as registerFn } from "../api/authApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema, registerSchema } from "../authSchema";
@@ -10,9 +12,12 @@ import FormInput from "@/components/common/FormInput";
 import { getErrorMessage } from "@/lib/apiUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const [formError, setFormError] = useState<string | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState<string | null>(null);
   const router = useRouter();
   const { handleSubmit, register, setError, formState } =
     useForm<RegisterSchema>({
@@ -21,6 +26,12 @@ export default function RegisterForm() {
 
   async function onSubmit(data: RegisterSchema) {
     setFormError(null);
+    setTermsError(null);
+
+    if (!termsAccepted) {
+      setTermsError("You must accept the terms and conditions to register");
+      return;
+    }
 
     try {
       const result = await registerFn(data.email, data.password, data.username);
@@ -92,6 +103,39 @@ export default function RegisterForm() {
             {...register("repeatPassword")}
             description={formState.errors.repeatPassword?.message}
           />
+
+          <div className="-mt-2 flex items-start gap-2">
+            <Checkbox
+              id="termsAccepted"
+              checked={termsAccepted}
+              onCheckedChange={(checked) => {
+                setTermsAccepted(checked);
+                setTermsError(null);
+              }}
+            />
+            <Label
+              htmlFor="termsAccepted"
+              className="flex-1 cursor-pointer text-sm font-normal normal-case"
+            >
+              I agree to the{" "}
+              <Link href="/terms" className="underline hover:text-foreground">
+                Terms of Use
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline hover:text-foreground">
+                Privacy Policy
+              </Link>
+            </Label>
+          </div>
+
+          {termsError && (
+            <p className="text-sm text-destructive" role="alert">
+              {termsError}
+            </p>
+          )}
+          <Link className="mt-2" href="/login">
+            Already have an account?
+          </Link>
 
           <Button type="submit" disabled={formState.isSubmitting}>
             {formState.isSubmitting ? "Registering..." : "Register"}
