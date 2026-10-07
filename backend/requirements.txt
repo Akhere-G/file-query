@@ -44,6 +44,7 @@ Mako==1.4.1
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
+mypy-boto3-bedrock-agent-runtime==1.43.105
 mypy-boto3-bedrock-runtime==1.43.62
 mypy-boto3-s3==1.43.106
 mypy-boto3-sqs==1.43.0
