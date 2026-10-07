@@ -1,4 +1,5 @@
 import logging
+import re
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -124,24 +125,77 @@ def create_message(
         raise
 
 
-def get_relevant_chunks(db: Session, project_id: int, message: str, limit: int = 5):
+def get_relevant_chunks(
+    db: Session, project_id: int, message: str, limit: int = settings.RAG_TOP_K
+):
+    semantic_chunks = get_relevant_chunks_by_semantics(db, project_id, message, limit)
+    keyword_chunks = get_relevant_chunks_by_keywords(db, project_id, message, limit)
+
+    k = 60
+    scores: dict[int, float] = {}
+    chunks: dict[int, Chunk] = {}
+
+    for rank, chunk in enumerate(semantic_chunks, start=1):
+        scores[chunk.id] = scores.get(chunk.id, 0) + 1 / (k + rank)
+        chunks[chunk.id] = chunk
+
+    for rank, chunk in enumerate(keyword_chunks, start=1):
+        scores[chunk.id] = scores.get(chunk.id, 0) + 1 / (k + rank)
+        chunks[chunk.id] = chunk
+
+    ranked_chunk_ids = sorted(
+        scores, key=lambda chunk_id: scores[chunk_id], reverse=True
+    )
+
+    return [chunks[chunk_id] for chunk_id in ranked_chunk_ids[:limit]]
+
+
+def get_relevant_chunks_by_semantics(
+    db: Session, project_id: int, message: str, limit: int = settings.RAG_TOP_K
+) -> list[Chunk]:
     query_embedding = generate_embedding(message)
     distance = Chunk.embedding.cosine_distance(query_embedding)
     similarity = (1 - distance).label("similarity")
 
     stmt = (
-        select(Chunk, similarity)
+        select(Chunk)
         .join(File, Chunk.file_id == File.id)
         .where(
-            File.project_id == project_id
-            # similarity >= settings.RAG_SIMILARITY_THRESHOLD,
+            File.project_id == project_id,
+            similarity >= settings.RAG_SIMILARITY_THRESHOLD,
         )
         .order_by(distance)
-        .limit(settings.RAG_TOP_K)
+        .limit(limit)
     )
-    results = db.execute(stmt).all()
+    results = db.execute(stmt).scalars().all()
 
-    return [chunk for [chunk, _] in results]
+    return list(results)
+
+
+def get_relevant_chunks_by_keywords(
+    db: Session, project_id: int, message: str, limit: int = settings.RAG_TOP_K
+) -> list[Chunk]:
+    search_vector = func.to_tsvector("english", Chunk.content)
+    terms = re.findall(r"\w+", message.lower())
+
+    if not terms:
+        return []
+
+    search_query = func.to_tsquery("english", " | ".join(terms))
+
+    stmt = (
+        select(Chunk)
+        .join(File, Chunk.file_id == File.id)
+        .where(
+            File.project_id == project_id,
+            search_vector.op("@@")(search_query),
+        )
+        .order_by(func.ts_rank(search_vector, search_query).desc())
+        .limit(limit)
+    )
+    results = db.execute(stmt).scalars().all()
+
+    return list(results)
 
 
 def get_ai_response(content: str, chunks: list[Chunk]):
