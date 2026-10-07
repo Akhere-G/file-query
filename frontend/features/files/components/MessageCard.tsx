@@ -4,7 +4,6 @@ import { Message } from "@/features/chat/types";
 export default function MessageCard({ message }: { message: Message }) {
   const { content, owner } = message;
 
-  console.log(message, content, owner);
   return (
     <div
       className={`rounded-2xl px-3 py-2 ${
