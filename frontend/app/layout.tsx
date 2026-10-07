@@ -82,8 +82,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     {
       title: "Company",
       links: [
-        { name: "About", href: "/about" },
-        { name: "Contact", href: "/contact" },
+        { name: "About", href: "/" },
+        { name: "Contact", href: "/" },
       ],
     },
     {

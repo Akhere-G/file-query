@@ -4,7 +4,7 @@ import {
   UploadCloud,
   Wand2,
   Search,
-  Scissors,
+  ListOrdered,
   KanbanSquare,
   ArrowRight,
 } from "lucide-react";
@@ -14,37 +14,37 @@ export default function Home() {
     {
       title: "RAG AI Integration",
       description:
-        "Chat with your documents using advanced Retrieval-Augmented Generation for context-aware, accurate insights.",
+        "Chat with your documents using Retrieval-Augmented Generation. Answers are written only from the information retrieved from your own files.",
       icon: <BrainCircuit className="w-8 h-8 text-primary" />,
     },
     {
-      title: "File Upload & View",
+      title: "File Upload & View ",
       description:
-        "Seamlessly upload, parse, and preview multiple file formats directly within the application.",
+        "Upload text, markdown, pdfs, documents, or csv files, and preview them in the app.",
       icon: <UploadCloud className="w-8 h-8 text-primary" />,
     },
     {
       title: "Query Rewriting",
       description:
-        "Automatically optimize and expand your search queries behind the scenes for maximum retrieval accuracy.",
+        "Follow-up questions are rewritten using your chat history, so searches make sense even when your question doesn't stand on its own.",
       icon: <Wand2 className="w-8 h-8 text-primary" />,
     },
     {
       title: "Hybrid Search",
       description:
-        "Combine semantic vector search with keyword-based BM25 to find precisely what you're looking for.",
+        "Combines semantic search (matching meaning) with PostgreSQL keyword search (matching exact terms), merged using Reciprocal Rank Fusion, so you always find what you need to know.",
       icon: <Search className="w-8 h-8 text-primary" />,
     },
     {
-      title: "Smart Chunking",
+      title: "Reranking",
       description:
-        "Intelligent document parsing that respects document structure, tables, and paragraphs for better AI context.",
-      icon: <Scissors className="w-8 h-8 text-primary" />,
+        "After searching, the best-matching passages are re-checked against your question and reordered, so the most useful ones come first.",
+      icon: <ListOrdered className="w-8 h-8 text-primary" />,
     },
     {
       title: "Project Management",
       description:
-        "Organize files, prompts, and vector stores into isolated workspaces for clean, manageable workflows.",
+        "Organise files and conversations into separate projects. Searches only ever look at the files in the project you are working in.",
       icon: <KanbanSquare className="w-8 h-8 text-primary" />,
     },
   ];
@@ -58,8 +58,8 @@ export default function Home() {
     "Python",
     "SQLAlchemy",
     "PostgreSQL",
-    "LangChain",
-    "Vector DB",
+    "pgvector",
+    "Amazon Bedrock",
   ];
 
   return (
@@ -78,7 +78,8 @@ export default function Home() {
 
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground">
             A fullstack platform built to ingest, process, and query your
-            knowledge base using cutting-edge RAG techniques and hybrid search.
+            knowledge base using retrieval-augmented generation, hybrid search,
+            and reranking.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
@@ -150,8 +151,8 @@ export default function Home() {
         <div className="mt-32 mb-16 w-full max-w-4xl rounded-3xl border border-border bg-card p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to experience it?</h2>
           <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
-            Dive into the dashboard to start uploading documents, configuring
-            workspaces, and querying your data.
+            Dive into the dashboard to start uploading documents, setting up
+            projects, and querying your data.
           </p>
           <Link
             href="/dashboard"
