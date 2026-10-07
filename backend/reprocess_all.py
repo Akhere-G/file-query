@@ -12,7 +12,7 @@ def main() -> None:
         db.execute(delete(Chunk))
 
         files = db.scalars(
-            select(File).where(File.status == FileStatus.processed)
+            select(File).where(File.status == FileStatus.processing)
         ).all()
 
         jobs: list[FileJob] = [

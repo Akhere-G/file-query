@@ -1,0 +1,1613 @@
+query_idx,query,answerable,rank,chunk_id,similarity,relevant
+1,What are the main costs that should be included in the holiday budget?,True,1,2,0.3889,True
+1,What are the main costs that should be included in the holiday budget?,True,2,27,0.3759,True
+1,What are the main costs that should be included in the holiday budget?,True,3,4,0.2913,False
+1,What are the main costs that should be included in the holiday budget?,True,4,5,0.2759,False
+1,What are the main costs that should be included in the holiday budget?,True,5,3,0.2346,False
+1,What are the main costs that should be included in the holiday budget?,True,6,15,0.2057,False
+1,What are the main costs that should be included in the holiday budget?,True,7,12,0.1272,False
+1,What are the main costs that should be included in the holiday budget?,True,8,25,0.1260,False
+1,What are the main costs that should be included in the holiday budget?,True,9,6,0.1256,False
+1,What are the main costs that should be included in the holiday budget?,True,10,7,0.1199,False
+1,What are the main costs that should be included in the holiday budget?,True,11,9,0.1161,False
+1,What are the main costs that should be included in the holiday budget?,True,12,21,0.1092,False
+1,What are the main costs that should be included in the holiday budget?,True,13,20,0.0940,False
+1,What are the main costs that should be included in the holiday budget?,True,14,24,0.0902,False
+1,What are the main costs that should be included in the holiday budget?,True,15,8,0.0841,False
+1,What are the main costs that should be included in the holiday budget?,True,16,23,0.0687,False
+1,What are the main costs that should be included in the holiday budget?,True,17,10,0.0622,False
+1,What are the main costs that should be included in the holiday budget?,True,18,26,0.0616,False
+1,What are the main costs that should be included in the holiday budget?,True,19,17,0.0456,False
+1,What are the main costs that should be included in the holiday budget?,True,20,16,0.0411,False
+1,What are the main costs that should be included in the holiday budget?,True,21,18,0.0322,False
+1,What are the main costs that should be included in the holiday budget?,True,22,11,0.0294,False
+1,What are the main costs that should be included in the holiday budget?,True,23,19,0.0229,False
+1,What are the main costs that should be included in the holiday budget?,True,24,22,0.0136,False
+1,What are the main costs that should be included in the holiday budget?,True,25,14,0.0119,False
+1,What are the main costs that should be included in the holiday budget?,True,26,13,-0.0243,False
+2,What expenses should we consider when planning the overall trip budget?,True,1,27,0.4616,True
+2,What expenses should we consider when planning the overall trip budget?,True,2,2,0.3973,True
+2,What expenses should we consider when planning the overall trip budget?,True,3,4,0.3523,False
+2,What expenses should we consider when planning the overall trip budget?,True,4,3,0.3376,False
+2,What expenses should we consider when planning the overall trip budget?,True,5,5,0.3231,False
+2,What expenses should we consider when planning the overall trip budget?,True,6,15,0.2822,False
+2,What expenses should we consider when planning the overall trip budget?,True,7,7,0.2655,False
+2,What expenses should we consider when planning the overall trip budget?,True,8,6,0.2461,False
+2,What expenses should we consider when planning the overall trip budget?,True,9,20,0.2072,False
+2,What expenses should we consider when planning the overall trip budget?,True,10,11,0.1783,False
+2,What expenses should we consider when planning the overall trip budget?,True,11,21,0.1763,False
+2,What expenses should we consider when planning the overall trip budget?,True,12,26,0.1674,False
+2,What expenses should we consider when planning the overall trip budget?,True,13,24,0.1670,False
+2,What expenses should we consider when planning the overall trip budget?,True,14,25,0.1583,False
+2,What expenses should we consider when planning the overall trip budget?,True,15,22,0.1454,False
+2,What expenses should we consider when planning the overall trip budget?,True,16,19,0.1444,False
+2,What expenses should we consider when planning the overall trip budget?,True,17,12,0.1424,False
+2,What expenses should we consider when planning the overall trip budget?,True,18,10,0.1374,False
+2,What expenses should we consider when planning the overall trip budget?,True,19,16,0.1339,False
+2,What expenses should we consider when planning the overall trip budget?,True,20,9,0.1281,False
+2,What expenses should we consider when planning the overall trip budget?,True,21,8,0.1278,False
+2,What expenses should we consider when planning the overall trip budget?,True,22,18,0.1141,False
+2,What expenses should we consider when planning the overall trip budget?,True,23,23,0.1028,False
+2,What expenses should we consider when planning the overall trip budget?,True,24,14,0.0936,False
+2,What expenses should we consider when planning the overall trip budget?,True,25,13,0.0853,False
+2,What expenses should we consider when planning the overall trip budget?,True,26,17,0.0615,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,1,2,0.5521,True
+3,How should we compare the cost of different flights from the UK to Orlando?,True,2,4,0.3180,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,3,3,0.3134,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,4,18,0.2599,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,5,27,0.2388,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,6,24,0.2260,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,7,23,0.2248,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,8,5,0.1974,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,9,22,0.1814,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,10,21,0.1785,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,11,7,0.1686,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,12,20,0.1599,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,13,15,0.1555,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,14,8,0.1308,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,15,26,0.1141,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,16,6,0.0944,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,17,14,0.0874,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,18,19,0.0506,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,19,16,0.0338,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,20,10,0.0193,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,21,25,0.0142,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,22,9,0.0110,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,23,13,0.0082,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,24,17,-0.0005,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,25,12,-0.0014,False
+3,How should we compare the cost of different flights from the UK to Orlando?,True,26,11,-0.0283,False
+4,What additional hotel costs should be included besides the nightly rate?,True,1,3,0.2585,True
+4,What additional hotel costs should be included besides the nightly rate?,True,2,4,0.2193,False
+4,What additional hotel costs should be included besides the nightly rate?,True,3,2,0.1977,False
+4,What additional hotel costs should be included besides the nightly rate?,True,4,27,0.1478,False
+4,What additional hotel costs should be included besides the nightly rate?,True,5,5,0.1342,False
+4,What additional hotel costs should be included besides the nightly rate?,True,6,15,0.0988,False
+4,What additional hotel costs should be included besides the nightly rate?,True,7,6,0.0674,False
+4,What additional hotel costs should be included besides the nightly rate?,True,8,10,0.0669,False
+4,What additional hotel costs should be included besides the nightly rate?,True,9,26,0.0632,False
+4,What additional hotel costs should be included besides the nightly rate?,True,10,17,0.0617,False
+4,What additional hotel costs should be included besides the nightly rate?,True,11,7,0.0604,False
+4,What additional hotel costs should be included besides the nightly rate?,True,12,19,0.0587,False
+4,What additional hotel costs should be included besides the nightly rate?,True,13,9,0.0574,False
+4,What additional hotel costs should be included besides the nightly rate?,True,14,8,0.0511,False
+4,What additional hotel costs should be included besides the nightly rate?,True,15,18,0.0449,False
+4,What additional hotel costs should be included besides the nightly rate?,True,16,25,0.0420,False
+4,What additional hotel costs should be included besides the nightly rate?,True,17,12,0.0404,False
+4,What additional hotel costs should be included besides the nightly rate?,True,18,13,0.0398,False
+4,What additional hotel costs should be included besides the nightly rate?,True,19,20,0.0390,False
+4,What additional hotel costs should be included besides the nightly rate?,True,20,11,0.0330,False
+4,What additional hotel costs should be included besides the nightly rate?,True,21,22,0.0276,False
+4,What additional hotel costs should be included besides the nightly rate?,True,22,16,0.0249,False
+4,What additional hotel costs should be included besides the nightly rate?,True,23,21,0.0239,False
+4,What additional hotel costs should be included besides the nightly rate?,True,24,14,0.0138,False
+4,What additional hotel costs should be included besides the nightly rate?,True,25,23,0.0082,False
+4,What additional hotel costs should be included besides the nightly rate?,True,26,24,-0.0189,False
+5,What extra costs might be charged on the cruise?,True,1,4,0.4946,True
+5,What extra costs might be charged on the cruise?,True,2,27,0.2982,True
+5,What extra costs might be charged on the cruise?,True,3,2,0.2825,False
+5,What extra costs might be charged on the cruise?,True,4,5,0.2795,False
+5,What extra costs might be charged on the cruise?,True,5,15,0.2720,False
+5,What extra costs might be charged on the cruise?,True,6,11,0.2262,False
+5,What extra costs might be charged on the cruise?,True,7,26,0.2201,False
+5,What extra costs might be charged on the cruise?,True,8,9,0.2111,True
+5,What extra costs might be charged on the cruise?,True,9,25,0.2054,True
+5,What extra costs might be charged on the cruise?,True,10,10,0.1978,False
+5,What extra costs might be charged on the cruise?,True,11,13,0.1952,False
+5,What extra costs might be charged on the cruise?,True,12,12,0.1932,False
+5,What extra costs might be charged on the cruise?,True,13,6,0.1901,False
+5,What extra costs might be charged on the cruise?,True,14,16,0.1826,False
+5,What extra costs might be charged on the cruise?,True,15,18,0.1693,False
+5,What extra costs might be charged on the cruise?,True,16,8,0.1564,True
+5,What extra costs might be charged on the cruise?,True,17,22,0.1519,False
+5,What extra costs might be charged on the cruise?,True,18,23,0.1499,False
+5,What extra costs might be charged on the cruise?,True,19,3,0.1303,False
+5,What extra costs might be charged on the cruise?,True,20,14,0.0803,False
+5,What extra costs might be charged on the cruise?,True,21,7,0.0651,False
+5,What extra costs might be charged on the cruise?,True,22,24,0.0409,False
+5,What extra costs might be charged on the cruise?,True,23,17,0.0392,False
+5,What extra costs might be charged on the cruise?,True,24,21,0.0165,False
+5,What extra costs might be charged on the cruise?,True,25,20,-0.0083,False
+5,What extra costs might be charged on the cruise?,True,26,19,-0.0523,False
+6,What should we consider when choosing flights to Orlando?,True,1,2,0.4694,True
+6,What should we consider when choosing flights to Orlando?,True,2,22,0.4085,False
+6,What should we consider when choosing flights to Orlando?,True,3,18,0.4080,False
+6,What should we consider when choosing flights to Orlando?,True,4,3,0.3985,False
+6,What should we consider when choosing flights to Orlando?,True,5,7,0.3735,False
+6,What should we consider when choosing flights to Orlando?,True,6,24,0.3725,False
+6,What should we consider when choosing flights to Orlando?,True,7,26,0.3524,False
+6,What should we consider when choosing flights to Orlando?,True,8,20,0.3053,False
+6,What should we consider when choosing flights to Orlando?,True,9,23,0.3053,False
+6,What should we consider when choosing flights to Orlando?,True,10,27,0.2970,False
+6,What should we consider when choosing flights to Orlando?,True,11,4,0.2930,False
+6,What should we consider when choosing flights to Orlando?,True,12,21,0.2791,False
+6,What should we consider when choosing flights to Orlando?,True,13,8,0.2688,False
+6,What should we consider when choosing flights to Orlando?,True,14,6,0.2653,False
+6,What should we consider when choosing flights to Orlando?,True,15,15,0.2452,False
+6,What should we consider when choosing flights to Orlando?,True,16,14,0.2421,False
+6,What should we consider when choosing flights to Orlando?,True,17,16,0.2019,False
+6,What should we consider when choosing flights to Orlando?,True,18,19,0.1950,False
+6,What should we consider when choosing flights to Orlando?,True,19,13,0.1814,False
+6,What should we consider when choosing flights to Orlando?,True,20,5,0.1770,False
+6,What should we consider when choosing flights to Orlando?,True,21,11,0.1595,False
+6,What should we consider when choosing flights to Orlando?,True,22,12,0.0829,False
+6,What should we consider when choosing flights to Orlando?,True,23,10,0.0782,False
+6,What should we consider when choosing flights to Orlando?,True,24,25,0.0779,False
+6,What should we consider when choosing flights to Orlando?,True,25,9,0.0490,False
+6,What should we consider when choosing flights to Orlando?,True,26,17,0.0312,False
+7,Why should baggage allowances be considered when comparing flights?,True,1,15,0.1817,False
+7,Why should baggage allowances be considered when comparing flights?,True,2,5,0.1739,False
+7,Why should baggage allowances be considered when comparing flights?,True,3,3,0.1501,False
+7,Why should baggage allowances be considered when comparing flights?,True,4,2,0.1493,True
+7,Why should baggage allowances be considered when comparing flights?,True,5,27,0.1440,False
+7,Why should baggage allowances be considered when comparing flights?,True,6,20,0.1100,False
+7,Why should baggage allowances be considered when comparing flights?,True,7,4,0.1078,False
+7,Why should baggage allowances be considered when comparing flights?,True,8,6,0.0956,False
+7,Why should baggage allowances be considered when comparing flights?,True,9,7,0.0858,False
+7,Why should baggage allowances be considered when comparing flights?,True,10,11,0.0824,False
+7,Why should baggage allowances be considered when comparing flights?,True,11,14,0.0803,False
+7,Why should baggage allowances be considered when comparing flights?,True,12,16,0.0727,False
+7,Why should baggage allowances be considered when comparing flights?,True,13,26,0.0640,False
+7,Why should baggage allowances be considered when comparing flights?,True,14,21,0.0595,False
+7,Why should baggage allowances be considered when comparing flights?,True,15,9,0.0589,False
+7,Why should baggage allowances be considered when comparing flights?,True,16,13,0.0588,False
+7,Why should baggage allowances be considered when comparing flights?,True,17,19,0.0527,False
+7,Why should baggage allowances be considered when comparing flights?,True,18,10,0.0508,False
+7,Why should baggage allowances be considered when comparing flights?,True,19,25,0.0431,False
+7,Why should baggage allowances be considered when comparing flights?,True,20,12,0.0406,False
+7,Why should baggage allowances be considered when comparing flights?,True,21,17,0.0330,False
+7,Why should baggage allowances be considered when comparing flights?,True,22,8,0.0148,False
+7,Why should baggage allowances be considered when comparing flights?,True,23,24,0.0019,False
+7,Why should baggage allowances be considered when comparing flights?,True,24,23,-0.0033,False
+7,Why should baggage allowances be considered when comparing flights?,True,25,18,-0.0040,False
+7,Why should baggage allowances be considered when comparing flights?,True,26,22,-0.0078,False
+8,What factors should we consider when choosing an Orlando hotel?,True,1,3,0.5316,True
+8,What factors should we consider when choosing an Orlando hotel?,True,2,2,0.3175,False
+8,What factors should we consider when choosing an Orlando hotel?,True,3,22,0.2907,False
+8,What factors should we consider when choosing an Orlando hotel?,True,4,18,0.2836,True
+8,What factors should we consider when choosing an Orlando hotel?,True,5,21,0.2792,False
+8,What factors should we consider when choosing an Orlando hotel?,True,6,7,0.2784,False
+8,What factors should we consider when choosing an Orlando hotel?,True,7,26,0.2675,False
+8,What factors should we consider when choosing an Orlando hotel?,True,8,20,0.2596,False
+8,What factors should we consider when choosing an Orlando hotel?,True,9,24,0.2572,False
+8,What factors should we consider when choosing an Orlando hotel?,True,10,27,0.2459,False
+8,What factors should we consider when choosing an Orlando hotel?,True,11,23,0.2407,False
+8,What factors should we consider when choosing an Orlando hotel?,True,12,8,0.2360,False
+8,What factors should we consider when choosing an Orlando hotel?,True,13,6,0.2005,False
+8,What factors should we consider when choosing an Orlando hotel?,True,14,4,0.1971,False
+8,What factors should we consider when choosing an Orlando hotel?,True,15,19,0.1917,False
+8,What factors should we consider when choosing an Orlando hotel?,True,16,14,0.1889,False
+8,What factors should we consider when choosing an Orlando hotel?,True,17,15,0.1845,False
+8,What factors should we consider when choosing an Orlando hotel?,True,18,5,0.1514,False
+8,What factors should we consider when choosing an Orlando hotel?,True,19,16,0.1388,False
+8,What factors should we consider when choosing an Orlando hotel?,True,20,13,0.1271,False
+8,What factors should we consider when choosing an Orlando hotel?,True,21,11,0.1194,False
+8,What factors should we consider when choosing an Orlando hotel?,True,22,25,0.1016,False
+8,What factors should we consider when choosing an Orlando hotel?,True,23,9,0.0919,False
+8,What factors should we consider when choosing an Orlando hotel?,True,24,12,0.0893,False
+8,What factors should we consider when choosing an Orlando hotel?,True,25,10,0.0834,False
+8,What factors should we consider when choosing an Orlando hotel?,True,26,17,0.0726,False
+9,Why might staying closer to the theme parks be beneficial?,True,1,3,0.4643,True
+9,Why might staying closer to the theme parks be beneficial?,True,2,20,0.4642,False
+9,Why might staying closer to the theme parks be beneficial?,True,3,21,0.3227,False
+9,Why might staying closer to the theme parks be beneficial?,True,4,19,0.2886,False
+9,Why might staying closer to the theme parks be beneficial?,True,5,24,0.1988,False
+9,Why might staying closer to the theme parks be beneficial?,True,6,2,0.1715,False
+9,Why might staying closer to the theme parks be beneficial?,True,7,14,0.1578,False
+9,Why might staying closer to the theme parks be beneficial?,True,8,18,0.1520,False
+9,Why might staying closer to the theme parks be beneficial?,True,9,7,0.1436,False
+9,Why might staying closer to the theme parks be beneficial?,True,10,27,0.1433,False
+9,Why might staying closer to the theme parks be beneficial?,True,11,15,0.1419,False
+9,Why might staying closer to the theme parks be beneficial?,True,12,8,0.1409,False
+9,Why might staying closer to the theme parks be beneficial?,True,13,4,0.1235,False
+9,Why might staying closer to the theme parks be beneficial?,True,14,10,0.1103,False
+9,Why might staying closer to the theme parks be beneficial?,True,15,22,0.1100,False
+9,Why might staying closer to the theme parks be beneficial?,True,16,16,0.1081,False
+9,Why might staying closer to the theme parks be beneficial?,True,17,23,0.1069,False
+9,Why might staying closer to the theme parks be beneficial?,True,18,12,0.1059,False
+9,Why might staying closer to the theme parks be beneficial?,True,19,25,0.1043,False
+9,Why might staying closer to the theme parks be beneficial?,True,20,5,0.1023,False
+9,Why might staying closer to the theme parks be beneficial?,True,21,13,0.0974,False
+9,Why might staying closer to the theme parks be beneficial?,True,22,11,0.0869,False
+9,Why might staying closer to the theme parks be beneficial?,True,23,6,0.0864,False
+9,Why might staying closer to the theme parks be beneficial?,True,24,26,0.0800,False
+9,Why might staying closer to the theme parks be beneficial?,True,25,9,0.0506,False
+9,Why might staying closer to the theme parks be beneficial?,True,26,17,0.0399,False
+10,What hotel facilities would be useful for the family?,True,1,20,0.3502,False
+10,What hotel facilities would be useful for the family?,True,2,3,0.2949,True
+10,What hotel facilities would be useful for the family?,True,3,21,0.2944,False
+10,What hotel facilities would be useful for the family?,True,4,10,0.2881,False
+10,What hotel facilities would be useful for the family?,True,5,8,0.2623,False
+10,What hotel facilities would be useful for the family?,True,6,5,0.2583,False
+10,What hotel facilities would be useful for the family?,True,7,6,0.2504,False
+10,What hotel facilities would be useful for the family?,True,8,14,0.2503,False
+10,What hotel facilities would be useful for the family?,True,9,7,0.2434,False
+10,What hotel facilities would be useful for the family?,True,10,15,0.2427,False
+10,What hotel facilities would be useful for the family?,True,11,25,0.2406,False
+10,What hotel facilities would be useful for the family?,True,12,11,0.2272,False
+10,What hotel facilities would be useful for the family?,True,13,24,0.2231,False
+10,What hotel facilities would be useful for the family?,True,14,27,0.2217,False
+10,What hotel facilities would be useful for the family?,True,15,4,0.2100,False
+10,What hotel facilities would be useful for the family?,True,16,19,0.2075,False
+10,What hotel facilities would be useful for the family?,True,17,9,0.2006,False
+10,What hotel facilities would be useful for the family?,True,18,12,0.1926,False
+10,What hotel facilities would be useful for the family?,True,19,16,0.1758,False
+10,What hotel facilities would be useful for the family?,True,20,23,0.1546,False
+10,What hotel facilities would be useful for the family?,True,21,26,0.1529,False
+10,What hotel facilities would be useful for the family?,True,22,13,0.1458,False
+10,What hotel facilities would be useful for the family?,True,23,2,0.1386,False
+10,What hotel facilities would be useful for the family?,True,24,18,0.1281,False
+10,What hotel facilities would be useful for the family?,True,25,22,0.1151,False
+10,What hotel facilities would be useful for the family?,True,26,17,0.0739,False
+11,Which Disney parks are mentioned in the document?,True,1,20,0.3123,False
+11,Which Disney parks are mentioned in the document?,True,2,19,0.2906,True
+11,Which Disney parks are mentioned in the document?,True,3,3,0.2716,False
+11,Which Disney parks are mentioned in the document?,True,4,24,0.1821,False
+11,Which Disney parks are mentioned in the document?,True,5,21,0.1775,False
+11,Which Disney parks are mentioned in the document?,True,6,27,0.1682,False
+11,Which Disney parks are mentioned in the document?,True,7,7,0.1675,False
+11,Which Disney parks are mentioned in the document?,True,8,6,0.1360,False
+11,Which Disney parks are mentioned in the document?,True,9,2,0.1314,False
+11,Which Disney parks are mentioned in the document?,True,10,8,0.1126,False
+11,Which Disney parks are mentioned in the document?,True,11,4,0.1115,False
+11,Which Disney parks are mentioned in the document?,True,12,26,0.1027,False
+11,Which Disney parks are mentioned in the document?,True,13,22,0.0934,False
+11,Which Disney parks are mentioned in the document?,True,14,18,0.0922,False
+11,Which Disney parks are mentioned in the document?,True,15,15,0.0917,False
+11,Which Disney parks are mentioned in the document?,True,16,16,0.0789,False
+11,Which Disney parks are mentioned in the document?,True,17,23,0.0772,False
+11,Which Disney parks are mentioned in the document?,True,18,13,0.0706,False
+11,Which Disney parks are mentioned in the document?,True,19,5,0.0655,False
+11,Which Disney parks are mentioned in the document?,True,20,14,0.0580,False
+11,Which Disney parks are mentioned in the document?,True,21,11,0.0433,False
+11,Which Disney parks are mentioned in the document?,True,22,9,0.0432,False
+11,Which Disney parks are mentioned in the document?,True,23,10,0.0400,False
+11,Which Disney parks are mentioned in the document?,True,24,25,0.0367,False
+11,Which Disney parks are mentioned in the document?,True,25,12,0.0295,False
+11,Which Disney parks are mentioned in the document?,True,26,17,-0.0011,False
+12,What Disney park would provide the most traditional Disney experience?,True,1,20,0.4285,False
+12,What Disney park would provide the most traditional Disney experience?,True,2,19,0.3993,True
+12,What Disney park would provide the most traditional Disney experience?,True,3,3,0.3029,False
+12,What Disney park would provide the most traditional Disney experience?,True,4,21,0.2469,False
+12,What Disney park would provide the most traditional Disney experience?,True,5,24,0.2185,False
+12,What Disney park would provide the most traditional Disney experience?,True,6,14,0.1717,False
+12,What Disney park would provide the most traditional Disney experience?,True,7,7,0.1604,False
+12,What Disney park would provide the most traditional Disney experience?,True,8,26,0.1534,False
+12,What Disney park would provide the most traditional Disney experience?,True,9,2,0.1457,False
+12,What Disney park would provide the most traditional Disney experience?,True,10,8,0.1455,False
+12,What Disney park would provide the most traditional Disney experience?,True,11,15,0.1454,False
+12,What Disney park would provide the most traditional Disney experience?,True,12,13,0.1440,False
+12,What Disney park would provide the most traditional Disney experience?,True,13,4,0.1435,False
+12,What Disney park would provide the most traditional Disney experience?,True,14,27,0.1433,False
+12,What Disney park would provide the most traditional Disney experience?,True,15,18,0.1411,False
+12,What Disney park would provide the most traditional Disney experience?,True,16,22,0.1376,False
+12,What Disney park would provide the most traditional Disney experience?,True,17,23,0.1287,False
+12,What Disney park would provide the most traditional Disney experience?,True,18,16,0.1113,False
+12,What Disney park would provide the most traditional Disney experience?,True,19,25,0.1062,False
+12,What Disney park would provide the most traditional Disney experience?,True,20,12,0.1048,False
+12,What Disney park would provide the most traditional Disney experience?,True,21,10,0.1025,False
+12,What Disney park would provide the most traditional Disney experience?,True,22,9,0.0878,False
+12,What Disney park would provide the most traditional Disney experience?,True,23,11,0.0860,False
+12,What Disney park would provide the most traditional Disney experience?,True,24,6,0.0744,False
+12,What Disney park would provide the most traditional Disney experience?,True,25,5,0.0562,False
+12,What Disney park would provide the most traditional Disney experience?,True,26,17,0.0238,False
+13,What should we consider when deciding which theme parks to visit?,True,1,20,0.5802,True
+13,What should we consider when deciding which theme parks to visit?,True,2,3,0.4669,True
+13,What should we consider when deciding which theme parks to visit?,True,3,19,0.4008,True
+13,What should we consider when deciding which theme parks to visit?,True,4,21,0.2979,False
+13,What should we consider when deciding which theme parks to visit?,True,5,15,0.2404,False
+13,What should we consider when deciding which theme parks to visit?,True,6,24,0.2114,False
+13,What should we consider when deciding which theme parks to visit?,True,7,27,0.2058,False
+13,What should we consider when deciding which theme parks to visit?,True,8,26,0.1924,False
+13,What should we consider when deciding which theme parks to visit?,True,9,5,0.1603,False
+13,What should we consider when deciding which theme parks to visit?,True,10,7,0.1581,False
+13,What should we consider when deciding which theme parks to visit?,True,11,18,0.1564,False
+13,What should we consider when deciding which theme parks to visit?,True,12,16,0.1532,False
+13,What should we consider when deciding which theme parks to visit?,True,13,11,0.1515,False
+13,What should we consider when deciding which theme parks to visit?,True,14,2,0.1493,False
+13,What should we consider when deciding which theme parks to visit?,True,15,13,0.1467,False
+13,What should we consider when deciding which theme parks to visit?,True,16,4,0.1406,False
+13,What should we consider when deciding which theme parks to visit?,True,17,14,0.1377,False
+13,What should we consider when deciding which theme parks to visit?,True,18,6,0.1325,False
+13,What should we consider when deciding which theme parks to visit?,True,19,8,0.1282,False
+13,What should we consider when deciding which theme parks to visit?,True,20,25,0.1202,False
+13,What should we consider when deciding which theme parks to visit?,True,21,22,0.1118,False
+13,What should we consider when deciding which theme parks to visit?,True,22,12,0.1108,False
+13,What should we consider when deciding which theme parks to visit?,True,23,10,0.0996,False
+13,What should we consider when deciding which theme parks to visit?,True,24,23,0.0840,False
+13,What should we consider when deciding which theme parks to visit?,True,25,9,0.0664,False
+13,What should we consider when deciding which theme parks to visit?,True,26,17,0.0347,False
+14,How can we avoid wasting money on theme park tickets?,True,1,3,0.4962,True
+14,How can we avoid wasting money on theme park tickets?,True,2,20,0.4646,False
+14,How can we avoid wasting money on theme park tickets?,True,3,2,0.2943,False
+14,How can we avoid wasting money on theme park tickets?,True,4,21,0.2829,False
+14,How can we avoid wasting money on theme park tickets?,True,5,19,0.2738,False
+14,How can we avoid wasting money on theme park tickets?,True,6,27,0.2277,False
+14,How can we avoid wasting money on theme park tickets?,True,7,4,0.2001,False
+14,How can we avoid wasting money on theme park tickets?,True,8,24,0.1652,False
+14,How can we avoid wasting money on theme park tickets?,True,9,5,0.1544,False
+14,How can we avoid wasting money on theme park tickets?,True,10,18,0.1412,False
+14,How can we avoid wasting money on theme park tickets?,True,11,15,0.1388,False
+14,How can we avoid wasting money on theme park tickets?,True,12,7,0.1176,False
+14,How can we avoid wasting money on theme park tickets?,True,13,16,0.1143,False
+14,How can we avoid wasting money on theme park tickets?,True,14,14,0.0936,False
+14,How can we avoid wasting money on theme park tickets?,True,15,22,0.0868,False
+14,How can we avoid wasting money on theme park tickets?,True,16,25,0.0838,False
+14,How can we avoid wasting money on theme park tickets?,True,17,10,0.0753,False
+14,How can we avoid wasting money on theme park tickets?,True,18,12,0.0739,False
+14,How can we avoid wasting money on theme park tickets?,True,19,8,0.0737,False
+14,How can we avoid wasting money on theme park tickets?,True,20,11,0.0712,False
+14,How can we avoid wasting money on theme park tickets?,True,21,6,0.0670,False
+14,How can we avoid wasting money on theme park tickets?,True,22,13,0.0570,False
+14,How can we avoid wasting money on theme park tickets?,True,23,26,0.0564,False
+14,How can we avoid wasting money on theme park tickets?,True,24,23,0.0554,False
+14,How can we avoid wasting money on theme park tickets?,True,25,9,0.0390,False
+14,How can we avoid wasting money on theme park tickets?,True,26,17,0.0174,False
+15,What additional costs might apply at Universal or Disney?,True,1,3,0.3970,True
+15,What additional costs might apply at Universal or Disney?,True,2,4,0.3766,False
+15,What additional costs might apply at Universal or Disney?,True,3,2,0.3537,False
+15,What additional costs might apply at Universal or Disney?,True,4,20,0.2787,True
+15,What additional costs might apply at Universal or Disney?,True,5,27,0.2593,False
+15,What additional costs might apply at Universal or Disney?,True,6,21,0.2281,False
+15,What additional costs might apply at Universal or Disney?,True,7,24,0.1943,False
+15,What additional costs might apply at Universal or Disney?,True,8,5,0.1678,False
+15,What additional costs might apply at Universal or Disney?,True,9,18,0.1611,False
+15,What additional costs might apply at Universal or Disney?,True,10,22,0.1576,False
+15,What additional costs might apply at Universal or Disney?,True,11,7,0.1303,False
+15,What additional costs might apply at Universal or Disney?,True,12,23,0.1268,False
+15,What additional costs might apply at Universal or Disney?,True,13,19,0.1219,False
+15,What additional costs might apply at Universal or Disney?,True,14,15,0.1191,False
+15,What additional costs might apply at Universal or Disney?,True,15,26,0.1135,False
+15,What additional costs might apply at Universal or Disney?,True,16,6,0.1114,False
+15,What additional costs might apply at Universal or Disney?,True,17,8,0.1111,False
+15,What additional costs might apply at Universal or Disney?,True,18,9,0.0914,False
+15,What additional costs might apply at Universal or Disney?,True,19,16,0.0855,False
+15,What additional costs might apply at Universal or Disney?,True,20,13,0.0802,False
+15,What additional costs might apply at Universal or Disney?,True,21,14,0.0778,False
+15,What additional costs might apply at Universal or Disney?,True,22,10,0.0777,False
+15,What additional costs might apply at Universal or Disney?,True,23,25,0.0673,False
+15,What additional costs might apply at Universal or Disney?,True,24,12,0.0622,False
+15,What additional costs might apply at Universal or Disney?,True,25,11,0.0344,False
+15,What additional costs might apply at Universal or Disney?,True,26,17,0.0101,False
+16,What should we consider when deciding whether to buy an express pass?,True,1,15,0.2376,False
+16,What should we consider when deciding whether to buy an express pass?,True,2,20,0.2235,True
+16,What should we consider when deciding whether to buy an express pass?,True,3,4,0.2143,False
+16,What should we consider when deciding whether to buy an express pass?,True,4,3,0.1801,True
+16,What should we consider when deciding whether to buy an express pass?,True,5,5,0.1741,False
+16,What should we consider when deciding whether to buy an express pass?,True,6,2,0.1588,False
+16,What should we consider when deciding whether to buy an express pass?,True,7,26,0.1575,False
+16,What should we consider when deciding whether to buy an express pass?,True,8,16,0.1560,False
+16,What should we consider when deciding whether to buy an express pass?,True,9,13,0.1520,False
+16,What should we consider when deciding whether to buy an express pass?,True,10,14,0.1518,False
+16,What should we consider when deciding whether to buy an express pass?,True,11,21,0.1459,False
+16,What should we consider when deciding whether to buy an express pass?,True,12,8,0.1306,False
+16,What should we consider when deciding whether to buy an express pass?,True,13,10,0.1280,False
+16,What should we consider when deciding whether to buy an express pass?,True,14,11,0.1275,False
+16,What should we consider when deciding whether to buy an express pass?,True,15,19,0.1205,False
+16,What should we consider when deciding whether to buy an express pass?,True,16,27,0.1200,False
+16,What should we consider when deciding whether to buy an express pass?,True,17,24,0.1109,False
+16,What should we consider when deciding whether to buy an express pass?,True,18,22,0.1071,False
+16,What should we consider when deciding whether to buy an express pass?,True,19,6,0.1050,False
+16,What should we consider when deciding whether to buy an express pass?,True,20,7,0.0975,False
+16,What should we consider when deciding whether to buy an express pass?,True,21,25,0.0953,False
+16,What should we consider when deciding whether to buy an express pass?,True,22,18,0.0869,False
+16,What should we consider when deciding whether to buy an express pass?,True,23,23,0.0836,False
+16,What should we consider when deciding whether to buy an express pass?,True,24,9,0.0813,False
+16,What should we consider when deciding whether to buy an express pass?,True,25,12,0.0715,False
+16,What should we consider when deciding whether to buy an express pass?,True,26,17,0.0666,False
+17,What transport options are suggested for getting around Orlando?,True,1,22,0.4606,False
+17,What transport options are suggested for getting around Orlando?,True,2,4,0.4425,True
+17,What transport options are suggested for getting around Orlando?,True,3,18,0.4030,True
+17,What transport options are suggested for getting around Orlando?,True,4,24,0.3637,True
+17,What transport options are suggested for getting around Orlando?,True,5,7,0.3518,False
+17,What transport options are suggested for getting around Orlando?,True,6,3,0.3375,False
+17,What transport options are suggested for getting around Orlando?,True,7,23,0.3341,False
+17,What transport options are suggested for getting around Orlando?,True,8,21,0.3335,False
+17,What transport options are suggested for getting around Orlando?,True,9,8,0.3322,False
+17,What transport options are suggested for getting around Orlando?,True,10,2,0.2940,False
+17,What transport options are suggested for getting around Orlando?,True,11,20,0.2839,False
+17,What transport options are suggested for getting around Orlando?,True,12,26,0.2817,False
+17,What transport options are suggested for getting around Orlando?,True,13,27,0.2656,False
+17,What transport options are suggested for getting around Orlando?,True,14,15,0.2472,False
+17,What transport options are suggested for getting around Orlando?,True,15,6,0.2226,False
+17,What transport options are suggested for getting around Orlando?,True,16,14,0.2203,False
+17,What transport options are suggested for getting around Orlando?,True,17,11,0.1706,False
+17,What transport options are suggested for getting around Orlando?,True,18,5,0.1657,False
+17,What transport options are suggested for getting around Orlando?,True,19,13,0.1653,False
+17,What transport options are suggested for getting around Orlando?,True,20,25,0.1633,False
+17,What transport options are suggested for getting around Orlando?,True,21,10,0.1612,False
+17,What transport options are suggested for getting around Orlando?,True,22,16,0.1549,False
+17,What transport options are suggested for getting around Orlando?,True,23,19,0.1489,False
+17,What transport options are suggested for getting around Orlando?,True,24,12,0.1445,False
+17,What transport options are suggested for getting around Orlando?,True,25,9,0.1357,False
+17,What transport options are suggested for getting around Orlando?,True,26,17,0.1072,False
+18,What costs need to be considered if we rent a car?,True,1,4,0.3538,True
+18,What costs need to be considered if we rent a car?,True,2,3,0.2868,True
+18,What costs need to be considered if we rent a car?,True,3,2,0.2080,False
+18,What costs need to be considered if we rent a car?,True,4,27,0.1712,False
+18,What costs need to be considered if we rent a car?,True,5,18,0.1419,True
+18,What costs need to be considered if we rent a car?,True,6,5,0.1381,False
+18,What costs need to be considered if we rent a car?,True,7,15,0.1304,False
+18,What costs need to be considered if we rent a car?,True,8,20,0.0994,False
+18,What costs need to be considered if we rent a car?,True,9,22,0.0985,False
+18,What costs need to be considered if we rent a car?,True,10,26,0.0947,False
+18,What costs need to be considered if we rent a car?,True,11,24,0.0912,False
+18,What costs need to be considered if we rent a car?,True,12,21,0.0778,False
+18,What costs need to be considered if we rent a car?,True,13,6,0.0746,False
+18,What costs need to be considered if we rent a car?,True,14,17,0.0716,False
+18,What costs need to be considered if we rent a car?,True,15,7,0.0652,False
+18,What costs need to be considered if we rent a car?,True,16,12,0.0601,False
+18,What costs need to be considered if we rent a car?,True,17,8,0.0594,False
+18,What costs need to be considered if we rent a car?,True,18,25,0.0479,False
+18,What costs need to be considered if we rent a car?,True,19,16,0.0444,False
+18,What costs need to be considered if we rent a car?,True,20,23,0.0391,False
+18,What costs need to be considered if we rent a car?,True,21,14,0.0384,False
+18,What costs need to be considered if we rent a car?,True,22,9,0.0342,False
+18,What costs need to be considered if we rent a car?,True,23,11,0.0306,False
+18,What costs need to be considered if we rent a car?,True,24,10,0.0269,False
+18,What costs need to be considered if we rent a car?,True,25,13,0.0223,False
+18,What costs need to be considered if we rent a car?,True,26,19,0.0156,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,1,4,0.2202,True
+19,What are the advantages and disadvantages of using ride-sharing services?,True,2,10,0.1576,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,3,8,0.1470,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,4,15,0.1392,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,5,14,0.1108,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,6,25,0.1108,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,7,26,0.1106,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,8,11,0.1101,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,9,20,0.1093,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,10,13,0.1063,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,11,16,0.1060,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,12,5,0.1053,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,13,12,0.1037,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,14,21,0.0993,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,15,27,0.0872,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,16,23,0.0848,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,17,3,0.0847,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,18,2,0.0769,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,19,9,0.0762,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,20,24,0.0758,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,21,6,0.0709,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,22,7,0.0609,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,23,18,0.0602,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,24,17,0.0469,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,25,22,0.0423,False
+19,What are the advantages and disadvantages of using ride-sharing services?,True,26,19,0.0396,False
+20,How should we get from Orlando to the cruise port?,True,1,22,0.6648,True
+20,How should we get from Orlando to the cruise port?,True,2,18,0.5612,False
+20,How should we get from Orlando to the cruise port?,True,3,23,0.4674,False
+20,How should we get from Orlando to the cruise port?,True,4,26,0.4673,True
+20,How should we get from Orlando to the cruise port?,True,5,4,0.4665,False
+20,How should we get from Orlando to the cruise port?,True,6,8,0.4277,False
+20,How should we get from Orlando to the cruise port?,True,7,24,0.3669,False
+20,How should we get from Orlando to the cruise port?,True,8,6,0.3264,False
+20,How should we get from Orlando to the cruise port?,True,9,7,0.3174,False
+20,How should we get from Orlando to the cruise port?,True,10,13,0.3075,False
+20,How should we get from Orlando to the cruise port?,True,11,2,0.2948,False
+20,How should we get from Orlando to the cruise port?,True,12,11,0.2900,False
+20,How should we get from Orlando to the cruise port?,True,13,27,0.2816,False
+20,How should we get from Orlando to the cruise port?,True,14,16,0.2780,False
+20,How should we get from Orlando to the cruise port?,True,15,15,0.2451,False
+20,How should we get from Orlando to the cruise port?,True,16,14,0.2424,False
+20,How should we get from Orlando to the cruise port?,True,17,25,0.2287,False
+20,How should we get from Orlando to the cruise port?,True,18,21,0.2255,False
+20,How should we get from Orlando to the cruise port?,True,19,12,0.2206,False
+20,How should we get from Orlando to the cruise port?,True,20,3,0.2123,False
+20,How should we get from Orlando to the cruise port?,True,21,9,0.2042,False
+20,How should we get from Orlando to the cruise port?,True,22,5,0.2027,False
+20,How should we get from Orlando to the cruise port?,True,23,10,0.1807,False
+20,How should we get from Orlando to the cruise port?,True,24,20,0.1758,False
+20,How should we get from Orlando to the cruise port?,True,25,19,0.1555,False
+20,How should we get from Orlando to the cruise port?,True,26,17,0.0544,False
+21,What types of food and dining options might be available on the cruise?,True,1,9,0.4705,True
+21,What types of food and dining options might be available on the cruise?,True,2,25,0.3595,True
+21,What types of food and dining options might be available on the cruise?,True,3,11,0.3526,False
+21,What types of food and dining options might be available on the cruise?,True,4,4,0.3431,False
+21,What types of food and dining options might be available on the cruise?,True,5,10,0.3386,False
+21,What types of food and dining options might be available on the cruise?,True,6,26,0.3271,False
+21,What types of food and dining options might be available on the cruise?,True,7,27,0.3245,False
+21,What types of food and dining options might be available on the cruise?,True,8,8,0.3106,True
+21,What types of food and dining options might be available on the cruise?,True,9,14,0.2953,False
+21,What types of food and dining options might be available on the cruise?,True,10,15,0.2904,False
+21,What types of food and dining options might be available on the cruise?,True,11,12,0.2835,False
+21,What types of food and dining options might be available on the cruise?,True,12,5,0.2805,False
+21,What types of food and dining options might be available on the cruise?,True,13,13,0.2678,False
+21,What types of food and dining options might be available on the cruise?,True,14,22,0.2586,False
+21,What types of food and dining options might be available on the cruise?,True,15,6,0.2475,False
+21,What types of food and dining options might be available on the cruise?,True,16,16,0.2448,False
+21,What types of food and dining options might be available on the cruise?,True,17,21,0.2394,False
+21,What types of food and dining options might be available on the cruise?,True,18,18,0.2237,False
+21,What types of food and dining options might be available on the cruise?,True,19,23,0.2225,False
+21,What types of food and dining options might be available on the cruise?,True,20,7,0.2078,False
+21,What types of food and dining options might be available on the cruise?,True,21,2,0.1886,False
+21,What types of food and dining options might be available on the cruise?,True,22,20,0.1636,False
+21,What types of food and dining options might be available on the cruise?,True,23,19,0.1635,False
+21,What types of food and dining options might be available on the cruise?,True,24,24,0.1624,False
+21,What types of food and dining options might be available on the cruise?,True,25,3,0.1573,False
+21,What types of food and dining options might be available on the cruise?,True,26,17,0.0290,False
+22,Which cruise activities might cost extra?,True,1,4,0.5654,True
+22,Which cruise activities might cost extra?,True,2,15,0.4052,False
+22,Which cruise activities might cost extra?,True,3,27,0.4007,False
+22,Which cruise activities might cost extra?,True,4,25,0.3661,True
+22,Which cruise activities might cost extra?,True,5,11,0.3637,False
+22,Which cruise activities might cost extra?,True,6,10,0.3485,False
+22,Which cruise activities might cost extra?,True,7,2,0.3380,False
+22,Which cruise activities might cost extra?,True,8,5,0.3342,False
+22,Which cruise activities might cost extra?,True,9,13,0.3060,False
+22,Which cruise activities might cost extra?,True,10,9,0.3059,False
+22,Which cruise activities might cost extra?,True,11,12,0.3006,False
+22,Which cruise activities might cost extra?,True,12,26,0.2937,False
+22,Which cruise activities might cost extra?,True,13,16,0.2861,False
+22,Which cruise activities might cost extra?,True,14,8,0.2739,True
+22,Which cruise activities might cost extra?,True,15,18,0.2606,False
+22,Which cruise activities might cost extra?,True,16,22,0.2556,False
+22,Which cruise activities might cost extra?,True,17,6,0.2448,False
+22,Which cruise activities might cost extra?,True,18,23,0.2373,False
+22,Which cruise activities might cost extra?,True,19,7,0.2193,False
+22,Which cruise activities might cost extra?,True,20,3,0.2169,False
+22,Which cruise activities might cost extra?,True,21,14,0.1964,False
+22,Which cruise activities might cost extra?,True,22,21,0.1851,False
+22,Which cruise activities might cost extra?,True,23,24,0.1540,False
+22,Which cruise activities might cost extra?,True,24,20,0.1048,False
+22,Which cruise activities might cost extra?,True,25,19,0.0564,False
+22,Which cruise activities might cost extra?,True,26,17,0.0529,False
+23,What should everyone do after boarding the cruise ship?,True,1,11,0.6642,False
+23,What should everyone do after boarding the cruise ship?,True,2,8,0.5816,True
+23,What should everyone do after boarding the cruise ship?,True,3,22,0.5140,False
+23,What should everyone do after boarding the cruise ship?,True,4,6,0.5021,False
+23,What should everyone do after boarding the cruise ship?,True,5,10,0.4818,False
+23,What should everyone do after boarding the cruise ship?,True,6,26,0.4728,False
+23,What should everyone do after boarding the cruise ship?,True,7,25,0.4666,False
+23,What should everyone do after boarding the cruise ship?,True,8,12,0.4427,False
+23,What should everyone do after boarding the cruise ship?,True,9,5,0.4384,False
+23,What should everyone do after boarding the cruise ship?,True,10,18,0.4174,False
+23,What should everyone do after boarding the cruise ship?,True,11,27,0.3828,False
+23,What should everyone do after boarding the cruise ship?,True,12,9,0.3783,False
+23,What should everyone do after boarding the cruise ship?,True,13,23,0.3712,False
+23,What should everyone do after boarding the cruise ship?,True,14,15,0.3653,False
+23,What should everyone do after boarding the cruise ship?,True,15,13,0.3375,False
+23,What should everyone do after boarding the cruise ship?,True,16,7,0.3308,False
+23,What should everyone do after boarding the cruise ship?,True,17,16,0.3262,False
+23,What should everyone do after boarding the cruise ship?,True,18,4,0.3251,False
+23,What should everyone do after boarding the cruise ship?,True,19,14,0.3027,False
+23,What should everyone do after boarding the cruise ship?,True,20,21,0.2700,False
+23,What should everyone do after boarding the cruise ship?,True,21,19,0.2692,False
+23,What should everyone do after boarding the cruise ship?,True,22,24,0.2596,False
+23,What should everyone do after boarding the cruise ship?,True,23,20,0.2064,False
+23,What should everyone do after boarding the cruise ship?,True,24,2,0.1471,False
+23,What should everyone do after boarding the cruise ship?,True,25,3,0.1260,False
+23,What should everyone do after boarding the cruise ship?,True,26,17,0.0504,False
+24,Why is the cruise the centrepiece of the holiday?,True,1,12,0.4796,True
+24,Why is the cruise the centrepiece of the holiday?,True,2,25,0.4677,True
+24,Why is the cruise the centrepiece of the holiday?,True,3,8,0.4449,True
+24,Why is the cruise the centrepiece of the holiday?,True,4,10,0.3936,False
+24,Why is the cruise the centrepiece of the holiday?,True,5,23,0.3789,False
+24,Why is the cruise the centrepiece of the holiday?,True,6,9,0.3657,False
+24,Why is the cruise the centrepiece of the holiday?,True,7,26,0.3547,False
+24,Why is the cruise the centrepiece of the holiday?,True,8,11,0.3356,False
+24,Why is the cruise the centrepiece of the holiday?,True,9,27,0.3311,False
+24,Why is the cruise the centrepiece of the holiday?,True,10,13,0.3287,False
+24,Why is the cruise the centrepiece of the holiday?,True,11,6,0.3267,False
+24,Why is the cruise the centrepiece of the holiday?,True,12,15,0.3122,False
+24,Why is the cruise the centrepiece of the holiday?,True,13,18,0.2983,False
+24,Why is the cruise the centrepiece of the holiday?,True,14,22,0.2969,False
+24,Why is the cruise the centrepiece of the holiday?,True,15,7,0.2944,False
+24,Why is the cruise the centrepiece of the holiday?,True,16,5,0.2933,False
+24,Why is the cruise the centrepiece of the holiday?,True,17,16,0.2923,False
+24,Why is the cruise the centrepiece of the holiday?,True,18,4,0.2850,False
+24,Why is the cruise the centrepiece of the holiday?,True,19,24,0.2709,False
+24,Why is the cruise the centrepiece of the holiday?,True,20,2,0.2382,False
+24,Why is the cruise the centrepiece of the holiday?,True,21,14,0.2254,False
+24,Why is the cruise the centrepiece of the holiday?,True,22,21,0.2020,False
+24,Why is the cruise the centrepiece of the holiday?,True,23,20,0.1956,False
+24,Why is the cruise the centrepiece of the holiday?,True,24,19,0.1531,False
+24,Why is the cruise the centrepiece of the holiday?,True,25,17,0.0843,False
+24,Why is the cruise the centrepiece of the holiday?,True,26,3,0.0826,False
+25,What should we check before boarding the cruise?,True,1,6,0.5615,False
+25,What should we check before boarding the cruise?,True,2,11,0.5329,False
+25,What should we check before boarding the cruise?,True,3,26,0.5259,False
+25,What should we check before boarding the cruise?,True,4,8,0.4690,True
+25,What should we check before boarding the cruise?,True,5,5,0.4672,False
+25,What should we check before boarding the cruise?,True,6,22,0.3968,True
+25,What should we check before boarding the cruise?,True,7,18,0.3768,False
+25,What should we check before boarding the cruise?,True,8,15,0.3697,False
+25,What should we check before boarding the cruise?,True,9,25,0.3284,False
+25,What should we check before boarding the cruise?,True,10,16,0.3233,False
+25,What should we check before boarding the cruise?,True,11,27,0.3216,False
+25,What should we check before boarding the cruise?,True,12,10,0.3103,False
+25,What should we check before boarding the cruise?,True,13,4,0.3100,False
+25,What should we check before boarding the cruise?,True,14,12,0.3097,False
+25,What should we check before boarding the cruise?,True,15,13,0.2970,False
+25,What should we check before boarding the cruise?,True,16,9,0.2726,False
+25,What should we check before boarding the cruise?,True,17,23,0.2682,False
+25,What should we check before boarding the cruise?,True,18,7,0.2357,False
+25,What should we check before boarding the cruise?,True,19,19,0.2174,False
+25,What should we check before boarding the cruise?,True,20,14,0.2095,False
+25,What should we check before boarding the cruise?,True,21,24,0.1834,False
+25,What should we check before boarding the cruise?,True,22,20,0.1705,False
+25,What should we check before boarding the cruise?,True,23,2,0.1559,False
+25,What should we check before boarding the cruise?,True,24,21,0.1513,False
+25,What should we check before boarding the cruise?,True,25,3,0.1324,False
+25,What should we check before boarding the cruise?,True,26,17,0.0347,False
+26,How should we celebrate Mum's 60th birthday?,True,1,12,0.6210,True
+26,How should we celebrate Mum's 60th birthday?,True,2,25,0.6036,True
+26,How should we celebrate Mum's 60th birthday?,True,3,9,0.5635,True
+26,How should we celebrate Mum's 60th birthday?,True,4,17,0.5476,True
+26,How should we celebrate Mum's 60th birthday?,True,5,23,0.4909,False
+26,How should we celebrate Mum's 60th birthday?,True,6,21,0.4069,False
+26,How should we celebrate Mum's 60th birthday?,True,7,27,0.3732,False
+26,How should we celebrate Mum's 60th birthday?,True,8,5,0.3682,True
+26,How should we celebrate Mum's 60th birthday?,True,9,10,0.3664,False
+26,How should we celebrate Mum's 60th birthday?,True,10,7,0.3557,False
+26,How should we celebrate Mum's 60th birthday?,True,11,8,0.3129,False
+26,How should we celebrate Mum's 60th birthday?,True,12,6,0.1872,False
+26,How should we celebrate Mum's 60th birthday?,True,13,16,0.1831,False
+26,How should we celebrate Mum's 60th birthday?,True,14,24,0.1701,False
+26,How should we celebrate Mum's 60th birthday?,True,15,20,0.1469,False
+26,How should we celebrate Mum's 60th birthday?,True,16,11,0.1438,False
+26,How should we celebrate Mum's 60th birthday?,True,17,15,0.1270,False
+26,How should we celebrate Mum's 60th birthday?,True,18,22,0.1265,False
+26,How should we celebrate Mum's 60th birthday?,True,19,18,0.1221,False
+26,How should we celebrate Mum's 60th birthday?,True,20,26,0.1173,False
+26,How should we celebrate Mum's 60th birthday?,True,21,2,0.1125,False
+26,How should we celebrate Mum's 60th birthday?,True,22,19,0.1094,False
+26,How should we celebrate Mum's 60th birthday?,True,23,4,0.1019,False
+26,How should we celebrate Mum's 60th birthday?,True,24,14,0.0957,False
+26,How should we celebrate Mum's 60th birthday?,True,25,13,0.0759,False
+26,How should we celebrate Mum's 60th birthday?,True,26,3,0.0683,False
+27,What birthday services might the cruise company offer?,True,1,10,0.6685,False
+27,What birthday services might the cruise company offer?,True,2,9,0.6517,True
+27,What birthday services might the cruise company offer?,True,3,25,0.6287,True
+27,What birthday services might the cruise company offer?,True,4,8,0.5950,False
+27,What birthday services might the cruise company offer?,True,5,12,0.5835,False
+27,What birthday services might the cruise company offer?,True,6,23,0.4917,False
+27,What birthday services might the cruise company offer?,True,7,5,0.4514,False
+27,What birthday services might the cruise company offer?,True,8,27,0.4259,False
+27,What birthday services might the cruise company offer?,True,9,21,0.3762,False
+27,What birthday services might the cruise company offer?,True,10,6,0.3688,False
+27,What birthday services might the cruise company offer?,True,11,7,0.3495,False
+27,What birthday services might the cruise company offer?,True,12,2,0.3228,False
+27,What birthday services might the cruise company offer?,True,13,4,0.3178,False
+27,What birthday services might the cruise company offer?,True,14,11,0.3106,False
+27,What birthday services might the cruise company offer?,True,15,15,0.2978,False
+27,What birthday services might the cruise company offer?,True,16,26,0.2867,False
+27,What birthday services might the cruise company offer?,True,17,16,0.2736,False
+27,What birthday services might the cruise company offer?,True,18,13,0.2701,False
+27,What birthday services might the cruise company offer?,True,19,17,0.2432,False
+27,What birthday services might the cruise company offer?,True,20,22,0.2201,False
+27,What birthday services might the cruise company offer?,True,21,18,0.2161,False
+27,What birthday services might the cruise company offer?,True,22,24,0.1862,False
+27,What birthday services might the cruise company offer?,True,23,14,0.1830,False
+27,What birthday services might the cruise company offer?,True,24,20,0.1645,False
+27,What birthday services might the cruise company offer?,True,25,19,0.1403,False
+27,What birthday services might the cruise company offer?,True,26,3,0.1267,False
+28,What could be included in Mum's birthday celebration?,True,1,25,0.5951,True
+28,What could be included in Mum's birthday celebration?,True,2,9,0.5899,True
+28,What could be included in Mum's birthday celebration?,True,3,12,0.5547,False
+28,What could be included in Mum's birthday celebration?,True,4,21,0.4823,False
+28,What could be included in Mum's birthday celebration?,True,5,27,0.4741,True
+28,What could be included in Mum's birthday celebration?,True,6,5,0.4586,True
+28,What could be included in Mum's birthday celebration?,True,7,10,0.4520,False
+28,What could be included in Mum's birthday celebration?,True,8,23,0.4333,False
+28,What could be included in Mum's birthday celebration?,True,9,17,0.3781,False
+28,What could be included in Mum's birthday celebration?,True,10,7,0.3578,False
+28,What could be included in Mum's birthday celebration?,True,11,8,0.3391,False
+28,What could be included in Mum's birthday celebration?,True,12,6,0.2123,False
+28,What could be included in Mum's birthday celebration?,True,13,16,0.2092,False
+28,What could be included in Mum's birthday celebration?,True,14,11,0.1673,False
+28,What could be included in Mum's birthday celebration?,True,15,2,0.1659,False
+28,What could be included in Mum's birthday celebration?,True,16,24,0.1635,False
+28,What could be included in Mum's birthday celebration?,True,17,15,0.1610,False
+28,What could be included in Mum's birthday celebration?,True,18,20,0.1564,False
+28,What could be included in Mum's birthday celebration?,True,19,4,0.1335,False
+28,What could be included in Mum's birthday celebration?,True,20,14,0.1307,False
+28,What could be included in Mum's birthday celebration?,True,21,26,0.1188,False
+28,What could be included in Mum's birthday celebration?,True,22,13,0.1004,False
+28,What could be included in Mum's birthday celebration?,True,23,19,0.0889,False
+28,What could be included in Mum's birthday celebration?,True,24,3,0.0850,False
+28,What could be included in Mum's birthday celebration?,True,25,22,0.0729,False
+28,What could be included in Mum's birthday celebration?,True,26,18,0.0621,False
+29,What types of gifts would Mum appreciate?,True,1,17,0.4202,True
+29,What types of gifts would Mum appreciate?,True,2,25,0.3116,False
+29,What types of gifts would Mum appreciate?,True,3,5,0.2932,False
+29,What types of gifts would Mum appreciate?,True,4,12,0.2770,False
+29,What types of gifts would Mum appreciate?,True,5,9,0.2748,False
+29,What types of gifts would Mum appreciate?,True,6,27,0.2706,False
+29,What types of gifts would Mum appreciate?,True,7,21,0.2218,False
+29,What types of gifts would Mum appreciate?,True,8,23,0.1978,False
+29,What types of gifts would Mum appreciate?,True,9,10,0.1696,False
+29,What types of gifts would Mum appreciate?,True,10,16,0.1610,False
+29,What types of gifts would Mum appreciate?,True,11,15,0.1509,False
+29,What types of gifts would Mum appreciate?,True,12,7,0.1501,False
+29,What types of gifts would Mum appreciate?,True,13,11,0.1088,False
+29,What types of gifts would Mum appreciate?,True,14,24,0.1076,False
+29,What types of gifts would Mum appreciate?,True,15,13,0.1052,False
+29,What types of gifts would Mum appreciate?,True,16,26,0.1047,False
+29,What types of gifts would Mum appreciate?,True,17,20,0.0936,False
+29,What types of gifts would Mum appreciate?,True,18,14,0.0877,False
+29,What types of gifts would Mum appreciate?,True,19,4,0.0834,False
+29,What types of gifts would Mum appreciate?,True,20,6,0.0759,False
+29,What types of gifts would Mum appreciate?,True,21,8,0.0752,False
+29,What types of gifts would Mum appreciate?,True,22,3,0.0662,False
+29,What types of gifts would Mum appreciate?,True,23,2,0.0527,False
+29,What types of gifts would Mum appreciate?,True,24,18,0.0345,False
+29,What types of gifts would Mum appreciate?,True,25,22,0.0287,False
+29,What types of gifts would Mum appreciate?,True,26,19,0.0053,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,1,17,0.3882,True
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,2,25,0.3097,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,3,21,0.2885,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,4,5,0.2860,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,5,12,0.2825,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,6,27,0.2703,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,7,9,0.2545,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,8,23,0.2351,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,9,10,0.2251,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,10,16,0.2160,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,11,15,0.2122,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,12,7,0.2055,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,13,13,0.1457,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,14,14,0.1447,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,15,11,0.1420,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,16,26,0.1391,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,17,24,0.1309,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,18,20,0.1256,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,19,8,0.1237,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,20,4,0.1209,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,21,6,0.1022,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,22,2,0.0845,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,23,3,0.0733,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,24,19,0.0558,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,25,18,0.0489,False
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,26,22,0.0450,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,1,5,0.5351,True
+31,What should the family decide about sharing the cost of Mum's birthday?,True,2,27,0.5088,True
+31,What should the family decide about sharing the cost of Mum's birthday?,True,3,9,0.4039,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,4,25,0.3907,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,5,21,0.3750,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,6,12,0.3720,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,7,23,0.3132,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,8,10,0.3032,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,9,2,0.2865,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,10,17,0.2531,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,11,8,0.2520,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,12,7,0.2298,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,13,4,0.2266,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,14,6,0.2195,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,15,16,0.1900,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,16,15,0.1886,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,17,20,0.1725,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,18,3,0.1700,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,19,24,0.1585,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,20,26,0.1337,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,21,14,0.1249,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,22,11,0.1090,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,23,13,0.0753,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,24,19,0.0743,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,25,22,0.0681,False
+31,What should the family decide about sharing the cost of Mum's birthday?,True,26,18,0.0493,False
+32,What type of activities are suggested for the Mexico stop?,True,1,13,0.6296,True
+32,What type of activities are suggested for the Mexico stop?,True,2,16,0.5106,True
+32,What type of activities are suggested for the Mexico stop?,True,3,14,0.5027,True
+32,What type of activities are suggested for the Mexico stop?,True,4,11,0.4094,False
+32,What type of activities are suggested for the Mexico stop?,True,5,26,0.3867,True
+32,What type of activities are suggested for the Mexico stop?,True,6,7,0.3081,False
+32,What type of activities are suggested for the Mexico stop?,True,7,15,0.2620,False
+32,What type of activities are suggested for the Mexico stop?,True,8,20,0.2381,False
+32,What type of activities are suggested for the Mexico stop?,True,9,19,0.2334,False
+32,What type of activities are suggested for the Mexico stop?,True,10,21,0.2176,False
+32,What type of activities are suggested for the Mexico stop?,True,11,25,0.2156,False
+32,What type of activities are suggested for the Mexico stop?,True,12,22,0.2018,False
+32,What type of activities are suggested for the Mexico stop?,True,13,4,0.1972,False
+32,What type of activities are suggested for the Mexico stop?,True,14,8,0.1947,False
+32,What type of activities are suggested for the Mexico stop?,True,15,24,0.1907,False
+32,What type of activities are suggested for the Mexico stop?,True,16,12,0.1800,False
+32,What type of activities are suggested for the Mexico stop?,True,17,10,0.1792,False
+32,What type of activities are suggested for the Mexico stop?,True,18,18,0.1772,False
+32,What type of activities are suggested for the Mexico stop?,True,19,27,0.1542,False
+32,What type of activities are suggested for the Mexico stop?,True,20,23,0.1508,False
+32,What type of activities are suggested for the Mexico stop?,True,21,6,0.1464,False
+32,What type of activities are suggested for the Mexico stop?,True,22,9,0.1123,False
+32,What type of activities are suggested for the Mexico stop?,True,23,17,0.1067,False
+32,What type of activities are suggested for the Mexico stop?,True,24,5,0.1054,False
+32,What type of activities are suggested for the Mexico stop?,True,25,3,0.0767,False
+32,What type of activities are suggested for the Mexico stop?,True,26,2,0.0422,False
+33,Why might we choose an organised excursion in Mexico?,True,1,13,0.5360,True
+33,Why might we choose an organised excursion in Mexico?,True,2,26,0.4466,False
+33,Why might we choose an organised excursion in Mexico?,True,3,16,0.4351,False
+33,Why might we choose an organised excursion in Mexico?,True,4,15,0.4058,True
+33,Why might we choose an organised excursion in Mexico?,True,5,14,0.4004,False
+33,Why might we choose an organised excursion in Mexico?,True,6,11,0.3397,False
+33,Why might we choose an organised excursion in Mexico?,True,7,4,0.2874,False
+33,Why might we choose an organised excursion in Mexico?,True,8,7,0.2725,False
+33,Why might we choose an organised excursion in Mexico?,True,9,20,0.2515,False
+33,Why might we choose an organised excursion in Mexico?,True,10,27,0.2505,False
+33,Why might we choose an organised excursion in Mexico?,True,11,21,0.2183,False
+33,Why might we choose an organised excursion in Mexico?,True,12,5,0.2098,False
+33,Why might we choose an organised excursion in Mexico?,True,13,19,0.2002,False
+33,Why might we choose an organised excursion in Mexico?,True,14,25,0.1973,False
+33,Why might we choose an organised excursion in Mexico?,True,15,10,0.1848,False
+33,Why might we choose an organised excursion in Mexico?,True,16,12,0.1845,False
+33,Why might we choose an organised excursion in Mexico?,True,17,8,0.1843,False
+33,Why might we choose an organised excursion in Mexico?,True,18,23,0.1788,False
+33,Why might we choose an organised excursion in Mexico?,True,19,24,0.1723,False
+33,Why might we choose an organised excursion in Mexico?,True,20,22,0.1710,False
+33,Why might we choose an organised excursion in Mexico?,True,21,3,0.1642,False
+33,Why might we choose an organised excursion in Mexico?,True,22,18,0.1602,False
+33,Why might we choose an organised excursion in Mexico?,True,23,6,0.1380,False
+33,Why might we choose an organised excursion in Mexico?,True,24,2,0.1314,False
+33,Why might we choose an organised excursion in Mexico?,True,25,9,0.1167,False
+33,Why might we choose an organised excursion in Mexico?,True,26,17,0.0586,False
+34,What are the risks of arranging an independent excursion?,True,1,15,0.4232,True
+34,What are the risks of arranging an independent excursion?,True,2,5,0.2942,False
+34,What are the risks of arranging an independent excursion?,True,3,11,0.2838,True
+34,What are the risks of arranging an independent excursion?,True,4,26,0.2679,False
+34,What are the risks of arranging an independent excursion?,True,5,4,0.2554,False
+34,What are the risks of arranging an independent excursion?,True,6,16,0.2394,False
+34,What are the risks of arranging an independent excursion?,True,7,27,0.2221,False
+34,What are the risks of arranging an independent excursion?,True,8,7,0.2219,False
+34,What are the risks of arranging an independent excursion?,True,9,6,0.2050,False
+34,What are the risks of arranging an independent excursion?,True,10,13,0.1925,True
+34,What are the risks of arranging an independent excursion?,True,11,10,0.1922,False
+34,What are the risks of arranging an independent excursion?,True,12,21,0.1774,False
+34,What are the risks of arranging an independent excursion?,True,13,12,0.1769,False
+34,What are the risks of arranging an independent excursion?,True,14,8,0.1702,False
+34,What are the risks of arranging an independent excursion?,True,15,22,0.1676,False
+34,What are the risks of arranging an independent excursion?,True,16,25,0.1660,False
+34,What are the risks of arranging an independent excursion?,True,17,20,0.1628,False
+34,What are the risks of arranging an independent excursion?,True,18,2,0.1548,False
+34,What are the risks of arranging an independent excursion?,True,19,9,0.1444,False
+34,What are the risks of arranging an independent excursion?,True,20,23,0.1371,False
+34,What are the risks of arranging an independent excursion?,True,21,19,0.1352,False
+34,What are the risks of arranging an independent excursion?,True,22,14,0.1293,False
+34,What are the risks of arranging an independent excursion?,True,23,24,0.1094,False
+34,What are the risks of arranging an independent excursion?,True,24,18,0.1042,False
+34,What are the risks of arranging an independent excursion?,True,25,3,0.0902,False
+34,What are the risks of arranging an independent excursion?,True,26,17,0.0773,False
+35,What type of food does the family want to try in Mexico?,True,1,14,0.5041,True
+35,What type of food does the family want to try in Mexico?,True,2,13,0.2295,False
+35,What type of food does the family want to try in Mexico?,True,3,16,0.2007,False
+35,What type of food does the family want to try in Mexico?,True,4,21,0.1397,False
+35,What type of food does the family want to try in Mexico?,True,5,26,0.1377,False
+35,What type of food does the family want to try in Mexico?,True,6,11,0.1354,False
+35,What type of food does the family want to try in Mexico?,True,7,20,0.1243,False
+35,What type of food does the family want to try in Mexico?,True,8,9,0.1046,False
+35,What type of food does the family want to try in Mexico?,True,9,4,0.0980,False
+35,What type of food does the family want to try in Mexico?,True,10,7,0.0906,False
+35,What type of food does the family want to try in Mexico?,True,11,6,0.0901,False
+35,What type of food does the family want to try in Mexico?,True,12,15,0.0891,False
+35,What type of food does the family want to try in Mexico?,True,13,10,0.0807,False
+35,What type of food does the family want to try in Mexico?,True,14,24,0.0755,False
+35,What type of food does the family want to try in Mexico?,True,15,27,0.0711,False
+35,What type of food does the family want to try in Mexico?,True,16,25,0.0709,False
+35,What type of food does the family want to try in Mexico?,True,17,8,0.0637,False
+35,What type of food does the family want to try in Mexico?,True,18,19,0.0611,False
+35,What type of food does the family want to try in Mexico?,True,19,5,0.0560,False
+35,What type of food does the family want to try in Mexico?,True,20,12,0.0501,False
+35,What type of food does the family want to try in Mexico?,True,21,3,0.0378,False
+35,What type of food does the family want to try in Mexico?,True,22,23,0.0226,False
+35,What type of food does the family want to try in Mexico?,True,23,2,0.0190,False
+35,What type of food does the family want to try in Mexico?,True,24,22,0.0173,False
+35,What type of food does the family want to try in Mexico?,True,25,17,0.0080,False
+35,What type of food does the family want to try in Mexico?,True,26,18,-0.0086,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,1,14,0.5543,True
+36,What should we consider if we decide to visit a beach in Mexico?,True,2,16,0.4957,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,3,13,0.4304,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,4,26,0.3954,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,5,11,0.2748,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,6,15,0.2260,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,7,4,0.1820,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,8,6,0.1702,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,9,20,0.1651,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,10,8,0.1572,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,11,22,0.1507,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,12,19,0.1435,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,13,7,0.1368,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,14,18,0.1355,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,15,21,0.1342,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,16,3,0.1337,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,17,27,0.1310,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,18,5,0.1281,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,19,12,0.1136,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,20,24,0.0970,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,21,25,0.0925,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,22,17,0.0866,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,23,23,0.0836,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,24,10,0.0651,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,25,2,0.0628,False
+36,What should we consider if we decide to visit a beach in Mexico?,True,26,9,0.0570,False
+37,What activities are suggested for the Bahamas?,True,1,15,0.5559,True
+37,What activities are suggested for the Bahamas?,True,2,16,0.4043,True
+37,What activities are suggested for the Bahamas?,True,3,14,0.3693,True
+37,What activities are suggested for the Bahamas?,True,4,13,0.3576,False
+37,What activities are suggested for the Bahamas?,True,5,11,0.3378,False
+37,What activities are suggested for the Bahamas?,True,6,26,0.3370,True
+37,What activities are suggested for the Bahamas?,True,7,7,0.3069,False
+37,What activities are suggested for the Bahamas?,True,8,25,0.2851,False
+37,What activities are suggested for the Bahamas?,True,9,10,0.2693,False
+37,What activities are suggested for the Bahamas?,True,10,12,0.2582,False
+37,What activities are suggested for the Bahamas?,True,11,21,0.2575,False
+37,What activities are suggested for the Bahamas?,True,12,8,0.2493,False
+37,What activities are suggested for the Bahamas?,True,13,4,0.2360,False
+37,What activities are suggested for the Bahamas?,True,14,20,0.2299,False
+37,What activities are suggested for the Bahamas?,True,15,6,0.2218,False
+37,What activities are suggested for the Bahamas?,True,16,27,0.2157,False
+37,What activities are suggested for the Bahamas?,True,17,23,0.2026,False
+37,What activities are suggested for the Bahamas?,True,18,5,0.1830,False
+37,What activities are suggested for the Bahamas?,True,19,19,0.1695,False
+37,What activities are suggested for the Bahamas?,True,20,9,0.1573,False
+37,What activities are suggested for the Bahamas?,True,21,24,0.1563,False
+37,What activities are suggested for the Bahamas?,True,22,3,0.1526,False
+37,What activities are suggested for the Bahamas?,True,23,22,0.1506,False
+37,What activities are suggested for the Bahamas?,True,24,18,0.1412,False
+37,What activities are suggested for the Bahamas?,True,25,17,0.1322,False
+37,What activities are suggested for the Bahamas?,True,26,2,0.0936,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,1,13,0.4194,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,2,16,0.4074,True
+38,Why is the Bahamas stop intended to be more relaxed?,True,3,15,0.3751,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,4,14,0.3510,True
+38,Why is the Bahamas stop intended to be more relaxed?,True,5,26,0.3222,True
+38,Why is the Bahamas stop intended to be more relaxed?,True,6,11,0.2876,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,7,12,0.2012,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,8,7,0.1919,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,9,22,0.1869,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,10,4,0.1521,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,11,25,0.1518,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,12,6,0.1386,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,13,8,0.1377,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,14,23,0.1370,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,15,10,0.1332,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,16,20,0.1317,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,17,18,0.1204,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,18,5,0.1098,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,19,27,0.1054,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,20,19,0.1030,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,21,21,0.0981,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,22,24,0.0892,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,23,9,0.0830,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,24,3,0.0669,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,25,17,0.0491,False
+38,Why is the Bahamas stop intended to be more relaxed?,True,26,2,0.0294,False
+39,What water activities could the family do in the Bahamas?,True,1,15,0.4522,False
+39,What water activities could the family do in the Bahamas?,True,2,14,0.4272,True
+39,What water activities could the family do in the Bahamas?,True,3,16,0.3606,False
+39,What water activities could the family do in the Bahamas?,True,4,13,0.3159,False
+39,What water activities could the family do in the Bahamas?,True,5,10,0.3144,False
+39,What water activities could the family do in the Bahamas?,True,6,11,0.2933,False
+39,What water activities could the family do in the Bahamas?,True,7,21,0.2724,False
+39,What water activities could the family do in the Bahamas?,True,8,25,0.2591,False
+39,What water activities could the family do in the Bahamas?,True,9,20,0.2529,False
+39,What water activities could the family do in the Bahamas?,True,10,26,0.2476,True
+39,What water activities could the family do in the Bahamas?,True,11,8,0.2428,False
+39,What water activities could the family do in the Bahamas?,True,12,4,0.2414,False
+39,What water activities could the family do in the Bahamas?,True,13,12,0.2294,False
+39,What water activities could the family do in the Bahamas?,True,14,7,0.2216,False
+39,What water activities could the family do in the Bahamas?,True,15,24,0.2080,False
+39,What water activities could the family do in the Bahamas?,True,16,23,0.2019,False
+39,What water activities could the family do in the Bahamas?,True,17,6,0.1946,False
+39,What water activities could the family do in the Bahamas?,True,18,9,0.1812,False
+39,What water activities could the family do in the Bahamas?,True,19,27,0.1789,False
+39,What water activities could the family do in the Bahamas?,True,20,3,0.1628,False
+39,What water activities could the family do in the Bahamas?,True,21,19,0.1600,False
+39,What water activities could the family do in the Bahamas?,True,22,5,0.1491,False
+39,What water activities could the family do in the Bahamas?,True,23,18,0.1164,False
+39,What water activities could the family do in the Bahamas?,True,24,22,0.0970,False
+39,What water activities could the family do in the Bahamas?,True,25,2,0.0821,False
+39,What water activities could the family do in the Bahamas?,True,26,17,0.0326,False
+40,What could we do in the Bahamas besides going to the beach?,True,1,15,0.5386,True
+40,What could we do in the Bahamas besides going to the beach?,True,2,14,0.4549,False
+40,What could we do in the Bahamas besides going to the beach?,True,3,16,0.4195,False
+40,What could we do in the Bahamas besides going to the beach?,True,4,26,0.3705,True
+40,What could we do in the Bahamas besides going to the beach?,True,5,13,0.3606,False
+40,What could we do in the Bahamas besides going to the beach?,True,6,11,0.3467,False
+40,What could we do in the Bahamas besides going to the beach?,True,7,25,0.2789,False
+40,What could we do in the Bahamas besides going to the beach?,True,8,21,0.2627,False
+40,What could we do in the Bahamas besides going to the beach?,True,9,8,0.2618,False
+40,What could we do in the Bahamas besides going to the beach?,True,10,4,0.2608,False
+40,What could we do in the Bahamas besides going to the beach?,True,11,12,0.2589,False
+40,What could we do in the Bahamas besides going to the beach?,True,12,10,0.2572,False
+40,What could we do in the Bahamas besides going to the beach?,True,13,23,0.2330,False
+40,What could we do in the Bahamas besides going to the beach?,True,14,7,0.2209,False
+40,What could we do in the Bahamas besides going to the beach?,True,15,6,0.2072,False
+40,What could we do in the Bahamas besides going to the beach?,True,16,27,0.2056,False
+40,What could we do in the Bahamas besides going to the beach?,True,17,22,0.1865,False
+40,What could we do in the Bahamas besides going to the beach?,True,18,5,0.1821,False
+40,What could we do in the Bahamas besides going to the beach?,True,19,9,0.1715,False
+40,What could we do in the Bahamas besides going to the beach?,True,20,20,0.1689,False
+40,What could we do in the Bahamas besides going to the beach?,True,21,24,0.1678,False
+40,What could we do in the Bahamas besides going to the beach?,True,22,3,0.1645,False
+40,What could we do in the Bahamas besides going to the beach?,True,23,18,0.1604,False
+40,What could we do in the Bahamas besides going to the beach?,True,24,19,0.1340,False
+40,What could we do in the Bahamas besides going to the beach?,True,25,2,0.1249,False
+40,What could we do in the Bahamas besides going to the beach?,True,26,17,0.1121,False
+41,Why is it important to leave plenty of time before the ship departs?,True,1,11,0.5567,True
+41,Why is it important to leave plenty of time before the ship departs?,True,2,6,0.4720,False
+41,Why is it important to leave plenty of time before the ship departs?,True,3,22,0.3744,False
+41,Why is it important to leave plenty of time before the ship departs?,True,4,8,0.3547,False
+41,Why is it important to leave plenty of time before the ship departs?,True,5,26,0.3543,True
+41,Why is it important to leave plenty of time before the ship departs?,True,6,5,0.3370,False
+41,Why is it important to leave plenty of time before the ship departs?,True,7,12,0.3209,False
+41,Why is it important to leave plenty of time before the ship departs?,True,8,10,0.3177,False
+41,Why is it important to leave plenty of time before the ship departs?,True,9,16,0.3138,False
+41,Why is it important to leave plenty of time before the ship departs?,True,10,25,0.3097,False
+41,Why is it important to leave plenty of time before the ship departs?,True,11,18,0.2813,False
+41,Why is it important to leave plenty of time before the ship departs?,True,12,27,0.2774,False
+41,Why is it important to leave plenty of time before the ship departs?,True,13,15,0.2756,True
+41,Why is it important to leave plenty of time before the ship departs?,True,14,7,0.2693,False
+41,Why is it important to leave plenty of time before the ship departs?,True,15,13,0.2400,True
+41,Why is it important to leave plenty of time before the ship departs?,True,16,9,0.2275,False
+41,Why is it important to leave plenty of time before the ship departs?,True,17,14,0.2236,True
+41,Why is it important to leave plenty of time before the ship departs?,True,18,23,0.2127,False
+41,Why is it important to leave plenty of time before the ship departs?,True,19,19,0.1907,False
+41,Why is it important to leave plenty of time before the ship departs?,True,20,24,0.1907,False
+41,Why is it important to leave plenty of time before the ship departs?,True,21,21,0.1884,False
+41,Why is it important to leave plenty of time before the ship departs?,True,22,20,0.1877,False
+41,Why is it important to leave plenty of time before the ship departs?,True,23,4,0.1621,False
+41,Why is it important to leave plenty of time before the ship departs?,True,24,3,0.1052,False
+41,Why is it important to leave plenty of time before the ship departs?,True,25,2,0.0981,False
+41,Why is it important to leave plenty of time before the ship departs?,True,26,17,0.0735,False
+42,What information should everyone have when going ashore?,True,1,6,0.3074,False
+42,What information should everyone have when going ashore?,True,2,5,0.3032,False
+42,What information should everyone have when going ashore?,True,3,11,0.2576,False
+42,What information should everyone have when going ashore?,True,4,15,0.2141,True
+42,What information should everyone have when going ashore?,True,5,26,0.2131,False
+42,What information should everyone have when going ashore?,True,6,8,0.2008,False
+42,What information should everyone have when going ashore?,True,7,27,0.1627,False
+42,What information should everyone have when going ashore?,True,8,22,0.1466,False
+42,What information should everyone have when going ashore?,True,9,7,0.1437,False
+42,What information should everyone have when going ashore?,True,10,16,0.1380,True
+42,What information should everyone have when going ashore?,True,11,14,0.1217,False
+42,What information should everyone have when going ashore?,True,12,18,0.1143,False
+42,What information should everyone have when going ashore?,True,13,10,0.1131,False
+42,What information should everyone have when going ashore?,True,14,12,0.1130,False
+42,What information should everyone have when going ashore?,True,15,19,0.1030,False
+42,What information should everyone have when going ashore?,True,16,25,0.1023,False
+42,What information should everyone have when going ashore?,True,17,20,0.1008,False
+42,What information should everyone have when going ashore?,True,18,17,0.0928,False
+42,What information should everyone have when going ashore?,True,19,21,0.0883,False
+42,What information should everyone have when going ashore?,True,20,3,0.0788,False
+42,What information should everyone have when going ashore?,True,21,9,0.0708,False
+42,What information should everyone have when going ashore?,True,22,4,0.0693,False
+42,What information should everyone have when going ashore?,True,23,13,0.0665,False
+42,What information should everyone have when going ashore?,True,24,24,0.0396,False
+42,What information should everyone have when going ashore?,True,25,2,0.0267,False
+42,What information should everyone have when going ashore?,True,26,23,0.0243,False
+43,What should the family do if bad weather affects an excursion?,True,1,11,0.4233,True
+43,What should the family do if bad weather affects an excursion?,True,2,16,0.3817,True
+43,What should the family do if bad weather affects an excursion?,True,3,15,0.3397,False
+43,What should the family do if bad weather affects an excursion?,True,4,20,0.3239,False
+43,What should the family do if bad weather affects an excursion?,True,5,6,0.2962,False
+43,What should the family do if bad weather affects an excursion?,True,6,14,0.2955,False
+43,What should the family do if bad weather affects an excursion?,True,7,21,0.2914,False
+43,What should the family do if bad weather affects an excursion?,True,8,7,0.2742,False
+43,What should the family do if bad weather affects an excursion?,True,9,24,0.2709,False
+43,What should the family do if bad weather affects an excursion?,True,10,5,0.2586,False
+43,What should the family do if bad weather affects an excursion?,True,11,19,0.2482,False
+43,What should the family do if bad weather affects an excursion?,True,12,27,0.2450,False
+43,What should the family do if bad weather affects an excursion?,True,13,8,0.2349,False
+43,What should the family do if bad weather affects an excursion?,True,14,4,0.2289,False
+43,What should the family do if bad weather affects an excursion?,True,15,10,0.2269,False
+43,What should the family do if bad weather affects an excursion?,True,16,25,0.2157,False
+43,What should the family do if bad weather affects an excursion?,True,17,12,0.2066,False
+43,What should the family do if bad weather affects an excursion?,True,18,22,0.2035,False
+43,What should the family do if bad weather affects an excursion?,True,19,9,0.1840,False
+43,What should the family do if bad weather affects an excursion?,True,20,23,0.1832,False
+43,What should the family do if bad weather affects an excursion?,True,21,26,0.1738,False
+43,What should the family do if bad weather affects an excursion?,True,22,13,0.1724,False
+43,What should the family do if bad weather affects an excursion?,True,23,3,0.1638,False
+43,What should the family do if bad weather affects an excursion?,True,24,18,0.1636,False
+43,What should the family do if bad weather affects an excursion?,True,25,2,0.1067,False
+43,What should the family do if bad weather affects an excursion?,True,26,17,0.0534,False
+44,What information should be included in the plan for each cruise port?,True,1,26,0.4747,False
+44,What information should be included in the plan for each cruise port?,True,2,6,0.3906,False
+44,What information should be included in the plan for each cruise port?,True,3,11,0.3821,False
+44,What information should be included in the plan for each cruise port?,True,4,22,0.3709,False
+44,What information should be included in the plan for each cruise port?,True,5,7,0.3498,False
+44,What information should be included in the plan for each cruise port?,True,6,5,0.3332,False
+44,What information should be included in the plan for each cruise port?,True,7,16,0.3328,True
+44,What information should be included in the plan for each cruise port?,True,8,27,0.3259,False
+44,What information should be included in the plan for each cruise port?,True,9,8,0.3208,False
+44,What information should be included in the plan for each cruise port?,True,10,13,0.3162,False
+44,What information should be included in the plan for each cruise port?,True,11,15,0.3013,False
+44,What information should be included in the plan for each cruise port?,True,12,4,0.2996,False
+44,What information should be included in the plan for each cruise port?,True,13,25,0.2763,False
+44,What information should be included in the plan for each cruise port?,True,14,18,0.2688,False
+44,What information should be included in the plan for each cruise port?,True,15,12,0.2622,False
+44,What information should be included in the plan for each cruise port?,True,16,9,0.2566,False
+44,What information should be included in the plan for each cruise port?,True,17,10,0.2448,False
+44,What information should be included in the plan for each cruise port?,True,18,23,0.2368,False
+44,What information should be included in the plan for each cruise port?,True,19,14,0.1883,False
+44,What information should be included in the plan for each cruise port?,True,20,20,0.1461,False
+44,What information should be included in the plan for each cruise port?,True,21,2,0.1302,False
+44,What information should be included in the plan for each cruise port?,True,22,24,0.1301,False
+44,What information should be included in the plan for each cruise port?,True,23,21,0.1204,False
+44,What information should be included in the plan for each cruise port?,True,24,3,0.1092,False
+44,What information should be included in the plan for each cruise port?,True,25,19,0.0915,False
+44,What information should be included in the plan for each cruise port?,True,26,17,0.0694,False
+45,What documents should everyone check before leaving the UK?,True,1,5,0.3415,True
+45,What documents should everyone check before leaving the UK?,True,2,6,0.2505,False
+45,What documents should everyone check before leaving the UK?,True,3,11,0.2024,False
+45,What documents should everyone check before leaving the UK?,True,4,26,0.1791,False
+45,What documents should everyone check before leaving the UK?,True,5,8,0.1653,False
+45,What documents should everyone check before leaving the UK?,True,6,15,0.1493,False
+45,What documents should everyone check before leaving the UK?,True,7,7,0.1356,False
+45,What documents should everyone check before leaving the UK?,True,8,22,0.1286,False
+45,What documents should everyone check before leaving the UK?,True,9,3,0.1222,False
+45,What documents should everyone check before leaving the UK?,True,10,20,0.1125,False
+45,What documents should everyone check before leaving the UK?,True,11,21,0.1015,False
+45,What documents should everyone check before leaving the UK?,True,12,27,0.1000,False
+45,What documents should everyone check before leaving the UK?,True,13,2,0.0919,False
+45,What documents should everyone check before leaving the UK?,True,14,19,0.0898,False
+45,What documents should everyone check before leaving the UK?,True,15,14,0.0767,False
+45,What documents should everyone check before leaving the UK?,True,16,18,0.0763,False
+45,What documents should everyone check before leaving the UK?,True,17,16,0.0663,False
+45,What documents should everyone check before leaving the UK?,True,18,23,0.0620,False
+45,What documents should everyone check before leaving the UK?,True,19,24,0.0589,False
+45,What documents should everyone check before leaving the UK?,True,20,4,0.0583,False
+45,What documents should everyone check before leaving the UK?,True,21,10,0.0471,False
+45,What documents should everyone check before leaving the UK?,True,22,12,0.0417,False
+45,What documents should everyone check before leaving the UK?,True,23,25,0.0324,False
+45,What documents should everyone check before leaving the UK?,True,24,17,0.0208,False
+45,What documents should everyone check before leaving the UK?,True,25,13,0.0167,False
+45,What documents should everyone check before leaving the UK?,True,26,9,0.0130,False
+46,What should be included in the shared packing checklist?,True,1,6,0.3118,True
+46,What should be included in the shared packing checklist?,True,2,5,0.1709,False
+46,What should be included in the shared packing checklist?,True,3,7,0.1663,False
+46,What should be included in the shared packing checklist?,True,4,27,0.1626,False
+46,What should be included in the shared packing checklist?,True,5,20,0.1487,False
+46,What should be included in the shared packing checklist?,True,6,15,0.1478,False
+46,What should be included in the shared packing checklist?,True,7,19,0.1401,False
+46,What should be included in the shared packing checklist?,True,8,21,0.1017,False
+46,What should be included in the shared packing checklist?,True,9,26,0.1001,False
+46,What should be included in the shared packing checklist?,True,10,11,0.0971,False
+46,What should be included in the shared packing checklist?,True,11,8,0.0765,False
+46,What should be included in the shared packing checklist?,True,12,4,0.0698,False
+46,What should be included in the shared packing checklist?,True,13,22,0.0681,False
+46,What should be included in the shared packing checklist?,True,14,10,0.0650,False
+46,What should be included in the shared packing checklist?,True,15,3,0.0617,False
+46,What should be included in the shared packing checklist?,True,16,14,0.0592,False
+46,What should be included in the shared packing checklist?,True,17,16,0.0555,False
+46,What should be included in the shared packing checklist?,True,18,25,0.0422,False
+46,What should be included in the shared packing checklist?,True,19,24,0.0370,False
+46,What should be included in the shared packing checklist?,True,20,12,0.0369,False
+46,What should be included in the shared packing checklist?,True,21,9,0.0234,False
+46,What should be included in the shared packing checklist?,True,22,2,0.0225,False
+46,What should be included in the shared packing checklist?,True,23,18,0.0166,False
+46,What should be included in the shared packing checklist?,True,24,17,0.0032,False
+46,What should be included in the shared packing checklist?,True,25,23,-0.0040,False
+46,What should be included in the shared packing checklist?,True,26,13,-0.0080,False
+47,How many days are we planning to spend in Orlando?,True,1,24,0.7173,True
+47,How many days are we planning to spend in Orlando?,True,2,18,0.6802,True
+47,How many days are we planning to spend in Orlando?,True,3,22,0.5086,False
+47,How many days are we planning to spend in Orlando?,True,4,7,0.5037,False
+47,How many days are we planning to spend in Orlando?,True,5,21,0.4284,False
+47,How many days are we planning to spend in Orlando?,True,6,23,0.4261,False
+47,How many days are we planning to spend in Orlando?,True,7,2,0.4042,False
+47,How many days are we planning to spend in Orlando?,True,8,3,0.3532,False
+47,How many days are we planning to spend in Orlando?,True,9,19,0.3446,False
+47,How many days are we planning to spend in Orlando?,True,10,20,0.3368,False
+47,How many days are we planning to spend in Orlando?,True,11,27,0.3290,False
+47,How many days are we planning to spend in Orlando?,True,12,8,0.3156,False
+47,How many days are we planning to spend in Orlando?,True,13,6,0.2978,False
+47,How many days are we planning to spend in Orlando?,True,14,26,0.2704,False
+47,How many days are we planning to spend in Orlando?,True,15,16,0.2082,False
+47,How many days are we planning to spend in Orlando?,True,16,14,0.2013,False
+47,How many days are we planning to spend in Orlando?,True,17,4,0.1969,False
+47,How many days are we planning to spend in Orlando?,True,18,25,0.1691,False
+47,How many days are we planning to spend in Orlando?,True,19,13,0.1590,False
+47,How many days are we planning to spend in Orlando?,True,20,11,0.1583,False
+47,How many days are we planning to spend in Orlando?,True,21,5,0.1525,False
+47,How many days are we planning to spend in Orlando?,True,22,10,0.1457,False
+47,How many days are we planning to spend in Orlando?,True,23,12,0.1300,False
+47,How many days are we planning to spend in Orlando?,True,24,9,0.1116,False
+47,How many days are we planning to spend in Orlando?,True,25,15,0.1011,False
+47,How many days are we planning to spend in Orlando?,True,26,17,0.0726,False
+48,What is the suggested structure for the Orlando itinerary?,True,1,7,0.7086,False
+48,What is the suggested structure for the Orlando itinerary?,True,2,22,0.6256,True
+48,What is the suggested structure for the Orlando itinerary?,True,3,24,0.5788,False
+48,What is the suggested structure for the Orlando itinerary?,True,4,18,0.5588,False
+48,What is the suggested structure for the Orlando itinerary?,True,5,27,0.4782,False
+48,What is the suggested structure for the Orlando itinerary?,True,6,23,0.4552,False
+48,What is the suggested structure for the Orlando itinerary?,True,7,26,0.4448,False
+48,What is the suggested structure for the Orlando itinerary?,True,8,21,0.4410,False
+48,What is the suggested structure for the Orlando itinerary?,True,9,2,0.4128,False
+48,What is the suggested structure for the Orlando itinerary?,True,10,20,0.3934,False
+48,What is the suggested structure for the Orlando itinerary?,True,11,8,0.3922,False
+48,What is the suggested structure for the Orlando itinerary?,True,12,3,0.3804,False
+48,What is the suggested structure for the Orlando itinerary?,True,13,6,0.3717,False
+48,What is the suggested structure for the Orlando itinerary?,True,14,19,0.3598,False
+48,What is the suggested structure for the Orlando itinerary?,True,15,4,0.3108,False
+48,What is the suggested structure for the Orlando itinerary?,True,16,16,0.2963,False
+48,What is the suggested structure for the Orlando itinerary?,True,17,11,0.2817,False
+48,What is the suggested structure for the Orlando itinerary?,True,18,13,0.2663,False
+48,What is the suggested structure for the Orlando itinerary?,True,19,15,0.2563,False
+48,What is the suggested structure for the Orlando itinerary?,True,20,14,0.2457,False
+48,What is the suggested structure for the Orlando itinerary?,True,21,25,0.2395,False
+48,What is the suggested structure for the Orlando itinerary?,True,22,12,0.2206,False
+48,What is the suggested structure for the Orlando itinerary?,True,23,5,0.2022,False
+48,What is the suggested structure for the Orlando itinerary?,True,24,10,0.1932,False
+48,What is the suggested structure for the Orlando itinerary?,True,25,9,0.1819,False
+48,What is the suggested structure for the Orlando itinerary?,True,26,17,0.0828,False
+49,What should happen on the first evening in Orlando?,True,1,19,0.5188,True
+49,What should happen on the first evening in Orlando?,True,2,22,0.4792,False
+49,What should happen on the first evening in Orlando?,True,3,18,0.4438,False
+49,What should happen on the first evening in Orlando?,True,4,24,0.3878,False
+49,What should happen on the first evening in Orlando?,True,5,21,0.3801,False
+49,What should happen on the first evening in Orlando?,True,6,7,0.3800,False
+49,What should happen on the first evening in Orlando?,True,7,8,0.3669,False
+49,What should happen on the first evening in Orlando?,True,8,23,0.2969,False
+49,What should happen on the first evening in Orlando?,True,9,6,0.2744,False
+49,What should happen on the first evening in Orlando?,True,10,20,0.2655,False
+49,What should happen on the first evening in Orlando?,True,11,3,0.2615,False
+49,What should happen on the first evening in Orlando?,True,12,2,0.2450,False
+49,What should happen on the first evening in Orlando?,True,13,27,0.2415,False
+49,What should happen on the first evening in Orlando?,True,14,11,0.2162,False
+49,What should happen on the first evening in Orlando?,True,15,26,0.2146,False
+49,What should happen on the first evening in Orlando?,True,16,14,0.1822,False
+49,What should happen on the first evening in Orlando?,True,17,10,0.1803,False
+49,What should happen on the first evening in Orlando?,True,18,25,0.1603,False
+49,What should happen on the first evening in Orlando?,True,19,4,0.1556,False
+49,What should happen on the first evening in Orlando?,True,20,12,0.1499,False
+49,What should happen on the first evening in Orlando?,True,21,16,0.1182,False
+49,What should happen on the first evening in Orlando?,True,22,9,0.1110,False
+49,What should happen on the first evening in Orlando?,True,23,13,0.1063,False
+49,What should happen on the first evening in Orlando?,True,24,5,0.1001,False
+49,What should happen on the first evening in Orlando?,True,25,15,0.0928,False
+49,What should happen on the first evening in Orlando?,True,26,17,0.0444,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,1,18,0.5167,True
+50,Why should the first day in Orlando not be overloaded with activities?,True,2,24,0.4944,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,3,21,0.4896,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,4,7,0.4877,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,5,22,0.4861,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,6,19,0.4655,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,7,20,0.4038,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,8,8,0.3773,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,9,2,0.3063,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,10,3,0.3010,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,11,27,0.2988,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,12,23,0.2907,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,13,6,0.2867,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,14,14,0.2816,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,15,16,0.2399,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,16,26,0.2380,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,17,4,0.2138,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,18,11,0.2075,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,19,12,0.2041,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,20,15,0.2001,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,21,25,0.1987,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,22,10,0.1956,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,23,5,0.1568,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,24,13,0.1496,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,25,9,0.1204,False
+50,Why should the first day in Orlando not be overloaded with activities?,True,26,17,0.0874,False
+51,What should be checked during the final two weeks before the trip?,True,1,6,0.4518,True
+51,What should be checked during the final two weeks before the trip?,True,2,11,0.3126,False
+51,What should be checked during the final two weeks before the trip?,True,3,26,0.2840,False
+51,What should be checked during the final two weeks before the trip?,True,4,22,0.2667,False
+51,What should be checked during the final two weeks before the trip?,True,5,7,0.2595,False
+51,What should be checked during the final two weeks before the trip?,True,6,5,0.2271,False
+51,What should be checked during the final two weeks before the trip?,True,7,16,0.2218,False
+51,What should be checked during the final two weeks before the trip?,True,8,18,0.1885,False
+51,What should be checked during the final two weeks before the trip?,True,9,27,0.1768,False
+51,What should be checked during the final two weeks before the trip?,True,10,15,0.1721,False
+51,What should be checked during the final two weeks before the trip?,True,11,24,0.1439,False
+51,What should be checked during the final two weeks before the trip?,True,12,8,0.1418,False
+51,What should be checked during the final two weeks before the trip?,True,13,20,0.1382,False
+51,What should be checked during the final two weeks before the trip?,True,14,19,0.1380,False
+51,What should be checked during the final two weeks before the trip?,True,15,14,0.1127,False
+51,What should be checked during the final two weeks before the trip?,True,16,3,0.1126,False
+51,What should be checked during the final two weeks before the trip?,True,17,13,0.1105,False
+51,What should be checked during the final two weeks before the trip?,True,18,23,0.0969,False
+51,What should be checked during the final two weeks before the trip?,True,19,4,0.0888,False
+51,What should be checked during the final two weeks before the trip?,True,20,12,0.0869,False
+51,What should be checked during the final two weeks before the trip?,True,21,25,0.0864,False
+51,What should be checked during the final two weeks before the trip?,True,22,21,0.0840,False
+51,What should be checked during the final two weeks before the trip?,True,23,2,0.0816,False
+51,What should be checked during the final two weeks before the trip?,True,24,9,0.0457,False
+51,What should be checked during the final two weeks before the trip?,True,25,10,0.0319,False
+51,What should be checked during the final two weeks before the trip?,True,26,17,0.0192,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,1,20,0.5285,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,2,21,0.4590,True
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,3,19,0.4390,True
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,4,24,0.4247,True
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,5,7,0.3730,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,6,3,0.3695,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,7,22,0.3428,True
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,8,18,0.2946,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,9,6,0.2772,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,10,27,0.2758,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,11,8,0.2583,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,12,11,0.2564,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,13,2,0.2349,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,14,12,0.2305,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,15,23,0.2293,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,16,14,0.2233,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,17,10,0.2189,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,18,25,0.2084,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,19,26,0.2069,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,20,16,0.1990,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,21,5,0.1972,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,22,4,0.1767,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,23,15,0.1723,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,24,13,0.1426,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,25,9,0.1388,False
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,26,17,0.0702,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,1,15,0.6025,True
+53,How should we decide between a cruise excursion and an independent excursion?,True,2,26,0.4762,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,3,4,0.4452,True
+53,How should we decide between a cruise excursion and an independent excursion?,True,4,11,0.4378,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,5,13,0.4096,True
+53,How should we decide between a cruise excursion and an independent excursion?,True,6,5,0.3645,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,7,27,0.3566,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,8,10,0.3563,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,9,12,0.3542,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,10,16,0.3489,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,11,25,0.3462,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,12,8,0.3393,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,13,22,0.3213,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,14,6,0.3062,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,15,23,0.2997,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,16,9,0.2967,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,17,7,0.2945,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,18,18,0.2625,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,19,14,0.2485,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,20,2,0.2425,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,21,20,0.2407,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,22,24,0.2118,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,23,21,0.2075,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,24,19,0.1973,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,25,3,0.1500,False
+53,How should we decide between a cruise excursion and an independent excursion?,True,26,17,0.0667,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,1,25,0.5629,True
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,2,12,0.5566,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,3,21,0.5552,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,4,9,0.5348,True
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,5,27,0.5327,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,6,7,0.5202,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,7,23,0.4479,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,8,5,0.4438,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,9,10,0.4381,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,10,8,0.3877,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,11,17,0.3074,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,12,16,0.2972,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,13,6,0.2910,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,14,24,0.2660,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,15,20,0.2574,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,16,26,0.2535,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,17,11,0.2449,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,18,15,0.2404,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,19,22,0.2260,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,20,2,0.2150,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,21,14,0.2032,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,22,19,0.1810,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,23,13,0.1674,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,24,4,0.1582,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,25,18,0.1549,False
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,26,3,0.1283,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,1,22,0.6815,True
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,2,18,0.6423,True
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,3,4,0.5863,True
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,4,26,0.5681,True
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,5,23,0.5468,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,6,8,0.5165,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,7,6,0.5105,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,8,24,0.4658,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,9,7,0.4613,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,10,2,0.4575,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,11,27,0.4535,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,12,5,0.4433,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,13,11,0.4007,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,14,15,0.3956,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,15,16,0.3672,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,16,3,0.3650,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,17,21,0.3604,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,18,13,0.3398,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,19,20,0.3216,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,20,25,0.3067,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,21,12,0.3012,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,22,14,0.2941,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,23,9,0.2622,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,24,10,0.2484,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,25,19,0.2151,False
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,26,17,0.0710,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,1,16,0.5058,True
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,2,13,0.4899,True
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,3,14,0.4864,True
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,4,26,0.3486,True
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,5,15,0.2896,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,6,11,0.2646,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,7,4,0.2087,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,8,23,0.1783,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,9,8,0.1668,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,10,12,0.1429,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,11,25,0.1411,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,12,21,0.1321,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,13,20,0.1280,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,14,10,0.1179,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,15,27,0.1162,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,16,7,0.1121,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,17,5,0.1088,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,18,9,0.1014,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,19,24,0.0989,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,20,2,0.0959,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,21,18,0.0797,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,22,6,0.0762,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,23,22,0.0722,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,24,17,0.0644,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,25,3,0.0577,False
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,26,19,0.0501,False
+57,How much will the entire holiday cost?,False,1,2,0.4200,False
+57,How much will the entire holiday cost?,False,2,4,0.3287,False
+57,How much will the entire holiday cost?,False,3,27,0.2991,False
+57,How much will the entire holiday cost?,False,4,3,0.1962,False
+57,How much will the entire holiday cost?,False,5,5,0.1957,False
+57,How much will the entire holiday cost?,False,6,15,0.1583,False
+57,How much will the entire holiday cost?,False,7,24,0.1381,False
+57,How much will the entire holiday cost?,False,8,23,0.1311,False
+57,How much will the entire holiday cost?,False,9,7,0.1072,False
+57,How much will the entire holiday cost?,False,10,12,0.0978,False
+57,How much will the entire holiday cost?,False,11,18,0.0928,False
+57,How much will the entire holiday cost?,False,12,6,0.0905,False
+57,How much will the entire holiday cost?,False,13,21,0.0883,False
+57,How much will the entire holiday cost?,False,14,9,0.0847,False
+57,How much will the entire holiday cost?,False,15,25,0.0837,False
+57,How much will the entire holiday cost?,False,16,8,0.0806,False
+57,How much will the entire holiday cost?,False,17,26,0.0796,False
+57,How much will the entire holiday cost?,False,18,17,0.0661,False
+57,How much will the entire holiday cost?,False,19,22,0.0596,False
+57,How much will the entire holiday cost?,False,20,16,0.0398,False
+57,How much will the entire holiday cost?,False,21,14,0.0383,False
+57,How much will the entire holiday cost?,False,22,10,0.0354,False
+57,How much will the entire holiday cost?,False,23,20,0.0280,False
+57,How much will the entire holiday cost?,False,24,13,0.0241,False
+57,How much will the entire holiday cost?,False,25,19,0.0104,False
+57,How much will the entire holiday cost?,False,26,11,-0.0149,False
+58,Which cruise ship are we taking?,False,1,26,0.3322,False
+58,Which cruise ship are we taking?,False,2,8,0.3039,False
+58,Which cruise ship are we taking?,False,3,23,0.2982,False
+58,Which cruise ship are we taking?,False,4,11,0.2852,False
+58,Which cruise ship are we taking?,False,5,4,0.2828,False
+58,Which cruise ship are we taking?,False,6,6,0.2700,False
+58,Which cruise ship are we taking?,False,7,10,0.2539,False
+58,Which cruise ship are we taking?,False,8,25,0.2403,False
+58,Which cruise ship are we taking?,False,9,5,0.2370,False
+58,Which cruise ship are we taking?,False,10,22,0.2356,False
+58,Which cruise ship are we taking?,False,11,15,0.2343,False
+58,Which cruise ship are we taking?,False,12,13,0.2333,False
+58,Which cruise ship are we taking?,False,13,9,0.2241,False
+58,Which cruise ship are we taking?,False,14,12,0.2151,False
+58,Which cruise ship are we taking?,False,15,16,0.2110,False
+58,Which cruise ship are we taking?,False,16,18,0.2043,False
+58,Which cruise ship are we taking?,False,17,27,0.1882,False
+58,Which cruise ship are we taking?,False,18,24,0.1378,False
+58,Which cruise ship are we taking?,False,19,19,0.1249,False
+58,Which cruise ship are we taking?,False,20,7,0.1089,False
+58,Which cruise ship are we taking?,False,21,2,0.1079,False
+58,Which cruise ship are we taking?,False,22,20,0.0996,False
+58,Which cruise ship are we taking?,False,23,14,0.0937,False
+58,Which cruise ship are we taking?,False,24,21,0.0586,False
+58,Which cruise ship are we taking?,False,25,3,0.0307,False
+58,Which cruise ship are we taking?,False,26,17,0.0062,False
+59,What exact dates are we travelling?,False,1,26,0.2571,False
+59,What exact dates are we travelling?,False,2,6,0.2071,False
+59,What exact dates are we travelling?,False,3,7,0.2053,False
+59,What exact dates are we travelling?,False,4,16,0.1809,False
+59,What exact dates are we travelling?,False,5,11,0.1725,False
+59,What exact dates are we travelling?,False,6,5,0.1708,False
+59,What exact dates are we travelling?,False,7,22,0.1664,False
+59,What exact dates are we travelling?,False,8,27,0.1549,False
+59,What exact dates are we travelling?,False,9,24,0.1400,False
+59,What exact dates are we travelling?,False,10,13,0.1337,False
+59,What exact dates are we travelling?,False,11,23,0.1272,False
+59,What exact dates are we travelling?,False,12,15,0.1233,False
+59,What exact dates are we travelling?,False,13,18,0.1222,False
+59,What exact dates are we travelling?,False,14,19,0.1124,False
+59,What exact dates are we travelling?,False,15,25,0.1093,False
+59,What exact dates are we travelling?,False,16,9,0.0948,False
+59,What exact dates are we travelling?,False,17,4,0.0921,False
+59,What exact dates are we travelling?,False,18,8,0.0871,False
+59,What exact dates are we travelling?,False,19,10,0.0863,False
+59,What exact dates are we travelling?,False,20,2,0.0761,False
+59,What exact dates are we travelling?,False,21,20,0.0759,False
+59,What exact dates are we travelling?,False,22,12,0.0731,False
+59,What exact dates are we travelling?,False,23,14,0.0725,False
+59,What exact dates are we travelling?,False,24,21,0.0499,False
+59,What exact dates are we travelling?,False,25,3,0.0450,False
+59,What exact dates are we travelling?,False,26,17,0.0368,False
+60,Which airline should we book?,False,1,26,0.2643,False
+60,Which airline should we book?,False,2,6,0.2274,False
+60,Which airline should we book?,False,3,7,0.2158,False
+60,Which airline should we book?,False,4,19,0.2054,False
+60,Which airline should we book?,False,5,2,0.1999,False
+60,Which airline should we book?,False,6,27,0.1970,False
+60,Which airline should we book?,False,7,5,0.1967,False
+60,Which airline should we book?,False,8,3,0.1947,False
+60,Which airline should we book?,False,9,15,0.1874,False
+60,Which airline should we book?,False,10,20,0.1870,False
+60,Which airline should we book?,False,11,22,0.1770,False
+60,Which airline should we book?,False,12,24,0.1758,False
+60,Which airline should we book?,False,13,23,0.1666,False
+60,Which airline should we book?,False,14,18,0.1603,False
+60,Which airline should we book?,False,15,8,0.1436,False
+60,Which airline should we book?,False,16,4,0.1399,False
+60,Which airline should we book?,False,17,21,0.1376,False
+60,Which airline should we book?,False,18,11,0.1196,False
+60,Which airline should we book?,False,19,25,0.1086,False
+60,Which airline should we book?,False,20,16,0.1082,False
+60,Which airline should we book?,False,21,12,0.0981,False
+60,Which airline should we book?,False,22,10,0.0943,False
+60,Which airline should we book?,False,23,9,0.0871,False
+60,Which airline should we book?,False,24,14,0.0773,False
+60,Which airline should we book?,False,25,13,0.0707,False
+60,Which airline should we book?,False,26,17,0.0449,False
+61,Which Orlando hotel should we stay at?,False,1,3,0.5037,False
+61,Which Orlando hotel should we stay at?,False,2,18,0.3913,False
+61,Which Orlando hotel should we stay at?,False,3,22,0.3676,False
+61,Which Orlando hotel should we stay at?,False,4,24,0.3617,False
+61,Which Orlando hotel should we stay at?,False,5,2,0.3158,False
+61,Which Orlando hotel should we stay at?,False,6,23,0.3037,False
+61,Which Orlando hotel should we stay at?,False,7,21,0.3016,False
+61,Which Orlando hotel should we stay at?,False,8,7,0.2915,False
+61,Which Orlando hotel should we stay at?,False,9,19,0.2804,False
+61,Which Orlando hotel should we stay at?,False,10,20,0.2549,False
+61,Which Orlando hotel should we stay at?,False,11,8,0.2472,False
+61,Which Orlando hotel should we stay at?,False,12,26,0.2451,False
+61,Which Orlando hotel should we stay at?,False,13,27,0.2197,False
+61,Which Orlando hotel should we stay at?,False,14,4,0.1743,False
+61,Which Orlando hotel should we stay at?,False,15,14,0.1722,False
+61,Which Orlando hotel should we stay at?,False,16,6,0.1690,False
+61,Which Orlando hotel should we stay at?,False,17,5,0.1249,False
+61,Which Orlando hotel should we stay at?,False,18,16,0.1133,False
+61,Which Orlando hotel should we stay at?,False,19,13,0.1121,False
+61,Which Orlando hotel should we stay at?,False,20,25,0.1016,False
+61,Which Orlando hotel should we stay at?,False,21,11,0.0991,False
+61,Which Orlando hotel should we stay at?,False,22,15,0.0847,False
+61,Which Orlando hotel should we stay at?,False,23,10,0.0806,False
+61,Which Orlando hotel should we stay at?,False,24,9,0.0795,False
+61,Which Orlando hotel should we stay at?,False,25,12,0.0676,False
+61,Which Orlando hotel should we stay at?,False,26,17,0.0638,False
+62,What is the name of the cruise port?,False,1,26,0.3363,False
+62,What is the name of the cruise port?,False,2,22,0.2889,False
+62,What is the name of the cruise port?,False,3,13,0.2777,False
+62,What is the name of the cruise port?,False,4,23,0.2534,False
+62,What is the name of the cruise port?,False,5,16,0.2434,False
+62,What is the name of the cruise port?,False,6,4,0.2384,False
+62,What is the name of the cruise port?,False,7,8,0.2360,False
+62,What is the name of the cruise port?,False,8,18,0.2302,False
+62,What is the name of the cruise port?,False,9,25,0.2178,False
+62,What is the name of the cruise port?,False,10,11,0.2141,False
+62,What is the name of the cruise port?,False,11,9,0.2119,False
+62,What is the name of the cruise port?,False,12,12,0.2004,False
+62,What is the name of the cruise port?,False,13,6,0.1814,False
+62,What is the name of the cruise port?,False,14,15,0.1670,False
+62,What is the name of the cruise port?,False,15,10,0.1665,False
+62,What is the name of the cruise port?,False,16,5,0.1521,False
+62,What is the name of the cruise port?,False,17,27,0.1441,False
+62,What is the name of the cruise port?,False,18,14,0.1361,False
+62,What is the name of the cruise port?,False,19,2,0.1063,False
+62,What is the name of the cruise port?,False,20,7,0.0986,False
+62,What is the name of the cruise port?,False,21,24,0.0661,False
+62,What is the name of the cruise port?,False,22,19,0.0380,False
+62,What is the name of the cruise port?,False,23,3,0.0257,False
+62,What is the name of the cruise port?,False,24,17,0.0245,False
+62,What is the name of the cruise port?,False,25,21,0.0171,False
+62,What is the name of the cruise port?,False,26,20,-0.0003,False

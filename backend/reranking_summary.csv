@@ -1,0 +1,63 @@
+query_idx,query,answerable,rrf_hit1,rrf_hit3,rrf_hit5,rrf_mrr,rrf_recall5,rrf_precision5,rerank_hit1,rerank_hit3,rerank_hit5,rerank_mrr,rerank_recall5,rerank_precision5
+1,What are the main costs that should be included in the holiday budget?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+2,What expenses should we consider when planning the overall trip budget?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+3,How should we compare the cost of different flights from the UK to Orlando?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+4,What additional hotel costs should be included besides the nightly rate?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+5,What extra costs might be charged on the cruise?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+6,What should we consider when choosing flights to Orlando?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+7,Why should baggage allowances be considered when comparing flights?,True,False,True,True,0.5,1.0,0.2,True,True,True,1.0,1.0,0.2
+8,What factors should we consider when choosing an Orlando hotel?,True,False,True,True,0.5,1.0,0.4,True,True,True,1.0,1.0,0.4
+9,Why might staying closer to the theme parks be beneficial?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+10,What hotel facilities would be useful for the family?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+11,Which Disney parks are mentioned in the document?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+12,What Disney park would provide the most traditional Disney experience?,True,False,True,True,0.5,1.0,0.2,True,True,True,1.0,1.0,0.2
+13,What should we consider when deciding which theme parks to visit?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+14,How can we avoid wasting money on theme park tickets?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+15,What additional costs might apply at Universal or Disney?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+16,What should we consider when deciding whether to buy an express pass?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+17,What transport options are suggested for getting around Orlando?,True,True,True,True,1.0,0.6666666666666666,0.4,True,True,True,1.0,0.6666666666666666,0.4
+18,What costs need to be considered if we rent a car?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+19,What are the advantages and disadvantages of using ride-sharing services?,True,True,True,True,1.0,1.0,0.2,False,True,True,0.5,1.0,0.2
+20,How should we get from Orlando to the cruise port?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+21,What types of food and dining options might be available on the cruise?,True,True,True,True,1.0,0.6666666666666666,0.4,True,True,True,1.0,1.0,0.6
+22,Which cruise activities might cost extra?,True,True,True,True,1.0,0.3333333333333333,0.2,True,True,True,1.0,1.0,0.6
+23,What should everyone do after boarding the cruise ship?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+24,Why is the cruise the centrepiece of the holiday?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+25,What should we check before boarding the cruise?,True,True,True,True,1.0,0.5,0.2,True,True,True,1.0,1.0,0.4
+26,How should we celebrate Mum's 60th birthday?,True,True,True,True,1.0,0.6,0.6,False,True,True,0.5,0.6,0.6
+27,What birthday services might the cruise company offer?,True,False,True,True,0.5,1.0,0.4,True,True,True,1.0,1.0,0.4
+28,What could be included in Mum's birthday celebration?,True,True,True,True,1.0,0.75,0.6,True,True,True,1.0,0.75,0.6
+29,What types of gifts would Mum appreciate?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+30,What are some experiences that could be given to Mum instead of a physical gift?,True,False,True,True,0.5,1.0,0.2,True,True,True,1.0,1.0,0.2
+31,What should the family decide about sharing the cost of Mum's birthday?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+32,What type of activities are suggested for the Mexico stop?,True,True,True,True,1.0,1.0,0.8,True,True,True,1.0,1.0,0.8
+33,Why might we choose an organised excursion in Mexico?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,0.5,0.2
+34,What are the risks of arranging an independent excursion?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+35,What type of food does the family want to try in Mexico?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+36,What should we consider if we decide to visit a beach in Mexico?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+37,What activities are suggested for the Bahamas?,True,True,True,True,1.0,0.5,0.4,True,True,True,1.0,1.0,0.8
+38,Why is the Bahamas stop intended to be more relaxed?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+39,What water activities could the family do in the Bahamas?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+40,What could we do in the Bahamas besides going to the beach?,True,False,False,True,0.25,1.0,0.4,True,True,True,1.0,1.0,0.4
+41,Why is it important to leave plenty of time before the ship departs?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+42,What information should everyone have when going ashore?,True,False,True,True,0.5,1.0,0.2,True,True,True,1.0,1.0,0.2
+43,What should the family do if bad weather affects an excursion?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,1.0,0.4
+44,What information should be included in the plan for each cruise port?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+45,What documents should everyone check before leaving the UK?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+46,What should be included in the shared packing checklist?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+47,How many days are we planning to spend in Orlando?,True,True,True,True,1.0,0.5,0.2,True,True,True,1.0,1.0,0.4
+48,What is the suggested structure for the Orlando itinerary?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+49,What should happen on the first evening in Orlando?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+50,Why should the first day in Orlando not be overloaded with activities?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+51,What should be checked during the final two weeks before the trip?,True,True,True,True,1.0,1.0,0.2,True,True,True,1.0,1.0,0.2
+52,How could we balance visiting Disney and Universal with having enough time to rest?,True,False,True,True,0.5,0.75,0.6,True,True,True,1.0,0.75,0.6
+53,How should we decide between a cruise excursion and an independent excursion?,True,True,True,True,1.0,1.0,0.6,True,True,True,1.0,1.0,0.6
+54,How can we make Mum's birthday feel special without making the itinerary too complicated?,True,True,True,True,1.0,1.0,0.4,True,True,True,1.0,0.5,0.2
+55,What should we consider when planning transport from the UK through Orlando and onto the cruise?,True,True,True,True,1.0,0.5,0.4,False,True,True,0.5,0.5,0.4
+56,How should Mexico and the Bahamas differ as part of the holiday?,True,True,True,True,1.0,1.0,0.8,True,True,True,1.0,1.0,0.8
+57,How much will the entire holiday cost?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+58,Which cruise ship are we taking?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+59,What exact dates are we travelling?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+60,Which airline should we book?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+61,Which Orlando hotel should we stay at?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
+62,What is the name of the cruise port?,False,False,False,False,0.0,,0.0,False,False,False,0.0,,0.0
