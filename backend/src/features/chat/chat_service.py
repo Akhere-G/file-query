@@ -7,6 +7,7 @@ from src.features.chat.message_model import Citation, Message, MessageOwner
 from src.features.files.embedding_service import (
     generate_embedding,
     get_response,
+    rerank_chunks,
     rewrite_query,
 )
 from src.features.files.file_model import Chunk, File, Project
@@ -92,12 +93,19 @@ def send_user_message(db: Session, user_id: int, project_id: int, content: str):
         conversation,
     )
     chunks = get_relevant_chunks(db, project_id, search_query)
-    response = get_ai_response(content, chunks)
-    response = response or "Sorry, I could not answer your question."
-    ai_message = create_message(
-        db, project_id, MessageOwner.assistant, response, chunks
-    )
-    return ai_message
+    if not chunks:
+        response = "Sorry, I could not answer your question with the context provided."
+        ai_message = create_message(
+            db, project_id, MessageOwner.assistant, response, chunks
+        )
+        return ai_message
+    else:
+        response = get_ai_response(content, chunks)
+        response = response or "Sorry, I could not answer your question."
+        ai_message = create_message(
+            db, project_id, MessageOwner.assistant, response, chunks
+        )
+        return ai_message
 
 
 def create_message(
@@ -126,10 +134,19 @@ def create_message(
 
 
 def get_relevant_chunks(
-    db: Session, project_id: int, message: str, limit: int = settings.RAG_TOP_K
+    db: Session,
+    project_id: int,
+    message: str,
+    candidate_limit: int = settings.RAG_TOP_K,
+    limit: int = settings.RAG_RERANK_K,
 ):
-    semantic_chunks = get_relevant_chunks_by_semantics(db, project_id, message, limit)
-    keyword_chunks = get_relevant_chunks_by_keywords(db, project_id, message, limit)
+
+    semantic_chunks = get_relevant_chunks_by_semantics(
+        db, project_id, message, candidate_limit
+    )
+    keyword_chunks = get_relevant_chunks_by_keywords(
+        db, project_id, message, candidate_limit
+    )
 
     k = 60
     scores: dict[int, float] = {}
@@ -147,7 +164,9 @@ def get_relevant_chunks(
         scores, key=lambda chunk_id: scores[chunk_id], reverse=True
     )
 
-    return [chunks[chunk_id] for chunk_id in ranked_chunk_ids[:limit]]
+    candidates = [chunks[chunk_id] for chunk_id in ranked_chunk_ids[:candidate_limit]]
+
+    return rerank_chunks(message, candidates, limit=limit)
 
 
 def get_relevant_chunks_by_semantics(

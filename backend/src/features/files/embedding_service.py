@@ -2,10 +2,21 @@ import json
 import logging
 
 import boto3
+from mypy_boto3_bedrock_agent_runtime.client import (
+    AgentsforBedrockRuntimeClient,
+)
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
+from src.features.files.file_model import Chunk
 from src.settings import settings
 
 logger = logging.getLogger(__name__)
+
+
+def get_bedrock_agent_client() -> AgentsforBedrockRuntimeClient:
+    return boto3.client(
+        "bedrock-agent-runtime",
+        region_name="eu-central-1",
+    )  # type: ignore
 
 
 def get_bedrock_client() -> BedrockRuntimeClient:
@@ -83,3 +94,44 @@ Search query:
 """
 
     return (get_response(prompt) or message).strip()
+
+
+def rerank_chunks(
+    query: str,
+    chunks: list[Chunk],
+    limit: int = 5,
+) -> list[Chunk]:
+    if not chunks:
+        return []
+
+    client = get_bedrock_agent_client()
+
+    response = client.rerank(
+        queries=[{"type": "TEXT", "textQuery": {"text": query}}],
+        sources=[
+            {
+                "type": "INLINE",
+                "inlineDocumentSource": {
+                    "type": "TEXT",
+                    "textDocument": {
+                        "text": chunk.content,
+                    },
+                },
+            }
+            for chunk in chunks
+        ],
+        rerankingConfiguration={
+            "type": "BEDROCK_RERANKING_MODEL",
+            "bedrockRerankingConfiguration": {
+                "modelConfiguration": {
+                    "modelArn": (
+                        "arn:aws:bedrock:eu-central-1::"
+                        "foundation-model/cohere.rerank-v3-5:0"
+                    ),
+                },
+                "numberOfResults": limit,
+            },
+        },
+    )
+
+    return [chunks[result["index"]] for result in response["results"]]

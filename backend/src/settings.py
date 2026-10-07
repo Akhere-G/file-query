@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     REDIS_URI: str
     FRONTEND_URL: str = "http://localhost:8000"
     RAG_SIMILARITY_THRESHOLD: float = 0.14
-    RAG_TOP_K: int = 20
+    RAG_TOP_K: int = 10
     RAG_RERANK_K: int = 5
     MAX_MONTHLY_MESSAGES: int = 40
     MAX_PROJECTS_PER_USER: int = 3
