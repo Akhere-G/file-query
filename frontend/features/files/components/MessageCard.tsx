@@ -4,6 +4,7 @@ import { Message } from "@/features/chat/types";
 export default function MessageCard({ message }: { message: Message }) {
   const { content, owner } = message;
 
+  console.log(message, content, owner);
   return (
     <div
       className={`rounded-2xl px-3 py-2 ${
@@ -12,7 +13,13 @@ export default function MessageCard({ message }: { message: Message }) {
           : "mr-[10%] bg-secondary text-secondary-foreground"
       }`}
     >
-      <div className="prose prose-sm dark:prose-invert max-w-none">
+      <div
+        className={`prose prose-sm max-w-none ${
+          owner === "user"
+            ? "shimmer-color-yellow-500 reverse-selection"
+            : "dark:reverse-selection"
+        }`}
+      >
         <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </div>

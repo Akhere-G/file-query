@@ -34,7 +34,7 @@ export default async function DashboardPage({
     <div className="min-h-[90vh] flex">
       <ProjectSidebar projects={projects} currentProjectId={projectId} />
       <Tabs className="w-full flex-1">
-        <TabsList className="bg-primary-foreground w-full flex justify-start">
+        <TabsList className="w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="files">
             Files
           </TabsTrigger>

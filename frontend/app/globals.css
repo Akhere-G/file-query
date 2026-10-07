@@ -224,5 +224,8 @@
   .title {
     @apply text-xl font-semibold tracking-tighter
   }
- 
+ .reverse-selection ::selection {
+  background-color: #0008;
+  font-weight: 900;
+}
 }
