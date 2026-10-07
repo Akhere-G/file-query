@@ -3,6 +3,7 @@ import {
   Attachment,
   AttachmentActions,
   AttachmentContent,
+  AttachmentDescription,
   AttachmentMedia,
   AttachmentTitle,
 } from "@/components/ui/attachment";
@@ -71,12 +72,11 @@ export default function FileCard({ file }: { file: ProjectFile }) {
     <>
       <Attachment
         key={file.id}
-        className={
+        className={`h-16 ${
           file.status === "error"
-            ? "border-red-500 bg-red-100 text-red-900"
+            ? "border-red-500 bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-100"
             : undefined
-        }
-        title="There was a problem with uploading this file. Please delete and reupload."
+        }`}
       >
         <AttachmentMedia>
           <FileIcon className="size-5" />
@@ -84,6 +84,13 @@ export default function FileCard({ file }: { file: ProjectFile }) {
 
         <AttachmentContent>
           <AttachmentTitle className="truncate">{file.name}</AttachmentTitle>
+          <AttachmentDescription
+            className={file.error ? "text-slate-700 dark:text-slate-300" : ""}
+          >
+            {file.error
+              ? "There was a problem with uploading this file. Please delete and reupload."
+              : ""}
+          </AttachmentDescription>
         </AttachmentContent>
         <AttachmentActions>
           <DropdownMenu>
