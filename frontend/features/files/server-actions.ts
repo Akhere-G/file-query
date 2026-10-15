@@ -16,6 +16,7 @@ export async function getFiles(projectId: number) {
   });
 
   const data = await parseResponse<ProjectFile[]>(response);
+  revalidatePath("/dashboard");
 
   return data;
 }

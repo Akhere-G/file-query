@@ -10,12 +10,13 @@ from langchain_text_splitters import (
 )
 from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
-from src.database import get_db
+from sqlalchemy.orm import selectinload
+from src.database import SessionLocal, get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding, get_response
 from src.features.files.file_extraction_service import extract_file
-from src.features.files.file_model import Chunk, File, FileStatus
+from src.features.files.file_model import Chunk, File, FileStatus, Project
 from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
@@ -46,7 +47,7 @@ def get_sqs_client() -> SQSClient:
 
 def enqueue_files(files: list[File]):
     sqs = get_sqs_client()
-    for file in files:
+    for i, file in enumerate(files):
         logger.info(f"enqueuing file: {file.id}")
         sqs.send_message(
             QueueUrl=settings.SQS_QUEUE_URL,
@@ -54,7 +55,9 @@ def enqueue_files(files: list[File]):
                 {
                     "file_id": file.id,
                     "storage_key": file.storage_key,
+                    "project_id": file.project_id,
                     "mime_type": file.mime_type,
+                    "is_last": i == len(files) - 1,
                 }
             ),
         )
@@ -62,8 +65,10 @@ def enqueue_files(files: list[File]):
 
 class FileJob(TypedDict):
     file_id: int
+    project_id: int
     storage_key: str
     mime_type: str
+    is_last: bool | None
 
 
 def process_file(job: FileJob):
@@ -75,16 +80,20 @@ def process_file(job: FileJob):
         file_id=job["file_id"],
         chunks=chunks,
     )
+    if job["is_last"]:
+        name_project(job["project_id"])
 
 
 def process_files_locally(files: list[File]):
-    for file in files:
+    for i, file in enumerate(files):
         try:
             process_file(
                 {
                     "file_id": file.id,
+                    "project_id": file.project_id,
                     "storage_key": file.storage_key,
                     "mime_type": file.mime_type,
+                    "is_last": i == len(files) - 1,
                 }
             )
         except Exception as err:
@@ -237,3 +246,54 @@ def process_embeddings(file_id: int, chunks: list[str]):
 
     finally:
         db.close()
+
+
+def name_project(project_id: int):
+    with SessionLocal() as db:
+        try:
+            stmt = (
+                select(Project)
+                .options(selectinload(Project.files).selectinload(File.chunks))
+                .where(Project.id == project_id)
+            )
+
+            project = db.execute(stmt).scalar_one_or_none()
+
+            if not project:
+                logger.warning(
+                    f"Project {project_id} was deleted embeddeing. Could not generate name."
+                )
+                return
+
+            filenames = [file.name for file in project.files]
+            chunk_titles = [
+                chunk.title
+                for file in project.files
+                for chunk in file.chunks[:10]
+                if chunk.title
+            ]
+            name = get_response(
+                f"""
+                Generate a short, descriptive name for a project
+                containing the following documents.
+                Base the name on the overall subject shared by
+                the documents, not on an individual section.
+                Filenames:
+                {filenames}
+
+                Section titles:
+                {chunk_titles[:30]}
+
+                Return only the project name, without quotes.
+                Use 3-7 words. Avoid generic names.
+                """
+            )
+            project.name = name or "New Project"
+            project.name = project.name.strip().strip("\"'")
+            db.commit()
+        except Exception:
+            logger.exception(
+                f"Could not generate name for project {project_id}. Exception occurred"
+            )
+            db.rollback()
+            raise

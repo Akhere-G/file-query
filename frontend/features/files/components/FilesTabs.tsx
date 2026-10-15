@@ -228,7 +228,7 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
             </div>
           )}
 
-          <div className="space-y-2">
+          <div className="space-y-2 flex flex-wrap gap-4">
             {uploadedFiles.map((file, index) => {
               const extension =
                 file.name.lastIndexOf(".") !== -1
@@ -238,7 +238,7 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
                   : "";
 
               return (
-                <Attachment key={`${file.name}-${index}`}>
+                <Attachment className="h-20" key={`${file.name}-${index}`}>
                   <AttachmentMedia>{getFileIcon(file)}</AttachmentMedia>
 
                   <AttachmentContent className="min-w-0">
