@@ -15,7 +15,9 @@ export async function getFiles(projectId: number) {
     },
   });
 
-  return (await response.json()) as ProjectFile[];
+  const data = await parseResponse<ProjectFile[]>(response);
+
+  return data;
 }
 export async function uploadFiles(files: File[], projectId?: number) {
   const fileData = files.map((file) => ({

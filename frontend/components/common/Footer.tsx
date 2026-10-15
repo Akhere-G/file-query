@@ -25,7 +25,7 @@ export default function Footer({ groups }: FooterProps) {
 
               <ul className="space-y-3">
                 {group.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.name}>
                     <Link
                       href={link.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"

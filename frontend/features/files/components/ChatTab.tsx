@@ -10,13 +10,15 @@ import {
   useState,
 } from "react";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { FileWarningIcon, Info, Loader2, Send } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import {
   getMessages,
   sendMessage as sendMessageAction,
 } from "@/features/chat/server-actions";
 import { toast } from "@/components/ui/toast";
+import { ProjectFile } from "../types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const PAGE_SIZE = 20;
 const LOAD_MORE_THRESHOLD_PX = 50;
@@ -34,16 +36,26 @@ const createOptimisticMessage = (content: string): Message => ({
 
 interface ChatTabProps {
   projectId: number | null;
+  files: ProjectFile[];
+  isLoading: boolean;
+  error: string;
+  allFilesProcessing: boolean;
 }
 
-const ChatTab = ({ projectId }: ChatTabProps) => (
-  <ChatPanel key={projectId ?? "none"} projectId={projectId} />
+const ChatTab = ({ projectId, ...props }: ChatTabProps) => (
+  <ChatPanel key={projectId ?? "none"} projectId={projectId} {...props} />
 );
 
-const ChatPanel = ({ projectId }: ChatTabProps) => {
+const ChatPanel = ({
+  projectId,
+  isLoading,
+  allFilesProcessing,
+  error,
+}: ChatTabProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
   const [isSending, setIsSending] = useState(false);
+  const [isFetchingMessages, setIsFetchingMessages] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -57,8 +69,11 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
   } | null>(null);
 
   const loadOlder = useCallback(async () => {
-    if (!projectId || isLoadingRef.current || !hasMoreRef.current) return;
+    if (!projectId || isLoadingRef.current || !hasMoreRef.current) {
+      return;
+    }
 
+    setIsFetchingMessages(true);
     isLoadingRef.current = true;
     const isFirstPage = cursorRef.current === null;
 
@@ -81,11 +96,15 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
         };
       }
 
-      setMessages((prev) => [...res.data.messages, ...prev]);
+      setMessages((prev) => {
+        if (prev) return [...res.data.messages, ...prev];
+        return res.data.messages;
+      });
     } catch {
       showError();
     } finally {
       isLoadingRef.current = false;
+      setIsFetchingMessages(false);
     }
   }, [projectId]);
 
@@ -95,7 +114,7 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
 
   useLayoutEffect(() => {
     const container = containerRef.current;
-    if (!container || messages.length === 0) return;
+    if (!container || messages?.length === 0) return;
 
     const before = scrollBeforePrependRef.current;
 
@@ -126,7 +145,10 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
     if (!projectId || isSending || !content) return;
 
     const optimistic = createOptimisticMessage(content);
-    setMessages((prev) => [...prev, optimistic]);
+    setMessages((prev) => {
+      if (prev) return [...prev, optimistic];
+      return [optimistic];
+    });
     setText("");
     setIsSending(true);
 
@@ -136,11 +158,17 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
     setIsSending(false);
 
     if (result?.success) {
-      setMessages((prev) => [...prev, result.data]);
+      setMessages((prev) => {
+        if (prev) return [...prev, result.data];
+        return [result.data];
+      });
       return;
     }
 
-    setMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
+    setMessages((prev) => {
+      if (prev) prev?.filter((m) => m.id !== optimistic.id);
+      return [];
+    });
     setText(content);
     showError(result?.message);
   };
@@ -152,6 +180,9 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
     }
   };
 
+  const cannotSend =
+    !projectId || isSending || isLoading || allFilesProcessing || !!error;
+
   return (
     <div className="relative h-full min-h-0 max-h-[85vh] flex flex-col p-4">
       <div
@@ -159,7 +190,13 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
         onScroll={handleScroll}
         className="flex-1 min-h-0 overflow-y-auto space-y-2 pr-2 [overflow-anchor:none]"
       >
-        {messages.map((message) => (
+        {isFetchingMessages && (
+          <div className="w-full flex flex-col justify-center items-center gap-2 p-4">
+            <h2 className="font-bold">Loading...</h2>
+            <Loader2 className="animate-spin" width={24} height={24} />
+          </div>
+        )}
+        {messages?.map((message) => (
           <MessageCard key={message.id} message={message} />
         ))}
 
@@ -169,6 +206,25 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
           </div>
         )}
       </div>
+      {allFilesProcessing && (
+        <Alert className="mt-4">
+          <Info />
+          <AlertTitle>All files are still processing</AlertTitle>
+          <AlertDescription>
+            Once some files are successfuly uploaded and processed you can query
+            them in the chat.
+          </AlertDescription>
+        </Alert>
+      )}
+      {error && (
+        <Alert className="mt-4">
+          <FileWarningIcon />
+          <AlertTitle>Sorry, something went wrong...</AlertTitle>
+          <AlertDescription>
+            Please refresh the page and try again
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="relative">
         <Textarea
@@ -177,13 +233,13 @@ const ChatPanel = ({ projectId }: ChatTabProps) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={isSending || !projectId}
+          disabled={cannotSend}
         />
 
         <Button
           className="right-2 top-6 absolute h-8 w-8 p-0 rounded-md"
           onClick={sendMessage}
-          disabled={isSending || !projectId}
+          disabled={cannotSend}
         >
           <Send size={16} />
         </Button>

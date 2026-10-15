@@ -6,6 +6,7 @@ import { getProject, getProjects } from "@/features/project/server-actions";
 import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toast";
+import ProjectTabs from "@/features/files/components/ProjectTabs";
 
 interface DashboardPageProps {
   searchParams: Promise<{ projectId?: string }>;
@@ -19,11 +20,9 @@ export default async function DashboardPage({
   const res = await getProjects();
 
   const projects = res.success ? res.data : [];
-  let project: Project | null = null;
 
   if (projectId) {
     const projectRes = await getProject(Number(projectId));
-    project = projectRes.data;
 
     if ([404, 403].includes(projectRes.status)) {
       redirect("/dashboard", "replace");
@@ -42,12 +41,7 @@ export default async function DashboardPage({
             Chat
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="chat">
-          <ChatTab projectId={projectId} />
-        </TabsContent>
-        <TabsContent value="files">
-          <FilesTab files={project?.files ?? []} />
-        </TabsContent>
+        <ProjectTabs projectId={projectId} />
         <Toaster />
       </Tabs>
     </div>

@@ -33,14 +33,14 @@ def get_project(
     return project
 
 
-@router.get("/{project_id:int}/files", response_model=FileResponse)
+@router.get("/{project_id:int}/files", response_model=list[FileResponse])
 def get_files(
     project_id: int | None = None,
     db: Session = Depends(get_db),
     user: User = Depends(user_service.get_current_user),
 ):
     if not project_id:
-        return BadRequestError("Project is is missing!")
+        raise BadRequestError("Project is is missing!")
 
     project = project_service.get_project(db, project_id)
     if project.user_id != user.id:

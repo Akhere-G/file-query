@@ -1,11 +1,10 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { ProjectFile } from "../types";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Upload, X } from "lucide-react";
+import { FileWarningIcon, Upload, X } from "lucide-react";
 import { getFileIcon, getSizeStr } from "../utils";
 import { confirmUploads, uploadFiles } from "../server-actions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -20,12 +19,15 @@ import {
   AttachmentTitle,
 } from "@/components/ui/attachment";
 import { toast } from "@/components/ui/toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ProjectFile } from "../types";
 
-interface FileTabsProps {
+interface FileTabProps {
   files: ProjectFile[];
+  isLoading: boolean;
+  error: string;
 }
-
-const FilesTabs = ({ files }: FileTabsProps) => {
+const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
   const [isPending, setIsPending] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
     {},
@@ -36,7 +38,6 @@ const FilesTabs = ({ files }: FileTabsProps) => {
   const projectId = searchParams.get("projectId");
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isDragEnter, setIsDragEnter] = useState(false);
-
   const dragCounter = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -120,6 +121,7 @@ const FilesTabs = ({ files }: FileTabsProps) => {
       setIsPending(false);
     }
   }
+
   return (
     <div
       className="flex h-full flex-col gap-6 p-6"
@@ -138,6 +140,15 @@ const FilesTabs = ({ files }: FileTabsProps) => {
             ))}
           </div>
         </div>
+      )}
+      {error && (
+        <Alert className="mt-4">
+          <FileWarningIcon />
+          <AlertTitle>Sorry, something went wrong...</AlertTitle>
+          <AlertDescription>
+            Please refresh the page and try again
+          </AlertDescription>
+        </Alert>
       )}
       <div
         className={`

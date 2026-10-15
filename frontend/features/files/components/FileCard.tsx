@@ -8,7 +8,7 @@ import {
   AttachmentTitle,
 } from "@/components/ui/attachment";
 import { ProjectFile } from "../types";
-import { FileIcon, MoreVertical } from "lucide-react";
+import { FileIcon, Loader2, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +38,13 @@ export default function FileCard({ file }: { file: ProjectFile }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const deleteFileAction = async () => {
+    if (file.status === "pending") {
+      toast.add({
+        title: "This file is still being uploading. Please wait.",
+        type: "info",
+      });
+      return;
+    }
     setIsDeleting(true);
     try {
       const res = await deleteFile(file.id);
@@ -61,6 +68,14 @@ export default function FileCard({ file }: { file: ProjectFile }) {
       });
       return;
     }
+
+    if (file.status === "pending") {
+      toast.add({
+        title: "This file is still being uploading. Please wait.",
+        type: "info",
+      });
+      return;
+    }
     const res = await viewFileContent(file.id);
     if (res.success) {
       window.open(res.data.url, "_blank", "noopener,noreferrer");
@@ -68,6 +83,7 @@ export default function FileCard({ file }: { file: ProjectFile }) {
       toast.add({ title: "Could not view file", type: "error" });
     }
   };
+  const fileIsLoading = ["processing", "pending"].includes(file.status);
   return (
     <>
       <Attachment
@@ -79,7 +95,11 @@ export default function FileCard({ file }: { file: ProjectFile }) {
         }`}
       >
         <AttachmentMedia>
-          <FileIcon className="size-5" />
+          {fileIsLoading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <FileIcon className="size-5" />
+          )}
         </AttachmentMedia>
 
         <AttachmentContent>
