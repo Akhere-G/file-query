@@ -29,6 +29,7 @@ const createOptimisticMessage = (content: string): Message => ({
   owner: "user",
   content,
   createdAt: new Date().toISOString(),
+  citations: [],
 });
 
 interface ChatTabProps {

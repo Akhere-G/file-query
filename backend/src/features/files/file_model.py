@@ -68,6 +68,7 @@ class Chunk(Base):
     __tablename__ = "chunks"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     file_id: Mapped[int] = mapped_column(ForeignKey("files.id", ondelete="CASCADE"))
+    title: Mapped[str | None] = mapped_column(String(255), nullable=True)
     content: Mapped[str] = mapped_column(Text)
     embedding: Mapped[list[float] | None] = mapped_column(Vector(1024), nullable=True)
     file: Mapped["File"] = relationship(back_populates="chunks")

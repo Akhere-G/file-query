@@ -2,9 +2,10 @@ import logging
 import re
 
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from src.features.chat.message_model import Citation, Message, MessageOwner
 from src.features.files.embedding_service import (
+    NO_CONTEXT_RESPONSE,
     generate_embedding,
     get_response,
     rerank_chunks,
@@ -40,6 +41,7 @@ def get_messages(
     limit = max(0, min(limit or 30, 30))
     stmt = (
         select(Message)
+        .options(selectinload(Message.chunks).options(selectinload(Chunk.file)))
         .where(Message.project_id == project_id)
         .order_by(Message.id.desc())
         .limit(limit + 1)
@@ -101,9 +103,10 @@ def send_user_message(db: Session, user_id: int, project_id: int, content: str):
         return ai_message
     else:
         response = get_ai_response(content, chunks)
-        response = response or "Sorry, I could not answer your question."
+        response = response or NO_CONTEXT_RESPONSE
+        citations = [] if NO_CONTEXT_RESPONSE.lower() in response.lower() else chunks
         ai_message = create_message(
-            db, project_id, MessageOwner.assistant, response, chunks
+            db, project_id, MessageOwner.assistant, response, citations
         )
         return ai_message
 
@@ -223,27 +226,43 @@ def get_ai_response(content: str, chunks: list[Chunk]):
     )
 
     prompt = f"""
-      You are a document question-answering assistant.
+You are a helpful assistant that answers questions using the user's documents.
 
-      Your job is to answer the user's question using ONLY the information
-      contained in the provided context.
+Answer the user's question directly, naturally, and conversationally, as if speaking to the user.
 
-      STRICT RULES:
-      1. Do not use your general knowledge.
-      2. Do not add information that is not explicitly stated in the context.
-      3. Do not make assumptions or suggestions based on information outside
-        the context.
-      4. If the context does not contain the answer, say:
-        "I don't have enough information in the provided documents to answer that."
-      5. Keep the answer concise and directly relevant to the question.
+STRICT RULES:
+1. Use ONLY information explicitly supported by the provided context. Do not use general knowledge or invent facts.
+2. First determine whether the context contains sufficient information to answer the question.
+3. If sufficient information exists, answer the specific question concisely and directly.
+4. If the context does not contain sufficient information, respond with exactly:
+   {NO_CONTEXT_RESPONSE}
+5. Never provide a partial answer, speculation, or suggestions unsupported by the context.
+6. Never include the fallback response alongside an answer.
+7. Do not assume a question is answerable merely because related keywords appear in the context.
+8. Do not describe, summarise, or introduce the context. Use it to answer the question, not as the subject of your response.
+9. Avoid phrases such as "The context provides information...", "Based on the provided context...", "According to the documents..." or "These suggestions are directly based on the information given".
+10. Do not repeat the question or explain your reasoning.
+11. Use a natural tone and everyday language. Avoid unnecessarily formal wording, repetitive introductions, and generic conclusions.
+12. Use bullet points only when they make the answer easier to read. Otherwise, prefer short paragraphs.
+13. Include relevant details from the context without listing every available detail when a shorter answer is sufficient.
 
-      User question:
-      {content}
+User question:
+{content}
 
-      Context:
-      {context}
+Context:
+{context}
 
-      Answer:
-    """
+Answer:
+"""
 
-    return get_response(prompt)
+    response = get_response(prompt)
+
+    if not response:
+        return NO_CONTEXT_RESPONSE
+
+    response = response.strip()
+
+    if NO_CONTEXT_RESPONSE.casefold() in response.casefold():
+        return NO_CONTEXT_RESPONSE
+
+    return response

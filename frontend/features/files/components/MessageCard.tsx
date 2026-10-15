@@ -1,8 +1,9 @@
 import ReactMarkdown from "react-markdown";
 import { Message } from "@/features/chat/types";
+import CitationDetail from "./CitationDetail";
 
 export default function MessageCard({ message }: { message: Message }) {
-  const { content, owner } = message;
+  const { content, owner, citations } = message;
 
   return (
     <div
@@ -20,6 +21,13 @@ export default function MessageCard({ message }: { message: Message }) {
         }`}
       >
         <ReactMarkdown>{content}</ReactMarkdown>
+        {citations.length > 0 && (
+          <div className="mt-4 flex gap-2 flex-wrap">
+            {citations.map((citation) => (
+              <CitationDetail key={citation.title} citation={citation} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ from sqlalchemy import select
 from src.database import get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
-from src.features.files.embedding_service import generate_embedding
+from src.features.files.embedding_service import generate_embedding, get_response
 from src.features.files.file_extraction_service import extract_file
 from src.features.files.file_model import Chunk, File, FileStatus
 from src.features.files.file_service import get_s3_client
@@ -184,6 +184,9 @@ def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:
         Chunk(
             file_id=file_id,
             content=content,
+            title=get_response(
+                f"Create a title for this chunk based on its content. Just return the title with no quotes and no markdown and make sure it is one sentence, less than 100 characters. Content = {content}"
+            ),
             embedding=generate_embedding(content),
         )
         for content in chunks

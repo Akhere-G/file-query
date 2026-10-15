@@ -11,6 +11,10 @@ from src.settings import settings
 
 logger = logging.getLogger(__name__)
 
+NO_CONTEXT_RESPONSE = (
+    "I don't have enough information in the provided documents to answer that."
+)
+
 
 def get_bedrock_agent_client() -> AgentsforBedrockRuntimeClient:
     return boto3.client(
@@ -106,6 +110,8 @@ def rerank_chunks(
 
     client = get_bedrock_agent_client()
 
+    number_of_results = min(limit, len(chunks))
+
     response = client.rerank(
         queries=[{"type": "TEXT", "textQuery": {"text": query}}],
         sources=[
@@ -129,7 +135,7 @@ def rerank_chunks(
                         "foundation-model/cohere.rerank-v3-5:0"
                     ),
                 },
-                "numberOfResults": limit,
+                "numberOfResults": number_of_results,
             },
         },
     )

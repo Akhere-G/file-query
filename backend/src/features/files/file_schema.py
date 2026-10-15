@@ -1,4 +1,4 @@
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from src.features.files.file_model import FileStatus
 from src.schemas import BaseModel
 from src.settings import settings
@@ -53,3 +53,28 @@ class FileResponse(FileBase):
 class ConfirmUploadRequest(BaseModel):
     id: int
     error: str | None = None
+
+
+class ChunkResponse(BaseModel):
+    id: int
+    file_id: int
+    content: str
+    title: str | None = None
+    file_name: str
+
+    @model_validator(mode="before")
+    @classmethod
+    def flatten_filename(cls, data):
+        if isinstance(data, dict):
+            if "file" in data:
+                data["file_name"] = data["file"].name
+        elif hasattr(data, "file"):
+            return {
+                "id": data.id,
+                "file_id": data.file_id,
+                "content": data.content,
+                "title": data.title,
+                "fileName": data.file.name,
+            }
+
+        return data
