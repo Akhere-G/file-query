@@ -59,6 +59,8 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth_s
 
     if user is None:
         raise InvalidCredentialsError()
+    if user.is_demo and not settings.DEMO_MODE_ENABLED:
+        raise InvalidCredentialsError()
     return user
 
 
@@ -77,6 +79,11 @@ def get_user(db: Session, user_id: int):
 
 def get_user_by_email(db: Session, email: str):
     query = select(User).where(User.email == email)
+    return db.execute(query).scalar_one_or_none()
+
+
+def get_demo_user(db: Session):
+    query = select(User).where(User.is_demo.is_(True))
     return db.execute(query).scalar_one_or_none()
 
 
@@ -101,5 +108,14 @@ def create_user(db: Session, user_in: UserCreate):
 
 def get_access_token(email: str):
     access_token = create_access_token(data={"sub": email})
+
+    return Token(access_token=access_token, token_type="bearer")
+
+
+def get_demo_access_token(user: User):
+    access_token = create_access_token(
+        data={"sub": user.email, "demo": True},
+        expires_delta=timedelta(minutes=settings.DEMO_TOKEN_EXPIRE_MINUTES),
+    )
 
     return Token(access_token=access_token, token_type="bearer")

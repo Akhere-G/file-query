@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     MAX_PROJECTS_PER_USER: int = 3
     MAX_FILE_SIZE: int = 1024 * 1024 * 500
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
+    DEMO_MODE_ENABLED: bool = False
+    DEMO_USER_EMAIL: str = "demo@example.com"
+    DEMO_TOKEN_EXPIRE_MINUTES: int = 120
+    DEMO_MAX_MESSAGES: int = 60
+    DEMO_MAX_FILE_SIZE: int = 1024 * 1024 * 5
+    DEMO_MAX_STORAGE: int = 1024 * 1024 * 50
+    DEMO_SEED_TIMEOUT_SECONDS: int = 600
     model_config = SettingsConfigDict(env_file=".env")
 
 

@@ -6,6 +6,7 @@ from src.features.auth import user_service
 from src.features.auth.user_model import User as UserModel
 from src.features.auth.user_schema import Token, User, UserCreate, UserLogin
 from src.limiter import limiter
+from src.settings import settings
 
 router = APIRouter(prefix="/api/auth", tags=["Users"])
 
@@ -34,8 +35,10 @@ def login(
     db: Session = Depends(get_db),
 ) -> Token:
     user = user_service.get_user_by_email(db, email=form_data.username)
-    if not user or not user_service.check_password_hash(
-        form_data.password, user.password_hash
+    if (
+        not user
+        or user.is_demo
+        or not user_service.check_password_hash(form_data.password, user.password_hash)
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -52,8 +55,12 @@ def login_user(
 ) -> Token:
     existing_user = user_service.get_user_by_email(db, email=user_in.email)
 
-    if not existing_user or not user_service.check_password_hash(
-        user_in.password, existing_user.password_hash
+    if (
+        not existing_user
+        or existing_user.is_demo
+        or not user_service.check_password_hash(
+            user_in.password, existing_user.password_hash
+        )
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -61,6 +68,21 @@ def login_user(
         )
 
     return user_service.get_access_token(existing_user.email)
+
+
+@router.post("/demo", response_model=Token, status_code=status.HTTP_200_OK)
+def start_demo(db: Session = Depends(get_db)) -> Token:
+    if not settings.DEMO_MODE_ENABLED:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+
+    demo_user = user_service.get_demo_user(db)
+    if demo_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="The demo is not available right now.",
+        )
+
+    return user_service.get_demo_access_token(demo_user)
 
 
 @limiter.limit("20/hour")

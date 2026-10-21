@@ -1,0 +1,20 @@
+{
+  "projects": [
+    {
+      "name": "Akhere's Portfolio Projects",
+      "files": [
+        "FileQuery_project_details.md",
+        "Gains_project_details.md",
+        "TaskFlow_project_details.md",
+        "TripTrack_project_details.md"
+      ],
+      "starterQuestions": [
+        "Which of these projects use AI, and what is the AI used for in each one?",
+        "What is the tech stack for TaskFlow?",
+        "How does TripTrack handle collaboration and permissions between users?",
+        "What analytics and stats does Gains provide?",
+        "How does FileQuery find and rank the document passages used to answer a question?"
+      ]
+    }
+  ]
+}

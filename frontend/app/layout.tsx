@@ -8,6 +8,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/common/Appsidebar";
 import { ThemeSync } from "@/components/common/ThemeSync";
 import { cookies } from "next/headers";
+import DemoBanner from "@/components/common/DemoBanner";
 
 const playfairDisplayHeading = Quicksand({
   subsets: ["latin"],
@@ -118,6 +119,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <SidebarProvider defaultOpen={false}>
           <div className="w-screen">
             <Header links={links} isAuth={isAuth} />
+            <DemoBanner />
 
             {children}
             <AppSidebar links={links} isAuth={isAuth} />
