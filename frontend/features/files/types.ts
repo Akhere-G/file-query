@@ -20,6 +20,5 @@ export interface ProjectFile {
   size: number;
   error?: string | null;
   projectId: number;
-  storageKey: string;
   status: string;
 }

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from src import analytics
 from src.database import get_db
-from src.exceptions import NotAuthorisedError, TooManyRequestsError
+from src.exceptions import TooManyRequestsError
 from src.features.auth import user_service
 from src.features.auth.user_model import User
 from src.features.chat import chat_service
@@ -27,9 +27,7 @@ def get_chat_messages(
     before_id: int | None = None,
     limit: int | None = 30,
 ):
-    project = project_service.get_project(db, project_id)
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You must own this project to see its messages")
+    project_service.get_owned_project(db, project_id, user.id)
 
     return chat_service.get_messages(db, project_id, before_id=before_id, limit=limit)
 
@@ -43,9 +41,7 @@ def send_chat_messsage(
     user: User = Depends(user_service.get_current_user),
     db: Session = Depends(get_db),
 ):
-    project = project_service.get_project(db, project_id)
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You must own this project to see its messages")
+    project_service.get_owned_project(db, project_id, user.id)
 
     if user.is_demo:
         demo_service.enforce_daily_chat_limit()

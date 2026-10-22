@@ -18,20 +18,20 @@ def owned(client, make_user):
 
 def test_other_user_cannot_read_or_change_project(client, owned):
     project, headers = owned["project"], owned["other"]
-    assert client.get(f"/api/projects/{project}", headers=headers).status_code == 403
-    assert client.get(f"/api/projects/{project}/files", headers=headers).status_code == 403
-    assert client.get(f"/api/projects/{project}/messages", headers=headers).status_code == 403
-    assert client.patch(f"/api/projects/{project}", json={"name": "x"}, headers=headers).status_code == 403
-    assert client.delete(f"/api/projects/{project}", headers=headers).status_code == 403
+    assert client.get(f"/api/projects/{project}", headers=headers).status_code == 404
+    assert client.get(f"/api/projects/{project}/files", headers=headers).status_code == 404
+    assert client.get(f"/api/projects/{project}/messages", headers=headers).status_code == 404
+    assert client.patch(f"/api/projects/{project}", json={"name": "x"}, headers=headers).status_code == 404
+    assert client.delete(f"/api/projects/{project}", headers=headers).status_code == 404
     res = client.post(f"/api/projects/{project}/messages", json={"content": "hi"}, headers=headers)
-    assert res.status_code == 403
+    assert res.status_code == 404
 
 
 def test_other_user_cannot_touch_file(client, owned):
     file, headers = owned["file"], owned["other"]
-    assert client.get(f"/api/files/{file}", headers=headers).status_code == 403
-    assert client.delete(f"/api/files/{file}", headers=headers).status_code == 403
-    assert client.post("/api/files/confirm", json=[{"id": file}], headers=headers).status_code == 403
+    assert client.get(f"/api/files/{file}", headers=headers).status_code == 404
+    assert client.delete(f"/api/files/{file}", headers=headers).status_code == 404
+    assert client.post("/api/files/confirm", json=[{"id": file}], headers=headers).status_code == 404
 
 
 def test_other_user_cannot_upload_to_project(client, owned):
@@ -40,4 +40,4 @@ def test_other_user_cannot_upload_to_project(client, owned):
         json=[{"name": "b.txt", **FILE}],
         headers=owned["other"],
     )
-    assert res.status_code == 403
+    assert res.status_code == 404
