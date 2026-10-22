@@ -83,6 +83,20 @@ def capture_file_event(db, file_id: int, event: str, **properties):
         logger.debug("Could not send analytics event %s", event, exc_info=True)
 
 
+READ_ERROR_MESSAGE = (
+    "We couldn't read this file. Check that it isn't corrupt or password-protected."
+)
+
+
+def mark_file_error(file_id: int, message: str):
+    with SessionLocal() as db:
+        file = db.get(File, file_id)
+        if file and file.status == FileStatus.processing:
+            file.status = FileStatus.error
+            file.error = message
+            db.commit()
+
+
 def process_file(job: FileJob):
     try:
         file_bytes = download_file(job["storage_key"])
@@ -98,7 +112,9 @@ def process_file(job: FileJob):
                 stage="extract",
                 error_type=type(err).__name__,
             )
-        raise
+        logger.exception("Could not read file %s", job["file_id"])
+        mark_file_error(job["file_id"], READ_ERROR_MESSAGE)
+        return
 
     process_embeddings(
         file_id=job["file_id"],
