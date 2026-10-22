@@ -16,10 +16,8 @@ export async function getFiles(projectId: number) {
     },
   });
 
-  const data = await parseResponse<ProjectFile[]>(response);
-  revalidatePath("/dashboard");
-
-  return data;
+  // No revalidatePath here: this runs on every poll and would re-render the dashboard each time.
+  return parseResponse<ProjectFile[]>(response);
 }
 export async function uploadFiles(files: File[], projectId?: number) {
   const fileData = files.map((file) => ({

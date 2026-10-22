@@ -15,15 +15,11 @@ def get_project(
     db: Session,
     project_id: int,
     with_files: bool | None = False,
-    with_messages: bool | None = False,
 ):
     stmt = select(Project).where(Project.id == project_id)
 
     if with_files:
         stmt = stmt.options(selectinload(Project.files))
-
-    if with_messages:
-        stmt = stmt.options(selectinload(Project.messages))
 
     project = db.execute(stmt).scalar_one_or_none()
     if not project:

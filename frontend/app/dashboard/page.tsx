@@ -19,17 +19,16 @@ export default async function DashboardPage({
   const params = await searchParams;
   const projectId = params.projectId ? Number(params.projectId) : null;
 
-  const isDemo = await isDemoSession();
-  const res = await getProjects();
+  const [isDemo, res, projectRes] = await Promise.all([
+    isDemoSession(),
+    getProjects(),
+    projectId ? getProject(projectId) : Promise.resolve(null),
+  ]);
 
   const projects = res.success ? res.data : [];
 
-  if (projectId) {
-    const projectRes = await getProject(Number(projectId));
-
-    if ([404, 403].includes(projectRes.status)) {
-      redirect("/dashboard", "replace");
-    }
+  if (projectRes && [404, 403].includes(projectRes.status)) {
+    redirect("/dashboard", "replace");
   }
 
   return (
