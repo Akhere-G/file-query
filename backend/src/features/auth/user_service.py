@@ -7,9 +7,10 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import InvalidCredentialsError
+from src.exceptions import ConflictError, InvalidCredentialsError
 from src.settings import settings
 
 from .user_model import User
@@ -29,6 +30,8 @@ if not SECRET_KEY:
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
 
 pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
+
+DUMMY_HASH = pwd_context.hash("not-a-real-password")
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
@@ -76,8 +79,16 @@ def get_user(db: Session, user_id: int):
 
 
 def get_user_by_email(db: Session, email: str):
-    query = select(User).where(User.email == email)
+    query = select(User).where(User.email == email.strip().lower())
     return db.execute(query).scalar_one_or_none()
+
+
+def authenticate(db: Session, email: str, password: str) -> User | None:
+    user = get_user_by_email(db, email=email)
+    password_ok = check_password_hash(password, user.password_hash if user else DUMMY_HASH)
+    if user is None or user.is_demo or not password_ok:
+        return None
+    return user
 
 
 def get_demo_user(db: Session):
@@ -99,6 +110,9 @@ def create_user(db: Session, user_in: UserCreate):
         db.commit()
         db.refresh(user)
         return user
+    except IntegrityError:
+        db.rollback()
+        raise ConflictError("A user with this email already exists.")
     except Exception:
         db.rollback()
         raise
@@ -113,7 +127,7 @@ def get_access_token(email: str):
 def get_demo_access_token(user: User):
     access_token = create_access_token(
         data={"sub": user.email, "demo": True},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        expires_delta=timedelta(minutes=settings.DEMO_TOKEN_EXPIRE_MINUTES),
     )
 
     return Token(access_token=access_token, token_type="bearer")

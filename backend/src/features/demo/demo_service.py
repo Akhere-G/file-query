@@ -1,26 +1,40 @@
-from sqlalchemy.orm import Session
-from src import analytics
-from src.exceptions import BadRequestError
-from src.features.auth.user_model import User
-from src.features.files.file_schema import FileCreate
-from src.features.files.file_service import get_used_storage
+from datetime import datetime, timezone
+
+import redis
+from src.exceptions import TooManyRequestsError
+from src.features.chat.chat_schema import MessageResponse
+from src.features.files.file_model import Chunk
+from src.features.files.file_schema import ChunkResponse
 from src.settings import settings
 
-DEMO_LIMIT_HINT = "This is a shared demo account."
+
+def get_redis():
+    return redis.Redis.from_url(settings.REDIS_URI)
 
 
-def enforce_upload_limits(db: Session, user: User, files_in: list[FileCreate]):
-    for file in files_in:
-        if file.size > settings.MAX_FILE_SIZE:
-            max_mb = settings.MAX_FILE_SIZE
-            raise BadRequestError(
-                f"{DEMO_LIMIT_HINT} Files must be {max_mb} MB or smaller."
-            )
+def enforce_daily_chat_limit():
+    client = get_redis()
+    key = f"demo:chat:{datetime.now(timezone.utc):%Y-%m-%d}"
+    count = client.incr(key)
+    if count == 1:
+        client.expire(key, 2 * 24 * 60 * 60)
 
-    used_storage = get_used_storage(db, user.id)
-    upload_size = sum(file.size for file in files_in)
-    if used_storage + upload_size > settings.MAX_USER_STORAGE:
-        analytics.capture("usage_limit_reached", user.id, True, limit="demo_storage")
-        raise BadRequestError(
-            f"{DEMO_LIMIT_HINT} Its storage is full. Delete files to upload more."
+    if count > settings.DEMO_MAX_DAILY_MESSAGES:
+        raise TooManyRequestsError(
+            "The shared demo has reached its daily limit of "
+            f"{settings.DEMO_MAX_DAILY_MESSAGES} questions. Please try again tomorrow."
         )
+
+
+def to_transient_message(
+    project_id: int, answer: str, chunks: list[Chunk]
+) -> MessageResponse:
+    now = datetime.now(timezone.utc)
+    return MessageResponse(
+        id=-int(now.timestamp() * 1000),
+        project_id=project_id,
+        owner="assistant",
+        content=answer,
+        created_at=now,
+        citations=[ChunkResponse.model_validate(chunk) for chunk in chunks],
+    )

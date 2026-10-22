@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import BadRequestError, NotAuthorisedError
+from src.exceptions import BadRequestError
 from src.features.auth import user_service
 from src.features.auth.user_model import User
+from src.features.demo.demo_guard import block_demo
 from src.features.files import file_service
 from src.features.files.file_schema import FileResponse
 from src.features.project import project_service
@@ -25,12 +26,7 @@ def get_project(
     user: User = Depends(user_service.get_current_user),
     db: Session = Depends(get_db),
 ):
-    project = project_service.get_project(
-        db, project_id, with_messages=True, with_files=True
-    )
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You cannot access this project")
-    return project
+    return project_service.get_owned_project(db, project_id, user.id, with_files=True)
 
 
 @router.get("/{project_id:int}/files", response_model=list[FileResponse])
@@ -42,33 +38,28 @@ def get_files(
     if not project_id:
         raise BadRequestError("Project is is missing!")
 
-    project = project_service.get_project(db, project_id)
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You must own this project to view its files")
-
+    project_service.get_owned_project(db, project_id, user.id)
     return file_service.get_files(db, project_id)
 
 
 @router.patch("/{project_id:int}", response_model=ProjectResponse)
+@block_demo
 def rename_project(
     project_id: int,
     body: RenameProjectRequest,
     user: User = Depends(user_service.get_current_user),
     db: Session = Depends(get_db),
 ):
-    project = project_service.get_project(db, project_id)
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You cannot modify this project")
+    project_service.get_owned_project(db, project_id, user.id)
     return project_service.update_project(db, project_id, body.name)
 
 
 @router.delete("/{project_id:int}")
+@block_demo
 def delete_project(
     project_id: int,
     user: User = Depends(user_service.get_current_user),
     db: Session = Depends(get_db),
 ):
-    project = project_service.get_project(db, project_id)
-    if project.user_id != user.id:
-        raise NotAuthorisedError("You cannot delete this project")
+    project_service.get_owned_project(db, project_id, user.id)
     return {"id": project_service.delete_project(db, project_id)}

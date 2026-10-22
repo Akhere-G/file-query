@@ -41,7 +41,7 @@ def get_messages(
     before_id: int | None = None,
     limit: int | None = 30,
 ):
-    limit = max(0, min(limit or 30, 30))
+    limit = max(1, min(limit or 30, 30))
     stmt = (
         select(Message)
         .options(selectinload(Message.chunks).options(selectinload(Chunk.file)))
@@ -89,28 +89,22 @@ def get_recent_conversation(
     )
 
 
-def send_user_message(
+def answer_question(
     db: Session,
     user_id: int,
     project_id: int,
     content: str,
+    conversation: str,
     is_demo: bool = False,
     track: bool = True,
 ):
     started_at = time.monotonic()
-    stage = "history"
+    stage = "rewrite"
     usage = {"input_tokens": 0, "output_tokens": 0}
     usage_token = usage_totals.set(usage)
     retrieval_counts: dict[str, int] = {}
 
     try:
-        conversation = get_recent_conversation(db, project_id)
-        stage = "save_message"
-        create_message(db, project_id, MessageOwner.user, content)
-        if track and not conversation:
-            analytics.capture("conversation_created", user_id, is_demo)
-
-        stage = "rewrite"
         search_query = rewrite_query(
             content,
             conversation,
@@ -131,11 +125,6 @@ def send_user_message(
             citations = (
                 [] if NO_CONTEXT_RESPONSE.lower() in response.lower() else chunks
             )
-
-        stage = "save_response"
-        ai_message = create_message(
-            db, project_id, MessageOwner.assistant, response, citations
-        )
     except Exception as err:
         if track:
             analytics.capture(
@@ -162,30 +151,47 @@ def send_user_message(
             input_tokens=usage["input_tokens"],
             output_tokens=usage["output_tokens"],
         )
-    return ai_message
+    return response, citations
 
 
-def create_message(
+def send_user_message(
+    db: Session,
+    user_id: int,
+    project_id: int,
+    content: str,
+    is_demo: bool = False,
+    track: bool = True,
+):
+    conversation = get_recent_conversation(db, project_id)
+    if track and not conversation:
+        analytics.capture("conversation_created", user_id, is_demo)
+
+    response, citations = answer_question(
+        db, user_id, project_id, content, conversation, is_demo, track
+    )
+    return create_message_pair(db, project_id, content, response, citations)
+
+
+def create_message_pair(
     db: Session,
     project_id: int,
-    owner: MessageOwner,
-    content: str,
-    chunks: None | list[Chunk] = None,
+    question: str,
+    answer: str,
+    chunks: list[Chunk] | None = None,
 ):
     try:
-        message = Message(
-            content=content,
-            owner=owner,
-            project_id=project_id,
-        )
-        db.add(message)
-        if chunks:
-            message.chunks = chunks
+        db.add(Message(content=question, owner=MessageOwner.user, project_id=project_id))
+        db.flush()
 
-        db.add(message)
+        ai_message = Message(
+            content=answer, owner=MessageOwner.assistant, project_id=project_id
+        )
+        if chunks:
+            ai_message.chunks = chunks
+        db.add(ai_message)
         db.commit()
-        return message
-    except:
+        return ai_message
+    except Exception:
         db.rollback()
         raise
 

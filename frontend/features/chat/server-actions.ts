@@ -1,6 +1,6 @@
 "use server";
 
-import { attachToken, getApiBaseUrl } from "@/lib/api";
+import { attachToken, getApiBaseUrl, getClientHeaders } from "@/lib/api";
 import { parseResponse } from "@/lib/apiUtils";
 import { revalidatePath } from "next/cache";
 import { Message } from "./types";
@@ -16,6 +16,7 @@ export async function sendMessage(projectId: number, content: string) {
       headers: {
         "Content-Type": "application/json",
         Authorization: await attachToken(),
+        ...(await getClientHeaders()),
       },
       body: JSON.stringify({ content }),
     },
