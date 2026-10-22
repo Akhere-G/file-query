@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { jwtDecode } from "jwt-decode";
 import { getToken } from "@/lib/api";
 
@@ -22,9 +21,9 @@ export default async function DemoBanner() {
       role="status"
       className="border-b bg-primary/10 px-4 py-2 text-center text-sm text-foreground"
     >
-      You&apos;re exploring the shared FileQuery demo. Anyone using the demo can
-      see and change what&apos;s here, so please don&apos;t upload private
-      files.{" "}
+      You&apos;re exploring the shared FileQuery demo. It is read-only: browse
+      the files and ask questions, but answers are not saved. Register to
+      upload your own files.
     </div>
   );
 }

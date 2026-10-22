@@ -1,7 +1,7 @@
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from mypy_boto3_s3.client import S3Client
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 from src import analytics, aws
 from src.exceptions import BadRequestError, NotFoundError
@@ -9,14 +9,8 @@ from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
 from src.settings import settings
 
-max_user_storage = 1024 * 1024 * 1024 * 2
-
-
 def convert_storage_to_GB(value: int):
     return value / (1024 * 1024 * 1024)
-
-
-max_user_storage_str = f"{convert_storage_to_GB(max_user_storage)} GB"
 
 load_dotenv()
 region_name = settings.AWS_REGION
@@ -49,6 +43,13 @@ def get_file(db: Session, file_id: int):
     return file
 
 
+def get_owned_file(db: Session, file_id: int, user_id: int):
+    file = get_file(db, file_id)
+    if file.project.user_id != user_id:
+        raise NotFoundError("File not found")
+    return file
+
+
 def view_file_content(db: Session, file_id: int, expiration=60 * 60):
     file = get_file(db, file_id)
 
@@ -74,13 +75,12 @@ def view_file_content(db: Session, file_id: int, expiration=60 * 60):
 
 def get_used_storage(db: Session, user_id: int):
     stmt = (
-        select(File)
+        select(func.coalesce(func.sum(File.size), 0))
         .join(Project, File.project_id == Project.id)
         .where(Project.user_id == user_id)
         .where(File.status.in_([FileStatus.processing, FileStatus.processed]))
     )
-    files = db.execute(stmt).scalars().all()
-    return sum([file.size for file in files])
+    return int(db.execute(stmt).scalar_one())
 
 
 def create_file(db: Session, project_id: int, file_in: FileCreate):
@@ -113,10 +113,10 @@ def create_files(
         )
         upload_size += file.size
 
-        if (used_storage + upload_size) > max_user_storage:
+        if (used_storage + upload_size) > settings.MAX_USER_STORAGE:
             analytics.capture("usage_limit_reached", user_id, limit="storage")
             raise BadRequestError(
-                f"You can only upload a maximum of {max_user_storage_str}. You have used {convert_storage_to_GB(used_storage)} GB. Delete unused files to upload more."
+                f"You can only upload a maximum of {convert_storage_to_GB(settings.MAX_USER_STORAGE):g} GB. You have used {convert_storage_to_GB(used_storage):.2f} GB. Delete unused files to upload more."
             )
         res.append(new_file)
     db.add_all(res)
@@ -175,11 +175,11 @@ def confirm_uploads(
             try:
                 res = s3_client.head_object(Bucket=bucket_name, Key=file.storage_key)
                 file_size = res["ContentLength"]
-                if (file_size + used_storage) > max_user_storage:
+                if (file_size + used_storage) > settings.MAX_USER_STORAGE:
                     file.status = FileStatus.error
-                    file.error = "You have ran out of storage. Delete files to add more"
+                    file.error = "You have run out of storage. Delete files to add more"
                     s3_client.delete_object(Bucket=bucket_name, Key=file.storage_key)
-                    break
+                    continue
                 used_storage += file_size
 
                 file.status = FileStatus.processing
@@ -193,14 +193,18 @@ def confirm_uploads(
     return successful_uploads
 
 
+def mark_files_error(db: Session, files: list[File], message: str):
+    for file in files:
+        file.status = FileStatus.error
+        file.error = message
+    db.commit()
+
+
 def delete_file(db: Session, file_id: int):
     file = get_file(db, file_id)
     storage_key = file.storage_key
-    status = file.status
     db.delete(file)
     db.commit()
-    if status in [FileStatus.processing, FileStatus.processed]:
-        s3_client = get_s3_client()
-        s3_client.delete_object(Bucket=bucket_name, Key=storage_key)
+    get_s3_client().delete_object(Bucket=bucket_name, Key=storage_key)
 
     return file_id

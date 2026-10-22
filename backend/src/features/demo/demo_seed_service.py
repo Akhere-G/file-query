@@ -93,7 +93,7 @@ def get_or_create_demo_user(db: Session) -> User:
     logger.info("Creating demo user %s", settings.DEMO_USER_EMAIL)
     demo_user = User(
         username="Demo User",
-        email=settings.DEMO_USER_EMAIL,
+        email=settings.DEMO_USER_EMAIL.strip().lower(),
         password_hash=user_service.get_password_hash(secrets.token_urlsafe(48)),
         is_demo=True,
     )
