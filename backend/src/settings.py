@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SQS_QUEUE_URL: str
     BEDROCK_CHAT_MODEL_ID: str
     REDIS_URI: str
+    INTERNAL_API_SECRET: str | None = None
     FRONTEND_URL: str = "http://localhost:8000"
     RAG_SIMILARITY_THRESHOLD: float = 0.14
     RAG_TOP_K: int = 20
