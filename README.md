@@ -147,7 +147,7 @@ Product analytics are optional and are disabled when the keys below are unset. T
 
 | Variable | Where | Notes |
 | --- | --- | --- |
-| `NEXT_PUBLIC_POSTHOG_KEY` | frontend, build time | PostHog project API key (starts with `phc_`) |
+| `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` | frontend, build time | PostHog project API key (starts with `phc_`) |
 | `NEXT_PUBLIC_POSTHOG_HOST` | frontend, build time | defaults to `https://eu.i.posthog.com` |
 | `POSTHOG_API_KEY` | backend and Lambda worker | same project API key |
 | `POSTHOG_HOST` | backend and Lambda worker | defaults to `https://eu.i.posthog.com` |
