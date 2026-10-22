@@ -6,13 +6,14 @@ from src.settings import settings
 MAX_FILE_SIZE = settings.MAX_FILE_SIZE
 MAX_USER_STORAGE = settings.MAX_USER_STORAGE
 
+# MIME type -> accepted file extensions. The frontend derives the type from the extension.
 accepted_mime_types = {
-    "application/msword": ".docx",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".doc",
-    "text/plain": ".txt",
-    "application/pdf": ".pdf",
-    "text/csv": ".csv",
-    "text/markdown": ".md",
+    "application/msword": (".doc",),
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": (".docx",),
+    "text/plain": (".txt",),
+    "application/pdf": (".pdf",),
+    "text/csv": (".csv",),
+    "text/markdown": (".md", ".markdown"),
 }
 
 
@@ -37,13 +38,29 @@ class FileBase(BaseModel):
     def validate_mime_type(cls, v):
         if v not in accepted_mime_types:
             raise ValueError(
-                f"Files must one of {', '.join(accepted_mime_types.values())}"
+                "Files must be one of "
+                + ", ".join(ext[0] for ext in accepted_mime_types.values())
             )
         return v
 
 
 class FileCreate(FileBase):
-    pass
+    @field_validator("name")
+    @classmethod
+    def clean_name(cls, v: str):
+        name = v.replace("\\", "/").split("/")[-1].strip()
+        if not name or len(name) > 255:
+            raise ValueError("File names must be 1 to 255 characters")
+        return name
+
+    @model_validator(mode="after")
+    def extension_matches_type(self):
+        if not self.name.lower().endswith(accepted_mime_types[self.mime_type]):
+            raise ValueError(
+                f"{self.name} does not look like a "
+                f"{accepted_mime_types[self.mime_type][0]} file"
+            )
+        return self
 
 
 class FileResponse(FileBase):

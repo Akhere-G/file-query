@@ -9,7 +9,11 @@ import { getFileIcon, getSizeStr } from "../utils";
 import { confirmUploads, uploadFiles } from "../server-actions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { sendFilesToS3 } from "../actions";
-import { MAX_FILE_SIZE_MB, MAX_FILES_PER_UPLOAD } from "../constants";
+import {
+  MAX_FILE_SIZE_MB,
+  MAX_FILES_PER_UPLOAD,
+  mimeTypeFor,
+} from "../constants";
 
 import FileCard from "./FileCard";
 import {
@@ -69,7 +73,15 @@ const FilesTabs = ({
     e.preventDefault();
   };
 
-  const addFiles = (newFiles: File[]) => {
+  const addFiles = (selected: File[]) => {
+    const unsupported = selected.filter((f) => mimeTypeFor(f.name) === null);
+    if (unsupported.length > 0) {
+      toast.add({
+        title: `${unsupported.map((f) => f.name).join(", ")}: only PDF, DOC, DOCX, CSV, TXT and MD files are supported`,
+        type: "error",
+      });
+    }
+    const newFiles = selected.filter((f) => !unsupported.includes(f));
     const tooBig = newFiles.filter(
       (f) => f.size >= MAX_FILE_SIZE_MB * 1024 * 1024,
     );
