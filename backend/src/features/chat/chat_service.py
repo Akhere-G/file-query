@@ -41,7 +41,7 @@ def get_messages(
     before_id: int | None = None,
     limit: int | None = 30,
 ):
-    limit = max(0, min(limit or 30, 30))
+    limit = max(1, min(limit or 30, 30))
     stmt = (
         select(Message)
         .options(selectinload(Message.chunks).options(selectinload(Chunk.file)))
@@ -105,8 +105,6 @@ def send_user_message(
 
     try:
         conversation = get_recent_conversation(db, project_id)
-        stage = "save_message"
-        create_message(db, project_id, MessageOwner.user, content)
         if track and not conversation:
             analytics.capture("conversation_created", user_id, is_demo)
 
@@ -133,8 +131,8 @@ def send_user_message(
             )
 
         stage = "save_response"
-        ai_message = create_message(
-            db, project_id, MessageOwner.assistant, response, citations
+        ai_message = create_message_pair(
+            db, project_id, content, response, citations
         )
     except Exception as err:
         if track:
@@ -165,27 +163,26 @@ def send_user_message(
     return ai_message
 
 
-def create_message(
+def create_message_pair(
     db: Session,
     project_id: int,
-    owner: MessageOwner,
-    content: str,
-    chunks: None | list[Chunk] = None,
+    question: str,
+    answer: str,
+    chunks: list[Chunk] | None = None,
 ):
     try:
-        message = Message(
-            content=content,
-            owner=owner,
-            project_id=project_id,
-        )
-        db.add(message)
-        if chunks:
-            message.chunks = chunks
+        db.add(Message(content=question, owner=MessageOwner.user, project_id=project_id))
+        db.flush()
 
-        db.add(message)
+        ai_message = Message(
+            content=answer, owner=MessageOwner.assistant, project_id=project_id
+        )
+        if chunks:
+            ai_message.chunks = chunks
+        db.add(ai_message)
         db.commit()
-        return message
-    except:
+        return ai_message
+    except Exception:
         db.rollback()
         raise
 
