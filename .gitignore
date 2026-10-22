@@ -1,2 +1,5 @@
 old-example-docs
 TODO
+# audit findings and remediation specs stay local
+docs/audit/
+docs/specs/audit-remediation.md
