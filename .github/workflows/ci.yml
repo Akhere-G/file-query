@@ -41,6 +41,5 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: ruff check src tests --select F821,F811,E9
       - run: pytest -q
-      - name: Dependency audit (not blocking yet)
-        run: pip-audit -r requirements.txt
-        continue-on-error: true
+      - name: Dependency audit
+        run: pip-audit -r requirements.txt --no-deps --disable-pip
