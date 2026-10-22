@@ -2,11 +2,11 @@ import json
 import logging
 from contextvars import ContextVar
 
-import boto3
 from mypy_boto3_bedrock_agent_runtime.client import (
     AgentsforBedrockRuntimeClient,
 )
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
+from src import aws
 from src.features.files.file_model import Chunk
 from src.settings import settings
 
@@ -18,10 +18,7 @@ NO_CONTEXT_RESPONSE = (
 
 
 def get_bedrock_agent_client() -> AgentsforBedrockRuntimeClient:
-    return boto3.client(
-        "bedrock-agent-runtime",
-        region_name="eu-central-1",
-    )  # type: ignore
+    return aws.bedrock_agent_client()  # type: ignore
 
 
 usage_totals: ContextVar[dict[str, int] | None] = ContextVar(
@@ -30,7 +27,7 @@ usage_totals: ContextVar[dict[str, int] | None] = ContextVar(
 
 
 def get_bedrock_client() -> BedrockRuntimeClient:
-    return boto3.client("bedrock-runtime", region_name=settings.AWS_REGION)  # type: ignore
+    return aws.bedrock_runtime_client()  # type: ignore
 
 
 def generate_embedding(text: str) -> list[float]:
@@ -141,10 +138,7 @@ def rerank_chunks(
             "type": "BEDROCK_RERANKING_MODEL",
             "bedrockRerankingConfiguration": {
                 "modelConfiguration": {
-                    "modelArn": (
-                        "arn:aws:bedrock:eu-central-1::"
-                        "foundation-model/cohere.rerank-v3-5:0"
-                    ),
+                    "modelArn": settings.BEDROCK_RERANK_MODEL_ARN,
                 },
                 "numberOfResults": number_of_results,
             },

@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
     DEMO_USER_EMAIL: str = "demo@example.com"
     DEMO_SEED_TIMEOUT_SECONDS: int = 600
+    BEDROCK_RERANK_REGION: str = "eu-central-1"
+    BEDROCK_RERANK_MODEL_ARN: str = (
+        "arn:aws:bedrock:eu-central-1::foundation-model/cohere.rerank-v3-5:0"
+    )
+    DB_POOL_SIZE: int = 5
+    DB_MAX_OVERFLOW: int = 5
     POSTHOG_API_KEY: str | None = None
     POSTHOG_HOST: str = "https://eu.i.posthog.com"
     POSTHOG_ID_SALT: str | None = None
