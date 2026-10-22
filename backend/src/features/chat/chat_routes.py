@@ -49,7 +49,7 @@ def send_chat_messsage(
 
     total_message_this_month = chat_service.get_messages_this_month(db, user.id)
     message_limit = settings.MAX_MONTHLY_MESSAGES
-    if total_message_this_month > message_limit:
+    if total_message_this_month >= message_limit:
         analytics.capture(
             "usage_limit_reached", user.id, user.is_demo, limit="messages"
         )
