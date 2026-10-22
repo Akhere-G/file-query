@@ -24,8 +24,12 @@ class FileBase(BaseModel):
     @field_validator("size")
     @classmethod
     def validate_size(cls, v):
+        if v <= 0:
+            raise ValueError("Files cannot be empty")
         if v >= MAX_FILE_SIZE:
-            raise ValueError("Files must be less than 500mb")
+            raise ValueError(
+                f"Files must be smaller than {MAX_FILE_SIZE // (1024 * 1024)} MB"
+            )
         return v
 
     @field_validator("mime_type")
