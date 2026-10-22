@@ -28,6 +28,7 @@ os.environ.update(
         "FRONTEND_URL": "http://localhost:3000",
         "POSTHOG_API_KEY": "",
         "POSTHOG_ID_SALT": "",
+        "INTERNAL_API_SECRET": "test-internal-secret",
     }
 )
 
@@ -59,7 +60,9 @@ def clean_state(request):
     from sqlalchemy import text
 
     from src.database import Base
+    from src.limiter import limiter
 
+    limiter.reset()
     with request.getfixturevalue("engine").begin() as conn:
         names = ", ".join(f'"{table.name}"' for table in Base.metadata.sorted_tables)
         conn.execute(text(f"TRUNCATE {names} RESTART IDENTITY CASCADE"))

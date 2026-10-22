@@ -34,8 +34,8 @@ def get_chat_messages(
     return chat_service.get_messages(db, project_id, before_id=before_id, limit=limit)
 
 
-@limiter.limit("30/hour")
 @router.post("", response_model=MessageResponse)
+@limiter.limit("30/hour")
 def send_chat_messsage(
     project_id: int,
     message: MessageCreate,

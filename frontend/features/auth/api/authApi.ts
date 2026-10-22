@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 
-import { getApiBaseUrl } from "@/lib/api";
+import { getApiBaseUrl, getClientHeaders } from "@/lib/api";
 import { ActionResult, getErrorMessage, parseResponse } from "@/lib/apiUtils";
 import { AuthResponse } from "../types";
 
@@ -37,6 +37,7 @@ async function authenticate(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(await getClientHeaders()),
       },
       body: body ? JSON.stringify(body) : undefined,
     });
