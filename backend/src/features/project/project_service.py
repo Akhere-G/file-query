@@ -31,6 +31,15 @@ def get_project(
     return project
 
 
+def get_owned_project(
+    db: Session, project_id: int, user_id: int, with_files: bool | None = False
+):
+    project = get_project(db, project_id, with_files=with_files)
+    if project.user_id != user_id:
+        raise NotFoundError("Project not found")
+    return project
+
+
 def create_project(db: Session, user_id: int, name: str):
     new_project = Project(name=name, user_id=user_id)
     db.add(new_project)

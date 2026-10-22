@@ -12,6 +12,11 @@ class InvalidCredentialsError(AppError):
     default_message = "Invalid credentials."
 
 
+class ConflictError(AppError):
+    status_code = 409
+    default_message = "That already exists"
+
+
 class NotFoundError(AppError):
     status_code = 404
     default_message = "The item you were looking for was not found"

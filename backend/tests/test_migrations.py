@@ -68,3 +68,46 @@ def test_model_indexes_exist_after_migrating(engine, scratch_url):
     alembic(scratch_url, "upgrade", "head")
     declared = {index.name for table in Base.metadata.tables.values() for index in table.indexes}
     assert declared <= index_names(scratch_url)
+
+
+def run_sql(url, sql):
+    engine = sa.create_engine(url)
+    try:
+        with engine.begin() as conn:
+            conn.execute(sa.text(sql))
+    finally:
+        engine.dispose()
+
+
+def emails(url):
+    engine = sa.create_engine(url)
+    try:
+        with engine.connect() as conn:
+            return [row[0] for row in conn.execute(sa.text("select email from users order by id"))]
+    finally:
+        engine.dispose()
+
+
+INSERT_USER = (
+    "insert into users (username, email, password_hash, created_at, updated_at) "
+    "values ('t', '{email}', 'x', now(), now())"
+)
+
+
+def test_existing_emails_are_lowercased(scratch_url):
+    alembic(scratch_url, "upgrade", "3f9d2c7a8b10")
+    run_sql(scratch_url, INSERT_USER.format(email="Mixed@Example.com"))
+
+    alembic(scratch_url, "upgrade", "head")
+    assert emails(scratch_url) == ["mixed@example.com"]
+
+
+def test_emails_differing_only_by_case_stop_the_migration(scratch_url):
+    alembic(scratch_url, "upgrade", "3f9d2c7a8b10")
+    run_sql(scratch_url, INSERT_USER.format(email="dup@example.com"))
+    run_sql(scratch_url, INSERT_USER.format(email="DUP@example.com"))
+
+    with pytest.raises(subprocess.CalledProcessError) as failed:
+        alembic(scratch_url, "upgrade", "head")
+    assert "different letter casing" in failed.value.stderr
+    assert sorted(emails(scratch_url)) == ["DUP@example.com", "dup@example.com"]
