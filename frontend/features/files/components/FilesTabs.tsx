@@ -142,6 +142,10 @@ const FilesTabs = ({
           stage: "s3",
           reason: "storage_error",
         });
+        toast.add({
+          title: "Some files could not be uploaded. Try them again.",
+          type: "error",
+        });
       } else if (!confirmRes.success) {
         failureTracked = true;
         track("file_upload_failed", {
@@ -152,13 +156,23 @@ const FilesTabs = ({
             confirmRes.status,
           ),
         });
+        toast.add({
+          title: confirmRes.message ?? "Your files could not be processed.",
+          type: "error",
+        });
       } else {
         track("file_upload_completed", {
           ...uploadProps,
           duration_ms: Date.now() - startedAt,
         });
       }
-      setUploadedFiles([]);
+      setUploadedFiles(
+        s3res.some((r) => r.error)
+          ? uploadedFiles.filter((_, i) => s3res[i]?.error)
+          : confirmRes.success
+            ? []
+            : uploadedFiles,
+      );
       if (!projectId) {
         const params = new URLSearchParams(searchParams.toString());
         params.set("projectId", String(res.data.projectId));
