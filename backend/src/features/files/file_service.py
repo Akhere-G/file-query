@@ -193,6 +193,13 @@ def confirm_uploads(
     return successful_uploads
 
 
+def mark_files_error(db: Session, files: list[File], message: str):
+    for file in files:
+        file.status = FileStatus.error
+        file.error = message
+    db.commit()
+
+
 def delete_file(db: Session, file_id: int):
     file = get_file(db, file_id)
     storage_key = file.storage_key

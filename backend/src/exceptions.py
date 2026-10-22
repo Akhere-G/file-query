@@ -37,3 +37,11 @@ class DemoReadOnlyError(AppError):
     default_message = (
         "The shared demo is read-only. Register to upload and manage your own files."
     )
+
+
+class ProcessingLimitError(Exception):
+    """A file cannot be processed (too large, unreadable). The message is safe to show users."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)

@@ -104,7 +104,11 @@ def confirm_uploads(
     rename_project = bool(files) and files[0].project.name == DEFAULT_PROJECT_NAME
     if settings.ENVIRONMENT == "production":
         logger.info("enqueuing files")
-        enqueue_files(files, rename_project=rename_project)
+        failed = enqueue_files(files, rename_project=rename_project)
+        if failed:
+            file_service.mark_files_error(
+                db, failed, "Could not start processing this file. Please upload it again."
+            )
     else:
         logger.info("local file processing")
         background_tasks.add_task(
