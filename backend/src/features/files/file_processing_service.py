@@ -9,15 +9,20 @@ from langchain_text_splitters import (
     RecursiveCharacterTextSplitter,
 )
 from mypy_boto3_sqs.client import SQSClient
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy import func, select
 from src import analytics, aws
 from src.database import SessionLocal, get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding, get_response
 from src.features.files.file_extraction_service import extract_file
-from src.features.files.file_model import Chunk, File, FileStatus, Project
+from src.features.files.file_model import (
+    DEFAULT_PROJECT_NAME,
+    Chunk,
+    File,
+    FileStatus,
+    Project,
+)
 from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
@@ -45,7 +50,7 @@ def get_sqs_client() -> SQSClient:
 
 def enqueue_files(files: list[File], rename_project: bool = True):
     sqs = get_sqs_client()
-    for i, file in enumerate(files):
+    for file in files:
         logger.info(f"enqueuing file: {file.id}")
         sqs.send_message(
             QueueUrl=settings.SQS_QUEUE_URL,
@@ -55,7 +60,7 @@ def enqueue_files(files: list[File], rename_project: bool = True):
                     "storage_key": file.storage_key,
                     "project_id": file.project_id,
                     "mime_type": file.mime_type,
-                    "is_last": rename_project and i == len(files) - 1,
+                    "rename_project": rename_project,
                 }
             ),
         )
@@ -66,7 +71,7 @@ class FileJob(TypedDict):
     project_id: int
     storage_key: str
     mime_type: str
-    is_last: bool | None
+    rename_project: bool | None
 
 
 def capture_file_event(db, file_id: int, event: str, **properties):
@@ -104,12 +109,14 @@ def process_file(job: FileJob):
         file_id=job["file_id"],
         chunks=chunks,
     )
-    if job["is_last"]:
-        name_project(job["project_id"])
+    # Messages queued before this change carry is_last instead of rename_project.
+    if job.get("rename_project", job.get("is_last")):
+        if not has_unfinished_files(job["project_id"]):
+            name_project(job["project_id"])
 
 
-def process_files_locally(files: list[File]):
-    for i, file in enumerate(files):
+def process_files_locally(files: list[File], rename_project: bool = True):
+    for file in files:
         try:
             process_file(
                 {
@@ -117,7 +124,7 @@ def process_files_locally(files: list[File]):
                     "project_id": file.project_id,
                     "storage_key": file.storage_key,
                     "mime_type": file.mime_type,
-                    "is_last": i == len(files) - 1,
+                    "rename_project": rename_project,
                 }
             )
         except Exception as err:
@@ -296,30 +303,40 @@ def process_embeddings(file_id: int, chunks: list[str]):
         db.close()
 
 
+def has_unfinished_files(project_id: int) -> bool:
+    with SessionLocal() as db:
+        unfinished = db.scalar(
+            select(func.count(File.id)).where(
+                File.project_id == project_id,
+                File.status.in_([FileStatus.pending, FileStatus.processing]),
+            )
+        )
+    return bool(unfinished)
+
+
 def name_project(project_id: int):
     with SessionLocal() as db:
         try:
-            stmt = (
-                select(Project)
-                .options(selectinload(Project.files).selectinload(File.chunks))
-                .where(Project.id == project_id)
-            )
-
-            project = db.execute(stmt).scalar_one_or_none()
+            project = db.get(Project, project_id)
 
             if not project:
                 logger.warning(
                     f"Project {project_id} was deleted embeddeing. Could not generate name."
                 )
                 return
+            if project.name != DEFAULT_PROJECT_NAME:
+                return
 
-            filenames = [file.name for file in project.files]
-            chunk_titles = [
-                chunk.title
-                for file in project.files
-                for chunk in file.chunks[:10]
-                if chunk.title
-            ]
+            filenames = db.scalars(
+                select(File.name).where(File.project_id == project_id)
+            ).all()
+            chunk_titles = db.scalars(
+                select(Chunk.title)
+                .join(File, Chunk.file_id == File.id)
+                .where(File.project_id == project_id, Chunk.title.is_not(None))
+                .order_by(Chunk.id)
+                .limit(30)
+            ).all()
             name = get_response(
                 f"""
                 Generate a short, descriptive name for a project
@@ -327,17 +344,16 @@ def name_project(project_id: int):
                 Base the name on the overall subject shared by
                 the documents, not on an individual section.
                 Filenames:
-                {filenames}
+                {list(filenames)}
 
                 Section titles:
-                {chunk_titles[:30]}
+                {list(chunk_titles)}
 
                 Return only the project name, without quotes.
                 Use 3-7 words. Avoid generic names.
                 """
             )
-            project.name = name or "New Project"
-            project.name = project.name.strip().strip("\"'")
+            project.name = (name or DEFAULT_PROJECT_NAME).strip().strip("\"'")[:255]
             db.commit()
         except Exception:
             logger.exception(

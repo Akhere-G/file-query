@@ -20,6 +20,8 @@ def main() -> None:
                 "file_id": file.id,
                 "storage_key": file.storage_key,
                 "mime_type": file.mime_type,
+                "project_id": file.project_id,
+                "rename_project": False,
             }
             for file in files
         ]
