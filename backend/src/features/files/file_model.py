@@ -23,7 +23,7 @@ class Project(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE")
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True
     )
     user: Mapped["User"] = relationship(back_populates="projects")  # type: ignore  # noqa: F821
     files: Mapped[list["File"]] = relationship(
@@ -51,7 +51,7 @@ class File(Base):
     )
     storage_key: Mapped[str] = mapped_column(String(255), unique=True)
     project_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("projects.id", ondelete="CASCADE")
+        Integer, ForeignKey("projects.id", ondelete="CASCADE"), index=True
     )
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
     project: Mapped["Project"] = relationship(back_populates="files")
@@ -70,7 +70,9 @@ class File(Base):
 class Chunk(Base):
     __tablename__ = "chunks"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    file_id: Mapped[int] = mapped_column(ForeignKey("files.id", ondelete="CASCADE"))
+    file_id: Mapped[int] = mapped_column(
+        ForeignKey("files.id", ondelete="CASCADE"), index=True
+    )
     title: Mapped[str | None] = mapped_column(String(255), nullable=True)
     content: Mapped[str] = mapped_column(Text)
     embedding: Mapped[list[float] | None] = mapped_column(Vector(1024), nullable=True)
