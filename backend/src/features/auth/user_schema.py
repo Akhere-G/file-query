@@ -3,9 +3,18 @@ import re
 from src.schemas import BaseModel
 
 
+def normalise_email(value: str) -> str:
+    return value.strip().lower()
+
+
 class UserBase(BaseModel):
     username: str
     email: EmailStr = Field(description="Email is required.")
+
+    @field_validator("email", mode="after")
+    @classmethod
+    def lowercase_email(cls, value: str) -> str:
+        return normalise_email(value)
 
 
 class User(UserBase):
@@ -14,7 +23,7 @@ class User(UserBase):
 
 class UserCreate(UserBase):
     password: str = Field(
-        min_length=8, max_length=30, description="Must be between 8 and 30 characters."
+        min_length=8, max_length=128, description="Must be between 8 and 128 characters."
     )
 
     @field_validator("password")
@@ -32,6 +41,11 @@ class UserCreate(UserBase):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+    @field_validator("email", mode="after")
+    @classmethod
+    def lowercase_email(cls, value: str) -> str:
+        return normalise_email(value)
 
 
 class Token(Base):

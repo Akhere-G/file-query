@@ -22,22 +22,22 @@ def owned(client, make_user, aws_fakes):
 
 def test_other_user_cannot_read_or_change_project(client, owned):
     pid, h = owned["project"], owned["other"]
-    assert client.get(f"/api/projects/{pid}", headers=h).status_code == 403
-    assert client.get(f"/api/projects/{pid}/files", headers=h).status_code == 403
-    assert client.get(f"/api/projects/{pid}/messages", headers=h).status_code == 403
-    assert client.patch(f"/api/projects/{pid}", json={"name": "x"}, headers=h).status_code == 403
-    assert client.delete(f"/api/projects/{pid}", headers=h).status_code == 403
+    assert client.get(f"/api/projects/{pid}", headers=h).status_code == 404
+    assert client.get(f"/api/projects/{pid}/files", headers=h).status_code == 404
+    assert client.get(f"/api/projects/{pid}/messages", headers=h).status_code == 404
+    assert client.patch(f"/api/projects/{pid}", json={"name": "x"}, headers=h).status_code == 404
+    assert client.delete(f"/api/projects/{pid}", headers=h).status_code == 404
     assert (
         client.post(f"/api/projects/{pid}/messages", json={"content": "hi"}, headers=h).status_code
-        == 403
+        == 404
     )
 
 
 def test_other_user_cannot_touch_file(client, owned):
     fid, h = owned["file"], owned["other"]
-    assert client.get(f"/api/files/{fid}", headers=h).status_code == 403
-    assert client.delete(f"/api/files/{fid}", headers=h).status_code == 403
-    assert client.post("/api/files/confirm", json=[{"id": fid}], headers=h).status_code == 403
+    assert client.get(f"/api/files/{fid}", headers=h).status_code == 404
+    assert client.delete(f"/api/files/{fid}", headers=h).status_code == 404
+    assert client.post("/api/files/confirm", json=[{"id": fid}], headers=h).status_code == 404
 
 
 def test_other_user_cannot_upload_to_project(client, owned):
@@ -46,4 +46,4 @@ def test_other_user_cannot_upload_to_project(client, owned):
         json=[{"name": "b.txt", **IDS}],
         headers=owned["other"],
     )
-    assert res.status_code == 403
+    assert res.status_code == 404

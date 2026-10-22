@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Index, Integer, String, false, text
+from sqlalchemy import Boolean, CheckConstraint, Index, Integer, String, false, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 from src.features.files.file_model import Project
@@ -7,6 +7,7 @@ from src.features.files.file_model import Project
 class User(Base):
     __tablename__ = "users"
     __table_args__ = (
+        CheckConstraint("email = lower(email)", name="ck_users_email_lowercase"),
         Index(
             "uq_users_single_demo",
             "is_demo",
@@ -21,7 +22,7 @@ class User(Base):
     is_demo: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false()
     )
-    projects: Mapped["Project"] = relationship(
+    projects: Mapped[list["Project"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
         order_by="Project.created_at",

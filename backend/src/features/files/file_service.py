@@ -49,6 +49,13 @@ def get_file(db: Session, file_id: int):
     return file
 
 
+def get_owned_file(db: Session, file_id: int, user_id: int):
+    file = get_file(db, file_id)
+    if file.project.user_id != user_id:
+        raise NotFoundError("File not found")
+    return file
+
+
 def view_file_content(db: Session, file_id: int, expiration=60 * 60):
     file = get_file(db, file_id)
 

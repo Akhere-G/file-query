@@ -67,7 +67,6 @@ class FileResponse(FileBase):
     id: int
     error: str | None
     project_id: int
-    storage_key: str
     status: FileStatus
 
 
