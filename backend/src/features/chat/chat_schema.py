@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 from src.features.files.file_schema import ChunkResponse
 from src.schemas import BaseModel
+from src.settings import settings
 
 
 class MessageBase(BaseModel):
@@ -36,7 +37,12 @@ class MessageResponse(MessageBase):
 
 
 class MessageCreate(MessageBase):
-    pass
+    content: str = Field(min_length=1, max_length=settings.MAX_MESSAGE_LENGTH)
+
+    @field_validator("content", mode="before")
+    @classmethod
+    def strip_content(cls, value):
+        return value.strip() if isinstance(value, str) else value
 
 
 class PaginatedMessages(BaseModel):

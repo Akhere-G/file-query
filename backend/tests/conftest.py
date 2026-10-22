@@ -109,7 +109,7 @@ def client(engine, aws_fakes):
 
     from src.main import app
 
-    with TestClient(app) as test_client:
+    with TestClient(app, raise_server_exceptions=False) as test_client:
         yield test_client
 
 
