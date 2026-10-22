@@ -11,7 +11,6 @@ from langchain_text_splitters import (
 )
 from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from src import analytics, aws
 from src.database import SessionLocal, get_db
 from src.exceptions import ProcessingLimitError
@@ -19,7 +18,13 @@ from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding, get_response
 from src.features.files.file_extraction_service import extract_file
-from src.features.files.file_model import Chunk, File, FileStatus, Project
+from src.features.files.file_model import (
+    DEFAULT_PROJECT_NAME,
+    Chunk,
+    File,
+    FileStatus,
+    Project,
+)
 from src.features.files.file_service import get_s3_client
 from src.settings import settings
 
@@ -332,27 +337,26 @@ def process_embeddings(file_id: int, chunks: list[str]):
 def name_project(project_id: int):
     with SessionLocal() as db:
         try:
-            stmt = (
-                select(Project)
-                .options(selectinload(Project.files).selectinload(File.chunks))
-                .where(Project.id == project_id)
-            )
-
-            project = db.execute(stmt).scalar_one_or_none()
+            project = db.get(Project, project_id)
 
             if not project:
                 logger.warning(
                     f"Project {project_id} was deleted embeddeing. Could not generate name."
                 )
                 return
+            if project.name != DEFAULT_PROJECT_NAME:
+                return
 
-            filenames = [file.name for file in project.files]
-            chunk_titles = [
-                chunk.title
-                for file in project.files
-                for chunk in file.chunks[:10]
-                if chunk.title
-            ]
+            filenames = db.scalars(
+                select(File.name).where(File.project_id == project_id)
+            ).all()
+            chunk_titles = db.scalars(
+                select(Chunk.title)
+                .join(File, Chunk.file_id == File.id)
+                .where(File.project_id == project_id, Chunk.title.is_not(None))
+                .order_by(Chunk.id)
+                .limit(30)
+            ).all()
             name = get_response(
                 f"""
                 Generate a short, descriptive name for a project
@@ -360,16 +364,16 @@ def name_project(project_id: int):
                 Base the name on the overall subject shared by
                 the documents, not on an individual section.
                 Filenames:
-                {filenames}
+                {list(filenames)}
 
                 Section titles:
-                {chunk_titles[:30]}
+                {list(chunk_titles)}
 
                 Return only the project name, without quotes.
                 Use 3-7 words. Avoid generic names.
                 """
             )
-            project.name = name or "New Project"
+            project.name = name or DEFAULT_PROJECT_NAME
             project.name = project.name.strip().strip("\"'")
             db.commit()
         except Exception:
