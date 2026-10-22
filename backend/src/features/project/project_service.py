@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 from src.exceptions import BadRequestError, NotFoundError
 from src.features.files.file_model import FileStatus, Project
-from src.features.files.file_service import get_s3_client
+from src.features.files.file_service import delete_object
 from src.settings import settings
 
 
@@ -40,18 +40,12 @@ def create_project(db: Session, user_id: int, name: str):
 
 def delete_project(db: Session, project_id: int):
     project = get_project(db, project_id, with_files=True)
-    storage_keys = [
-        file.storage_key
-        for file in project.files
-        if file.status in [FileStatus.processing, FileStatus.processed]
-    ]
+    storage_keys = [file.storage_key for file in project.files]
     db.delete(project)
     db.commit()
 
-    if storage_keys:
-        s3_client = get_s3_client()
-        for key in storage_keys:
-            s3_client.delete_object(Bucket=settings.AWS_BUCKET_NAME, Key=key)
+    for key in storage_keys:
+        delete_object(key)
 
     return project_id
 
