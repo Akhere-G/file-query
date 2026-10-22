@@ -17,7 +17,7 @@ class Message(Base):
     content: Mapped[str] = mapped_column(Text)
     owner: Mapped[MessageOwner] = mapped_column(Enum(MessageOwner))
     project_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("projects.id", ondelete="CASCADE")
+        Integer, ForeignKey("projects.id", ondelete="CASCADE"), index=True
     )
     project: Mapped["Project"] = relationship(back_populates="messages")
     chunks: Mapped[list["Chunk"]] = relationship(
@@ -35,5 +35,8 @@ class Citation(Base):
         primary_key=True,
     )
     chunk_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("chunks.id", ondelete="CASCADE"), primary_key=True
+        Integer,
+        ForeignKey("chunks.id", ondelete="CASCADE"),
+        primary_key=True,
+        index=True,
     )
