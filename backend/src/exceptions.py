@@ -32,6 +32,11 @@ class NotAuthorisedError(AppError):
     default_message = "Not authorised"
 
 
+class ServiceUnavailableError(AppError):
+    status_code = 503
+    default_message = "This service is not available right now."
+
+
 class TooManyRequestsError(AppError):
     status_code = 429
     default_message = "Too many requests"

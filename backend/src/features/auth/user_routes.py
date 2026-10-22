@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.exceptions import ConflictError, InvalidCredentialsError
+from src.exceptions import (
+    ConflictError,
+    InvalidCredentialsError,
+    ServiceUnavailableError,
+)
 from src.features.auth import user_service
 from src.features.auth.user_model import User as UserModel
 from src.features.auth.user_schema import Token, User, UserCreate, UserLogin
@@ -57,10 +61,7 @@ def login_user(
 def start_demo(request: Request, db: Session = Depends(get_db)) -> Token:
     demo_user = user_service.get_demo_user(db)
     if demo_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="The demo is not available right now.",
-        )
+        raise ServiceUnavailableError("The demo is not available right now.")
 
     return user_service.get_demo_access_token(demo_user)
 

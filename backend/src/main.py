@@ -14,6 +14,7 @@ from src.features.project import project_routes
 from src.limiter import limiter
 from src.settings import settings
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 

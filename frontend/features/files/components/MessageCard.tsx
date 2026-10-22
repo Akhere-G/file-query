@@ -38,7 +38,7 @@ export default function MessageCard({ message }: { message: Message }) {
         {citations.length > 0 && (
           <div className="mt-4 flex gap-2 flex-wrap">
             {citations.map((citation) => (
-              <CitationDetail key={citation.title} citation={citation} />
+              <CitationDetail key={citation.id} citation={citation} />
             ))}
           </div>
         )}
