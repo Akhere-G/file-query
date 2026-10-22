@@ -1,7 +1,9 @@
 import posthog from "posthog-js";
 import type { AnalyticsEvent, AnalyticsProperties } from "./events";
 
-const KEY = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
+const KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN ??
+  "phc_qfHerWar58zqtbrpFJx4ydWd7tzdGr4WVRBZTzjY5KJJ";
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://eu.i.posthog.com";
 
 let ready = false;
