@@ -17,10 +17,8 @@
 | Documents | The four portfolio project files (FileQuery, Gains, TaskFlow, TripTrack). No CV, no trip/gift files. |
 | Account | One shared demo account, with a banner. |
 | Scheduling | **None.** There is no Cloud Run Job / Scheduler and no periodic full reset; the owner runs the script manually. Sections 6.6 and the scheduler steps in section 10 are dropped. |
-| Files | **Never deleted** because they are old or recruiter-made. The script only creates a seeded file when it does not exist, and replaces a seeded file that is broken (not processed, no chunks, missing from S3, or content changed). Recruiter uploads are left alone. |
-| Messages | If the chat has no messages, the script creates the conversation by asking five questions about the four projects through the existing `chat_service.send_user_message`. `--delete-messages-after DATE` deletes demo messages created after `DATE` (citations cascade); if that leaves the chat empty, the starter chat is regenerated. |
-| Project names | If a visitor renames the seeded project, the script recognises it by its files and restores the manifest name. |
-| Dropped flags | `--force-rebuild`, `--purge-only`, `--no-starter-chat`. Remaining flags: `--apply` (default is a dry run) and `--delete-messages-after`. |
+| Reset | **Delete and rebuild.** Each `--apply` run deletes every project the demo user owns (S3 objects first, then the DB rows; files, chunks, messages and citations cascade), then recreates the project, uploads and processes the example files, and asks the five starter questions through the existing chat. Nothing is kept between runs. |
+| Script scope | No dry-run plan (without `--apply` it only prints the target DB/bucket), no advisory lock, no health checks or hashes, no `--delete-messages-after`, a single project in `manifest.json` (`name`, `files`, `starterQuestions`). Only flag: `--apply`. |
 | Tests | No test suite was added (the repo has none). Behaviour was verified with a throw-away integration script (not committed) against a local Postgres + pgvector with fake S3/Bedrock; see the PR/summary. |
 
 Run it from `backend/`:
@@ -28,7 +26,6 @@ Run it from `backend/`:
 ```bash
 python -m src.scripts.seed_demo                                     # dry run
 python -m src.scripts.seed_demo --apply
-python -m src.scripts.seed_demo --apply --delete-messages-after 2026-10-21
 ```
 
 Exit codes: `0` ok, `1` partial failure, `2` refused (for example the demo email belongs to a real user, or `alembic upgrade head` has not been run).

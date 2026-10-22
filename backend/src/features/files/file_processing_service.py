@@ -84,7 +84,7 @@ def process_file(job: FileJob):
         name_project(job["project_id"])
 
 
-def process_files_locally(files: list[File], rename_project: bool = True):
+def process_files_locally(files: list[File]):
     for i, file in enumerate(files):
         try:
             process_file(
@@ -93,7 +93,7 @@ def process_files_locally(files: list[File], rename_project: bool = True):
                     "project_id": file.project_id,
                     "storage_key": file.storage_key,
                     "mime_type": file.mime_type,
-                    "is_last": rename_project and i == len(files) - 1,
+                    "is_last": i == len(files) - 1,
                 }
             )
         except Exception as err:

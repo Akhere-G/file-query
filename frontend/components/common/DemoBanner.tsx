@@ -25,9 +25,6 @@ export default async function DemoBanner() {
       You&apos;re exploring the shared FileQuery demo. Anyone using the demo can
       see and change what&apos;s here, so please don&apos;t upload private
       files.{" "}
-      <Link href="/register" className="font-medium underline">
-        Create your own account
-      </Link>
     </div>
   );
 }

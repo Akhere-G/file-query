@@ -47,7 +47,7 @@ def send_chat_messsage(
         raise NotAuthorisedError("You must own this project to see its messages")
 
     total_message_this_month = chat_service.get_messages_this_month(db, user.id)
-    message_limit = demo_service.message_limit_for(user)
+    message_limit = settings.MAX_MONTHLY_MESSAGES
     if total_message_this_month > message_limit:
         if user.is_demo:
             raise TooManyRequestsError(

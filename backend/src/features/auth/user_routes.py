@@ -72,9 +72,6 @@ def login_user(
 
 @router.post("/demo", response_model=Token, status_code=status.HTTP_200_OK)
 def start_demo(db: Session = Depends(get_db)) -> Token:
-    if not settings.DEMO_MODE_ENABLED:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
-
     demo_user = user_service.get_demo_user(db)
     if demo_user is None:
         raise HTTPException(
