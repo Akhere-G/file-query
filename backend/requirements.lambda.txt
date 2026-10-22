@@ -1,0 +1,3 @@
+# Extra Python dependencies for the embedding worker (Lambda) only.
+# embedding_worker.Dockerfile installs requirements.txt first, then this file.
+# Add worker-only packages here; anything the API also needs belongs in requirements.txt.
