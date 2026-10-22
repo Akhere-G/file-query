@@ -12,6 +12,7 @@ from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import func, select
 from src import analytics, aws
 from src.database import SessionLocal, get_db
+from src.exceptions import ProcessingLimitError
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding, get_response
@@ -48,22 +49,29 @@ def get_sqs_client() -> SQSClient:
     return aws.sqs_client()  # type: ignore
 
 
-def enqueue_files(files: list[File], rename_project: bool = True):
+def enqueue_files(files: list[File], rename_project: bool = True) -> list[File]:
+    """Queue every file for processing. Returns the files that could not be queued."""
     sqs = get_sqs_client()
+    failed: list[File] = []
     for file in files:
         logger.info(f"enqueuing file: {file.id}")
-        sqs.send_message(
-            QueueUrl=settings.SQS_QUEUE_URL,
-            MessageBody=json.dumps(
-                {
-                    "file_id": file.id,
-                    "storage_key": file.storage_key,
-                    "project_id": file.project_id,
-                    "mime_type": file.mime_type,
-                    "rename_project": rename_project,
-                }
-            ),
-        )
+        try:
+            sqs.send_message(
+                QueueUrl=settings.SQS_QUEUE_URL,
+                MessageBody=json.dumps(
+                    {
+                        "file_id": file.id,
+                        "storage_key": file.storage_key,
+                        "project_id": file.project_id,
+                        "mime_type": file.mime_type,
+                        "rename_project": rename_project,
+                    }
+                ),
+            )
+        except Exception:
+            logger.exception(f"Could not enqueue file: {file.id}")
+            failed.append(file)
+    return failed
 
 
 class FileJob(TypedDict):
@@ -88,6 +96,21 @@ def capture_file_event(db, file_id: int, event: str, **properties):
         logger.debug("Could not send analytics event %s", event, exc_info=True)
 
 
+READ_ERROR_MESSAGE = (
+    "We couldn't read this file. Check that it isn't corrupt or password-protected."
+)
+
+
+def mark_file_error(file_id: int, message: str):
+    """Show a failed file as errored instead of leaving it on 'processing' forever."""
+    with SessionLocal() as db:
+        file = db.get(File, file_id)
+        if file and file.status == FileStatus.processing:
+            file.status = FileStatus.error
+            file.error = message
+            db.commit()
+
+
 def process_file(job: FileJob):
     try:
         file_bytes = download_file(job["storage_key"])
@@ -103,7 +126,13 @@ def process_file(job: FileJob):
                 stage="extract",
                 error_type=type(err).__name__,
             )
-        raise
+        logger.exception("Could not read file %s", job["file_id"])
+        mark_file_error(
+            job["file_id"],
+            err.message if isinstance(err, ProcessingLimitError) else READ_ERROR_MESSAGE,
+        )
+        # A file that cannot be read will not become readable on retry, so do not re-raise.
+        return
 
     process_embeddings(
         file_id=job["file_id"],
