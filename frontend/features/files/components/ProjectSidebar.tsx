@@ -31,9 +31,11 @@ import { track } from "@/lib/analytics/client";
 const ProjectSidebar = ({
   projects,
   currentProjectId,
+  isDemo = false,
 }: {
   projects: Project[];
   currentProjectId: number | null;
+  isDemo?: boolean;
 }) => {
   const router = useRouter();
   const noProjects = !projects || projects.length == 0;
@@ -109,27 +111,29 @@ const ProjectSidebar = ({
               >
                 {project.name}
               </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="h-6 w-6 opacity-0 group-hover:opacity-100 shrink-0 inline-flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer">
-                  <Ellipsis className="h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleRenameOpen(project)}>
-                    Rename
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-destructive"
-                    onClick={() => handleDeleteOpen(project)}
-                  >
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {!isDemo && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="h-6 w-6 opacity-0 group-hover:opacity-100 shrink-0 inline-flex items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer">
+                    <Ellipsis className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleRenameOpen(project)}>
+                      Rename
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-destructive"
+                      onClick={() => handleDeleteOpen(project)}
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           ))}
         </div>
       )}
-      {currentProjectId && (
+      {currentProjectId && !isDemo && (
         <Link className="text-sm pl-1 pt-4 block" href="/dashboard">
           Start new project
         </Link>

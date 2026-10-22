@@ -4,6 +4,7 @@ from src.database import get_db
 from src.exceptions import BadRequestError, NotAuthorisedError
 from src.features.auth import user_service
 from src.features.auth.user_model import User
+from src.features.demo.demo_guard import block_demo
 from src.features.files import file_service
 from src.features.files.file_schema import FileResponse
 from src.features.project import project_service
@@ -50,6 +51,7 @@ def get_files(
 
 
 @router.patch("/{project_id:int}", response_model=ProjectResponse)
+@block_demo
 def rename_project(
     project_id: int,
     body: RenameProjectRequest,
@@ -63,6 +65,7 @@ def rename_project(
 
 
 @router.delete("/{project_id:int}")
+@block_demo
 def delete_project(
     project_id: int,
     user: User = Depends(user_service.get_current_user),

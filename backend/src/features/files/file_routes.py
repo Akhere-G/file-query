@@ -5,7 +5,7 @@ from src.database import get_db
 from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
-from src.features.demo import demo_service
+from src.features.demo.demo_guard import block_demo
 from src.features.files import file_service
 from src.features.files.file_processing_service import (
     enqueue_files,
@@ -46,6 +46,7 @@ def get_file(
 @router.post(
     "",
 )
+@block_demo
 def upload_files(
     files_in: list[FileCreate],
     request: Request,
@@ -53,9 +54,6 @@ def upload_files(
     user: User = Depends(get_current_user),
     project_id: int | None = None,
 ):
-    if user.is_demo:
-        demo_service.enforce_upload_limits(db, user, files_in)
-
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
         if len(projects) >= settings.MAX_PROJECTS_PER_USER:
@@ -84,6 +82,7 @@ def upload_files(
 
 
 @router.post("/confirm")
+@block_demo
 def confirm_uploads(
     confirmed_files: list[ConfirmUploadRequest],
     background_tasks: BackgroundTasks,
@@ -111,6 +110,7 @@ def confirm_uploads(
 
 
 @router.delete("/{file_id:int}")
+@block_demo
 def delete_file(
     file_id: int,
     db: Session = Depends(get_db),
