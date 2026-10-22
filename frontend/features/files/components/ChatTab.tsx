@@ -23,6 +23,7 @@ import { track } from "@/lib/analytics/client";
 import { lengthBucket } from "@/lib/analytics/events";
 
 const PAGE_SIZE = 20;
+const MAX_MESSAGE_LENGTH = 2000;
 const LOAD_MORE_THRESHOLD_PX = 50;
 
 const showError = (message?: string | null) =>
@@ -240,6 +241,7 @@ const ChatPanel = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
+          maxLength={MAX_MESSAGE_LENGTH}
           disabled={cannotSend}
         />
 

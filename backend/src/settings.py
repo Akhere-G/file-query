@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     RAG_TOP_K: int = 20
     RAG_RERANK_K: int = 5
     MAX_MONTHLY_MESSAGES: int = 40
+    MAX_MESSAGE_LENGTH: int = 2000
     MAX_PROJECTS_PER_USER: int = 3
     MAX_FILE_SIZE: int = 1024 * 1024 * 500
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
