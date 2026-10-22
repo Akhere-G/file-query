@@ -22,7 +22,13 @@ class Settings(BaseSettings):
     MAX_MONTHLY_MESSAGES: int = 40
     MAX_MESSAGE_LENGTH: int = 2000
     MAX_PROJECTS_PER_USER: int = 3
-    MAX_FILE_SIZE: int = 1024 * 1024 * 500
+    MAX_FILE_SIZE: int = 1024 * 1024 * 50
+    MAX_FILES_PER_REQUEST: int = 10
+    MAX_PDF_PAGES: int = 300
+    MAX_EXTRACTED_CHARS: int = 1_500_000
+    MAX_CHUNKS_PER_FILE: int = 1000
+    EMBED_CONCURRENCY: int = 4
+    CHUNK_TITLE_MODE: str = "heuristic"  # "heuristic" or "llm" (one LLM call per chunk)
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
     DEMO_USER_EMAIL: str = "demo@example.com"
     DEMO_SEED_TIMEOUT_SECONDS: int = 600

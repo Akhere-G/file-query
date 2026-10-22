@@ -1,7 +1,9 @@
 import enum
 import json
 import logging
+import re
 import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import TypedDict
 
 from langchain_text_splitters import (
@@ -116,6 +118,10 @@ def process_file(job: FileJob):
         file_bytes = download_file(job["storage_key"])
         text = extract_file(file_bytes, job["mime_type"])
         chunks = chunk_text(text)
+        if len(chunks) > settings.MAX_CHUNKS_PER_FILE:
+            raise ProcessingLimitError(
+                "This file is too large to process. Split it into smaller files."
+            )
     except Exception as err:
         with SessionLocal() as db:
             capture_file_event(
@@ -248,18 +254,36 @@ def chunk_markdown(
     return chunks
 
 
-def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:
-    return [
-        Chunk(
-            file_id=file_id,
-            content=content,
-            title=get_response(
-                f"Create a title for this chunk based on its content. Just return the title with no quotes and no markdown and make sure it is one sentence, less than 100 characters. Content = {content}"
-            ),
-            embedding=generate_embedding(content),
+def derive_chunk_title(content: str) -> str | None:
+    """A short label for a chunk without an LLM call: its first heading, else its first sentence."""
+    lines = [line.strip() for line in content.splitlines() if line.strip()]
+    heading = next((line for line in lines if re.match(r"^#{1,6}\s+\S", line)), None)
+    text = re.sub(r"^#{1,6}\s+", "", heading) if heading else (lines[0] if lines else "")
+    text = re.sub(r"[*_`>|#]", "", text).strip()
+    if not heading:
+        text = re.split(r"(?<=[.!?])\s", text)[0]
+    return text[:100].strip() or None
+
+
+def create_chunk(file_id: int, content: str) -> Chunk:
+    if settings.CHUNK_TITLE_MODE == "llm":
+        title = get_response(
+            f"Create a title for this chunk based on its content. Just return the title with no quotes and no markdown and make sure it is one sentence, less than 100 characters. Content = {content}"
         )
-        for content in chunks
-    ]
+    else:
+        title = derive_chunk_title(content)
+    return Chunk(
+        file_id=file_id,
+        content=content,
+        title=title,
+        embedding=generate_embedding(content),
+    )
+
+
+def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:
+    # map keeps the input order; the boto clients are thread-safe and retry throttling.
+    with ThreadPoolExecutor(max_workers=settings.EMBED_CONCURRENCY) as pool:
+        return list(pool.map(lambda content: create_chunk(file_id, content), chunks))
 
 
 def process_embeddings(file_id: int, chunks: list[str]):
