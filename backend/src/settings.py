@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
     DEMO_USER_EMAIL: str = "demo@example.com"
     DEMO_SEED_TIMEOUT_SECONDS: int = 600
+    POSTHOG_API_KEY: str | None = None
+    POSTHOG_HOST: str = "https://eu.i.posthog.com"
+    POSTHOG_ID_SALT: str | None = None
     model_config = SettingsConfigDict(env_file=".env")
 
 

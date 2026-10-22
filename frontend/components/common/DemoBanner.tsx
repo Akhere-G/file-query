@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { getToken } from "@/lib/api";
 
 // UI hint only: the backend decides what a demo user may do from the database.
-async function isDemoSession() {
+export async function isDemoSession() {
   const token = await getToken();
   if (!token) return false;
 

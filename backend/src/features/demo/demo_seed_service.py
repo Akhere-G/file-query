@@ -182,7 +182,7 @@ def ask_question(db: Session, demo_user: User, project: Project, question: str):
         )
         try:
             return chat_service.send_user_message(
-                db, demo_user.id, project.id, question
+                db, demo_user.id, project.id, question, track=False
             )
         except ClientError as err:
             throttled = err.response["Error"]["Code"] == "ThrottlingException"

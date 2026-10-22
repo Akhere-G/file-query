@@ -19,6 +19,8 @@ import {
 import { toast } from "@/components/ui/toast";
 import { ProjectFile } from "../types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { track } from "@/lib/analytics/client";
+import { lengthBucket } from "@/lib/analytics/events";
 
 const PAGE_SIZE = 20;
 const LOAD_MORE_THRESHOLD_PX = 50;
@@ -143,6 +145,11 @@ const ChatPanel = ({
   const sendMessage = async () => {
     const content = text.trim();
     if (!projectId || isSending || !content) return;
+
+    track("chat_message_sent", {
+      length_bucket: lengthBucket(content.length),
+      is_first_message: messages.length === 0 && !hasMoreRef.current,
+    });
 
     const optimistic = createOptimisticMessage(content);
     setMessages((prev) => {

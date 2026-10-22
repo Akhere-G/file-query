@@ -13,6 +13,8 @@ import { getErrorMessage } from "@/lib/apiUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { track } from "@/lib/analytics/client";
+import { failureReason } from "@/lib/analytics/events";
 
 export default function RegisterForm() {
   const [formError, setFormError] = useState<string | null>(null);
@@ -37,6 +39,9 @@ export default function RegisterForm() {
       const result = await registerFn(data.email, data.password, data.username);
 
       if (!result.success) {
+        track("register_failed", {
+          reason: failureReason(result.message ?? undefined, result.status),
+        });
         const unmatchedMessages: string[] = [];
 
         if (result.details) {
@@ -58,6 +63,7 @@ export default function RegisterForm() {
         }
         setFormError(result.message ?? (unmatchedMessages.join(" ") || null));
       } else {
+        track("register", { method: "password" });
         router.push("/dashboard");
       }
     } catch (error) {

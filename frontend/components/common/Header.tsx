@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Button } from "../ui/button";
 import { logout } from "@/features/auth/api/authApi";
+import { track } from "@/lib/analytics/client";
 
 interface HeaderProps {
   links: { name: string; href: string }[];
@@ -14,6 +15,7 @@ export default function Header({ links, isAuth }: HeaderProps) {
   const pathname = usePathname();
 
   async function logoutFn() {
+    track("logout", undefined, { sendInstantly: true });
     await logout();
     window.location.reload();
   }

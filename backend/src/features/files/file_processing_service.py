@@ -1,6 +1,7 @@
 import enum
 import json
 import logging
+import time
 from typing import TypedDict
 
 import boto3
@@ -11,6 +12,7 @@ from langchain_text_splitters import (
 from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
+from src import analytics
 from src.database import SessionLocal, get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
@@ -71,10 +73,36 @@ class FileJob(TypedDict):
     is_last: bool | None
 
 
+def capture_file_event(db, file_id: int, event: str, **properties):
+    try:
+        owner = db.execute(
+            select(User.id, User.is_demo)
+            .join(Project, Project.user_id == User.id)
+            .join(File, File.project_id == Project.id)
+            .where(File.id == file_id)
+        ).first()
+        if owner:
+            analytics.capture(event, owner.id, owner.is_demo, **properties)
+    except Exception:
+        logger.debug("Could not send analytics event %s", event, exc_info=True)
+
+
 def process_file(job: FileJob):
-    file_bytes = download_file(job["storage_key"])
-    text = extract_file(file_bytes, job["mime_type"])
-    chunks = chunk_text(text)
+    try:
+        file_bytes = download_file(job["storage_key"])
+        text = extract_file(file_bytes, job["mime_type"])
+        chunks = chunk_text(text)
+    except Exception as err:
+        with SessionLocal() as db:
+            capture_file_event(
+                db,
+                job["file_id"],
+                "file_processing_failed",
+                file_type=analytics.file_type_label(job["mime_type"]),
+                stage="extract",
+                error_type=type(err).__name__,
+            )
+        raise
 
     process_embeddings(
         file_id=job["file_id"],
@@ -207,9 +235,14 @@ def process_embeddings(file_id: int, chunks: list[str]):
 
     db = next(get_db())
     file = None
+    started_at = time.monotonic()
+    file_type = "other"
+    file_size = None
 
     try:
         file = get_file(db, file_id)
+        file_type = analytics.file_type_label(file.mime_type)
+        file_size = file.size
 
         if file.status == FileStatus.processed:
             logger.warning(
@@ -224,6 +257,16 @@ def process_embeddings(file_id: int, chunks: list[str]):
         file.status = FileStatus.processed
         file.error = None
         db.commit()
+
+        capture_file_event(
+            db,
+            file_id,
+            "file_processing_completed",
+            file_type=file_type,
+            file_size_bytes=file_size,
+            chunk_count=len(chunk_records),
+            duration_ms=round((time.monotonic() - started_at) * 1000),
+        )
 
     except Exception as err:
         db.rollback()
@@ -242,6 +285,15 @@ def process_embeddings(file_id: int, chunks: list[str]):
                     file_id,
                 )
 
+        capture_file_event(
+            db,
+            file_id,
+            "file_processing_failed",
+            file_type=file_type,
+            file_size_bytes=file_size,
+            stage="embed",
+            error_type=type(err).__name__,
+        )
         raise
 
     finally:

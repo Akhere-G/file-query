@@ -30,6 +30,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { deleteFile, viewFileContent } from "../server-actions";
 import { toast } from "@/components/ui/toast";
+import { track } from "@/lib/analytics/client";
+import { fileTypeLabel } from "@/lib/analytics/events";
 
 type ModalState = "delete" | null;
 
@@ -49,6 +51,10 @@ export default function FileCard({ file }: { file: ProjectFile }) {
     try {
       const res = await deleteFile(file.id);
       if (res.success) {
+        track("file_deleted", {
+          file_type: fileTypeLabel(file.mimeType),
+          file_status: file.status,
+        });
         toast.add({ title: "Deleted file" });
         setModalState(null);
       } else {
@@ -78,6 +84,10 @@ export default function FileCard({ file }: { file: ProjectFile }) {
     }
     const res = await viewFileContent(file.id);
     if (res.success) {
+      track("file_viewed", {
+        file_type: fileTypeLabel(file.mimeType),
+        file_status: file.status,
+      });
       window.open(res.data.url, "_blank", "noopener,noreferrer");
     } else {
       toast.add({ title: "Could not view file", type: "error" });

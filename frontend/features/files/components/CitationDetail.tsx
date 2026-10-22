@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -8,12 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { Citation } from "@/features/chat/types";
 import { FileText } from "lucide-react";
+import { track } from "@/lib/analytics/client";
 
 export default function CitationDetail({ citation }: { citation: Citation }) {
   const { title, content, fileName } = citation;
 
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => open && track("citation_opened")}>
       <DialogTrigger className="inline-flex max-w-56 items-center gap-2 rounded-lg border bg-card px-3 py-2 text-left text-sm transition-colors hover:bg-accent">
         <FileText className="size-4 shrink-0 text-muted-foreground" />
         <span className="truncate">{title}</span>
