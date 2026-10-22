@@ -13,7 +13,7 @@ from src.features.chat.chat_schema import (
     PaginatedMessages,
 )
 from src.features.project import project_service
-from src.limiter import limiter
+from src.limiter import chat_limit, limiter
 from src.settings import settings
 
 router = APIRouter(prefix="/api/projects/{project_id}/messages", tags=["Chat"])
@@ -34,8 +34,8 @@ def get_chat_messages(
     return chat_service.get_messages(db, project_id, before_id=before_id, limit=limit)
 
 
-@limiter.limit("30/hour")
 @router.post("", response_model=MessageResponse)
+@limiter.limit(chat_limit)
 def send_chat_messsage(
     project_id: int,
     message: MessageCreate,

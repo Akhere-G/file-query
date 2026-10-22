@@ -41,11 +41,10 @@ def get_file(
     return {"file": FileResponse.model_validate(file), "url": url}
 
 
-# TODO: rate limit based on no. projects and 20/hour
-@limiter.limit("20/hour")
 @router.post(
     "",
 )
+@limiter.limit("20/hour")
 def upload_files(
     files_in: list[FileCreate],
     request: Request,
