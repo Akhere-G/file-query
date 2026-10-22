@@ -4,6 +4,7 @@ import { attachToken, getApiBaseUrl } from "@/lib/api";
 import { FileUploadStatus, ProjectFile, UploadFileResponse } from "./types";
 import { parseResponse } from "@/lib/apiUtils";
 import { revalidatePath } from "next/cache";
+import { mimeTypeFor } from "./constants";
 
 export async function getFiles(projectId: number) {
   const url = await getApiBaseUrl();
@@ -24,7 +25,7 @@ export async function uploadFiles(files: File[], projectId?: number) {
   const fileData = files.map((file) => ({
     size: file.size,
     name: file.name,
-    mimeType: file.type,
+    mimeType: mimeTypeFor(file.name) ?? file.type,
   }));
 
   const baseUrl = await getApiBaseUrl();
