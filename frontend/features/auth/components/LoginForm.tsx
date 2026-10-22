@@ -11,6 +11,7 @@ import FormInput from "@/components/common/FormInput";
 import { getErrorMessage } from "@/lib/apiUtils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import DemoButton from "./DemoButton";
 
 export default function LoginForm() {
   const [formError, setFormError] = useState<string | null>(null);
@@ -82,6 +83,9 @@ export default function LoginForm() {
             {formState.isSubmitting ? "Logging in..." : "Login"}
           </Button>
         </form>
+        <div className="mt-4 text-center">
+          <DemoButton variant="ghost" label="Just looking? Try the demo" />
+        </div>
       </CardContent>
     </Card>
   );

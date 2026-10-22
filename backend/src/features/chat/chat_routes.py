@@ -5,6 +5,7 @@ from src.exceptions import NotAuthorisedError, TooManyRequestsError
 from src.features.auth import user_service
 from src.features.auth.user_model import User
 from src.features.chat import chat_service
+from src.features.demo import demo_service
 from src.features.chat.chat_schema import (
     MessageCreate,
     MessageResponse,
@@ -46,7 +47,12 @@ def send_chat_messsage(
         raise NotAuthorisedError("You must own this project to see its messages")
 
     total_message_this_month = chat_service.get_messages_this_month(db, user.id)
-    if total_message_this_month > settings.MAX_MONTHLY_MESSAGES:
+    message_limit = settings.MAX_MONTHLY_MESSAGES
+    if total_message_this_month > message_limit:
+        if user.is_demo:
+            raise TooManyRequestsError(
+                f"The shared demo has reached its limit of {message_limit} messages. Please try again later."
+            )
         raise TooManyRequestsError(
             f"Free accounts can only send {settings.MAX_MONTHLY_MESSAGES} per month."
         )
