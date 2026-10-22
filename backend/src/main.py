@@ -18,7 +18,13 @@ logger = logging.getLogger(__name__)
 
 
 def create_app():
-    app = FastAPI()
+    # The API docs describe every route; only expose them outside production.
+    docs = None if settings.ENVIRONMENT == "production" else "/docs"
+    app = FastAPI(
+        docs_url=docs,
+        redoc_url=None if docs is None else "/redoc",
+        openapi_url=None if docs is None else "/openapi.json",
+    )
     create_exception_handlers(app)
     register_models()
     configure_app(app)
@@ -57,10 +63,17 @@ def register_models():
     from src.features.files.file_model import Chunk, File, Project
 
 
+def allowed_origins() -> list[str]:
+    origins = [settings.FRONTEND_URL]
+    if settings.ENVIRONMENT != "production":
+        origins.append("http://localhost:3000")
+    return origins
+
+
 def configure_app(app: FastAPI):
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000", settings.FRONTEND_URL],
+        allow_origins=allowed_origins(),
         allow_credentials=True,
         allow_headers=["*"],
         allow_methods=["*"],
