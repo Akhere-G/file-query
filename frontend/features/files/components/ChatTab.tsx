@@ -173,10 +173,7 @@ const ChatPanel = ({
       return;
     }
 
-    setMessages((prev) => {
-      if (prev) prev?.filter((m) => m.id !== optimistic.id);
-      return [];
-    });
+    setMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
     setText(content);
     showError(result?.message);
   };
