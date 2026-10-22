@@ -96,6 +96,7 @@ def extract_doc(file: bytes) -> str:
         input=file,
         capture_output=True,
         check=True,
+        timeout=30,
     )
 
     return decode_text(result.stdout).strip()
