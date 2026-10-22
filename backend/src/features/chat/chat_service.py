@@ -17,8 +17,7 @@ from src.features.files.embedding_service import (
 from src.features.files.file_model import Chunk, File, Project
 from src.settings import settings
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def get_messages_this_month(db: Session, user_id: int):

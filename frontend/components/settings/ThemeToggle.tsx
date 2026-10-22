@@ -1,46 +1,69 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun, Laptop } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+type Theme = "light" | "dark" | "system";
+
+const listeners = new Set<() => void>();
+
+function readTheme(): Theme {
+  const saved = localStorage.getItem("theme");
+  return saved === "light" || saved === "dark" ? saved : "system";
+}
+
+function subscribeToTheme(onChange: () => void) {
+  listeners.add(onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    listeners.delete(onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function applyTheme(theme: Theme) {
+  const root = window.document.documentElement;
+
+  root.classList.remove("light", "dark");
+
+  if (theme === "system") {
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+    root.classList.add(systemTheme);
+  } else {
+    root.classList.add(theme);
+  }
+}
+
+function saveTheme(theme: Theme) {
+  localStorage.setItem("theme", theme);
+  applyTheme(theme);
+  listeners.forEach((listener) => listener());
+}
+
+const subscribeNever = () => () => {};
+
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | "system" | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      applyTheme("system");
-    }
-  }, []);
-
-  const applyTheme = (newTheme: "light" | "dark" | "system") => {
-    const root = window.document.documentElement;
-    
-    root.classList.remove("light", "dark");
-    
-    if (newTheme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.classList.add(systemTheme);
-    } else {
-      root.classList.add(newTheme);
-    }
-  };
-
-  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-  };
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    readTheme,
+    () => "system" as Theme,
+  );
+  const mounted = useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  );
+  const handleThemeChange = saveTheme;
 
   // Prevent hydration mismatch
   if (!mounted) {
-    return <div className="h-10 w-full max-w-[400px] animate-pulse bg-muted rounded-md" />;
+    return (
+      <div className="h-10 w-full max-w-[400px] animate-pulse bg-muted rounded-md" />
+    );
   }
 
   return (
