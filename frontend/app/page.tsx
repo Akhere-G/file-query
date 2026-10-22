@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import DemoButton from "@/features/auth/components/DemoButton";
 import {
   BrainCircuit,
   UploadCloud,
@@ -9,7 +11,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies();
+  const isAuth = !!cookieStore.get("access_token");
   const features = [
     {
       title: "RAG AI Integration",
@@ -90,6 +94,7 @@ export default function Home() {
               Get Started
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
+            {!isAuth && <DemoButton className="h-12 rounded-xl px-8" />}
             <Link
               href="https://github.com/Akhere-G/file-query"
               target="_blank"
@@ -160,6 +165,11 @@ export default function Home() {
           >
             Go to Dashboard
           </Link>
+          {!isAuth && (
+            <div className="mt-4 flex justify-center">
+              <DemoButton variant="ghost" className="h-12 rounded-xl px-8" />
+            </div>
+          )}
         </div>
       </div>
     </div>

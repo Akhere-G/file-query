@@ -4,6 +4,7 @@ from src.database import get_db
 from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
+from src.features.demo import demo_service
 from src.features.files import file_service
 from src.features.files.file_processing_service import (
     enqueue_files,
@@ -51,6 +52,9 @@ def upload_files(
     user: User = Depends(get_current_user),
     project_id: int | None = None,
 ):
+    if user.is_demo:
+        demo_service.enforce_upload_limits(db, user, files_in)
+
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
         if len(projects) >= settings.MAX_PROJECTS_PER_USER:

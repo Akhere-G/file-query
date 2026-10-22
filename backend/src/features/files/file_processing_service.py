@@ -45,7 +45,7 @@ def get_sqs_client() -> SQSClient:
     )  # type: ignore
 
 
-def enqueue_files(files: list[File]):
+def enqueue_files(files: list[File], rename_project: bool = True):
     sqs = get_sqs_client()
     for i, file in enumerate(files):
         logger.info(f"enqueuing file: {file.id}")
@@ -57,7 +57,7 @@ def enqueue_files(files: list[File]):
                     "storage_key": file.storage_key,
                     "project_id": file.project_id,
                     "mime_type": file.mime_type,
-                    "is_last": i == len(files) - 1,
+                    "is_last": rename_project and i == len(files) - 1,
                 }
             ),
         )
