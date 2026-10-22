@@ -92,12 +92,18 @@ def extract_docx(file: bytes) -> str:
 
 
 def extract_doc(file: bytes) -> str:
-    result = subprocess.run(
-        ["antiword", "-"],
-        input=file,
-        capture_output=True,
-        check=True,
-    )
+    try:
+        result = subprocess.run(
+            ["antiword", "-"],
+            input=file,
+            capture_output=True,
+            check=True,
+            timeout=30,
+        )
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError) as err:
+        raise ProcessingLimitError(
+            "We couldn't read this .doc file. Try saving it as .docx and uploading again."
+        ) from err
 
     return decode_text(result.stdout).strip()
 
