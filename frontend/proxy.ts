@@ -28,7 +28,7 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  const guestPaths = ["/login", "/register"];
+  const guestPaths = ["/login", "/register", "/demo"];
   const protectedPaths = ["/dashboard", "/settings"];
 
   const isGuestPage = guestPaths.some((path) => pathname === path);
