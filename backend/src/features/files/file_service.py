@@ -1,11 +1,9 @@
-import boto3
-from botocore.config import Config
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from mypy_boto3_s3.client import S3Client
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
-from src import analytics
+from src import analytics, aws
 from src.exceptions import BadRequestError, NotFoundError
 from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
@@ -26,13 +24,7 @@ bucket_name = settings.AWS_BUCKET_NAME
 
 
 def get_s3_client() -> S3Client:
-    s3_client = boto3.client(
-        "s3",
-        region_name=region_name,
-        config=Config(signature_version="s3v4", s3={"addressing_style": "virtual"}),
-    )
-
-    return s3_client  # type: ignore
+    return aws.s3_client()  # type: ignore
 
 
 def get_files(db: Session, project_id: int):
