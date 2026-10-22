@@ -13,7 +13,9 @@ export default function ProjectTabs({
   projectId: number | null;
   isDemo?: boolean;
 }) {
-  const { files, isLoading, error } = useGetFiles(Number(projectId));
+  const { files, isLoading, error, pollingStopped } = useGetFiles(
+    Number(projectId),
+  );
 
   const someFilesProcessing =
     files.length > 0 &&
@@ -39,6 +41,18 @@ export default function ProjectTabs({
             <AlertTitle className="text-white">{alertText}</AlertTitle>
             <AlertDescription>
               The AI cannot search through files being processed.
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {pollingStopped && (
+        <div className="px-5 pt-4">
+          <Alert>
+            <InfoIcon />
+            <AlertTitle>Some files are taking longer than expected</AlertTitle>
+            <AlertDescription>
+              Refresh the page to check their status again.
             </AlertDescription>
           </Alert>
         </div>
