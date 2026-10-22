@@ -8,6 +8,9 @@ from src.database import Base
 from src.settings import settings
 
 
+DEFAULT_PROJECT_NAME = "New Project"
+
+
 class FileStatus(enum.Enum):
     pending = "pending"
     processing = "processing"
