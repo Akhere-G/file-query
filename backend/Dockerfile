@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src ./src
 COPY example-docs ./example-docs
 
+RUN useradd --create-home app
+USER app
+
 EXPOSE 8000
 
 CMD ["sh", "-c", "uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
