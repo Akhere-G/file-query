@@ -41,3 +41,4 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: ruff check src tests --select F821,F811,E9
       - run: pytest -q
+      - run: pip-audit -r requirements.txt --no-deps --disable-pip
