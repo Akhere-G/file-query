@@ -20,7 +20,9 @@ export default function MessageCard({ message }: { message: Message }) {
             : "dark:reverse-selection"
         }`}
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown components={{ img: () => null }}>
+          {content}
+        </ReactMarkdown>
         {citations.length > 0 && (
           <div className="mt-4 flex gap-2 flex-wrap">
             {citations.map((citation) => (
