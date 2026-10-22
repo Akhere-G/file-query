@@ -32,7 +32,6 @@ interface FileTabProps {
 }
 const FilesTabs = ({
   files,
-  isLoading,
   error,
   isDemo = false,
 }: FileTabProps) => {

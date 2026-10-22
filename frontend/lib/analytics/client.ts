@@ -10,8 +10,6 @@ let ready = false;
 
 // Cookieless mode must also be enabled in the PostHog project settings.
 export function initAnalytics() {
-  console.log(`host is ${HOST}`);
-  console.log(`key is present: ${Boolean(KEY)}`);
   if (ready || typeof window === "undefined" || !KEY) return;
 
   try {
