@@ -4,7 +4,6 @@ import logging
 import time
 from typing import TypedDict
 
-import boto3
 from langchain_text_splitters import (
     MarkdownHeaderTextSplitter,
     RecursiveCharacterTextSplitter,
@@ -12,7 +11,7 @@ from langchain_text_splitters import (
 from mypy_boto3_sqs.client import SQSClient
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from src import analytics
+from src import analytics, aws
 from src.database import SessionLocal, get_db
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
@@ -41,10 +40,7 @@ mime_types = {
 
 
 def get_sqs_client() -> SQSClient:
-    return boto3.client(
-        "sqs",
-        region_name=settings.AWS_REGION,
-    )  # type: ignore
+    return aws.sqs_client()  # type: ignore
 
 
 def enqueue_files(files: list[File], rename_project: bool = True):
