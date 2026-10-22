@@ -273,7 +273,7 @@ const FilesTabs = ({
             </Button>
 
             <p className="mt-3 text-xs text-muted-foreground">
-              PDF, DOC, DOCX, CSV, TXT, MD files up to 500MB
+              PDF, DOC, DOCX, CSV, TXT, MD files up to 50MB
             </p>
           </>
         )}
