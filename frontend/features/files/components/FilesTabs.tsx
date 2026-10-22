@@ -37,7 +37,6 @@ interface FileTabProps {
 }
 const FilesTabs = ({
   files,
-  isLoading,
   error,
   isDemo = false,
 }: FileTabProps) => {
@@ -168,13 +167,22 @@ const FilesTabs = ({
       stage = "confirm";
       const confirmRes = await confirmUploads(s3res);
 
-      if (s3res.some((r) => r.error)) {
+      const failedUploads = s3res.filter((r) => r.error);
+      let keepFiles: File[] = [];
+
+      if (failedUploads.length > 0) {
         failureTracked = true;
         track("file_upload_failed", {
           ...uploadProps,
           stage: "s3",
           reason: "storage_error",
         });
+        toast.add({
+          title: `${failedUploads.length} ${failedUploads.length === 1 ? "file" : "files"} could not be uploaded. They are still in the list so you can try again.`,
+          type: "error",
+        });
+        // Keep only the files that failed to reach storage.
+        keepFiles = uploadedFiles.filter((_, i) => s3res[i]?.error);
       } else if (!confirmRes.success) {
         failureTracked = true;
         track("file_upload_failed", {
@@ -185,13 +193,18 @@ const FilesTabs = ({
             confirmRes.status,
           ),
         });
+        toast.add({
+          title: confirmRes.message ?? "Your files could not be processed.",
+          type: "error",
+        });
+        keepFiles = uploadedFiles;
       } else {
         track("file_upload_completed", {
           ...uploadProps,
           duration_ms: Date.now() - startedAt,
         });
       }
-      setUploadedFiles([]);
+      setUploadedFiles(keepFiles);
       if (!projectId) {
         const params = new URLSearchParams(searchParams.toString());
         params.set("projectId", String(res.data.projectId));
