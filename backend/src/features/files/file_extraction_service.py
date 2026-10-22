@@ -9,12 +9,19 @@ import pymupdf4llm
 from docx import Document
 
 
+def decode_text(file: bytes) -> str:
+    try:
+        return file.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return file.decode("cp1252", errors="replace")
+
+
 def extract_text(file: bytes) -> str:
-    return file.decode("utf-8")
+    return decode_text(file)
 
 
 def extract_csv(file: bytes) -> str:
-    content = file.decode("utf-8")
+    content = decode_text(file)
     reader = csv.reader(io.StringIO(content))
 
     rows = []
@@ -85,7 +92,7 @@ def extract_doc(file: bytes) -> str:
         check=True,
     )
 
-    return result.stdout.decode("utf-8").strip()
+    return decode_text(result.stdout).strip()
 
 
 EXTRACTION_METHODS = {

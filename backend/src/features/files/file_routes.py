@@ -97,7 +97,13 @@ def confirm_uploads(
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
     if settings.ENVIRONMENT == "production":
         logger.info("enqueuing files")
-        enqueue_files(files)
+        try:
+            enqueue_files(files)
+        except Exception:
+            logger.exception("Could not enqueue files")
+            file_service.mark_files_error(
+                db, files, "Could not start processing this file. Please upload it again."
+            )
     else:
         logger.info("local file processing")
         background_tasks.add_task(process_files_locally, files)
