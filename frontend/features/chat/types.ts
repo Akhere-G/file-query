@@ -13,7 +13,8 @@ export interface PaginatedMessages {
 }
 
 export interface Citation {
-  title: string;
+  id: number;
+  title: string | null;
   content: string;
   fileId: number;
   fileName: string;

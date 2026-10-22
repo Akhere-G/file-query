@@ -265,17 +265,19 @@ def derive_chunk_title(content: str) -> str | None:
     return text[:100].strip() or None
 
 
-def create_chunk(file_id: int, content: str) -> Chunk:
+def make_chunk_title(content: str) -> str | None:
     if settings.CHUNK_TITLE_MODE == "llm":
-        title = get_response(
+        return get_response(
             f"Create a title for this chunk based on its content. Just return the title with no quotes and no markdown and make sure it is one sentence, less than 100 characters. Content = {content}"
         )
-    else:
-        title = derive_chunk_title(content)
+    return derive_chunk_title(content)
+
+
+def create_chunk(file_id: int, content: str) -> Chunk:
     return Chunk(
         file_id=file_id,
         content=content,
-        title=title,
+        title=make_chunk_title(content),
         embedding=generate_embedding(content),
     )
 

@@ -1,10 +1,7 @@
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TrackedTabs from "@/components/common/TrackedTabs";
-import ChatTab from "@/features/files/components/ChatTab";
-import FilesTab from "@/features/files/components/FilesTabs";
 import ProjectSidebar from "@/features/files/components/ProjectSidebar";
 import { getProject, getProjects } from "@/features/project/server-actions";
-import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toast";
 import ProjectTabs from "@/features/files/components/ProjectTabs";

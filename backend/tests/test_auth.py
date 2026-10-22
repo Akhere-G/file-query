@@ -35,3 +35,9 @@ def test_duplicate_email_conflicts(client, make_user):
         json={"username": "X", "email": "dup@example.com", "password": PASSWORD},
     )
     assert res.status_code == 409
+
+
+def test_demo_unavailable_without_a_demo_user(client):
+    res = client.post("/api/auth/demo")
+    assert res.status_code == 503
+    assert "demo is not available" in res.json()["detail"]

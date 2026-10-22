@@ -13,7 +13,8 @@ import { FileText } from "lucide-react";
 import { track } from "@/lib/analytics/client";
 
 export default function CitationDetail({ citation }: { citation: Citation }) {
-  const { title, content, fileName } = citation;
+  const { content, fileName } = citation;
+  const title = citation.title ?? fileName;
 
   return (
     <Dialog onOpenChange={(open) => open && track("citation_opened")}>
