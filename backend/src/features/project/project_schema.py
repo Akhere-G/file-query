@@ -1,5 +1,3 @@
-from src.features.chat.chat_schema import MessageResponse
-from src.features.files.file_schema import FileResponse
 from src.schemas import BaseModel
 
 
@@ -11,7 +9,5 @@ class RenameProjectRequest(BaseModel):
     name: str
 
 
-class ProjectResponse(ProjectBase):
+class ProjectSummary(ProjectBase):
     id: int
-    files: list[FileResponse]
-    messages: list[MessageResponse]
