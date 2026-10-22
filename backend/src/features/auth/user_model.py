@@ -21,7 +21,7 @@ class User(Base):
     is_demo: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default=false()
     )
-    projects: Mapped["Project"] = relationship(
+    projects: Mapped[list["Project"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
         order_by="Project.created_at",

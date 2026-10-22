@@ -2,10 +2,10 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.orm import Session
 from src import analytics
 from src.database import get_db
-from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
+from src.exceptions import BadRequestError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
-from src.features.demo import demo_service
+from src.features.demo.demo_guard import block_demo
 from src.features.files import file_service
 from src.features.files.file_processing_service import (
     enqueue_files,
@@ -16,6 +16,7 @@ from src.features.files.file_schema import (
     FileCreate,
     FileResponse,
 )
+from src.features.files.file_model import DEFAULT_PROJECT_NAME
 from src.features.project import project_service
 from src.limiter import limiter
 from src.settings import settings
@@ -32,20 +33,18 @@ def get_file(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    file = file_service.get_file(db, file_id)
-
-    if file.project.user_id != user.id:
-        raise NotAuthorisedError("Not allowed to view this file")
+    file = file_service.get_owned_file(db, file_id, user.id)
 
     url = file_service.view_file_content(db, file_id)
     return {"file": FileResponse.model_validate(file), "url": url}
 
 
 # TODO: rate limit based on no. projects and 20/hour
-@limiter.limit("20/hour")
 @router.post(
     "",
 )
+@limiter.limit("20/hour")
+@block_demo
 def upload_files(
     files_in: list[FileCreate],
     request: Request,
@@ -53,8 +52,10 @@ def upload_files(
     user: User = Depends(get_current_user),
     project_id: int | None = None,
 ):
-    if user.is_demo:
-        demo_service.enforce_upload_limits(db, user, files_in)
+    if not files_in or len(files_in) > settings.MAX_FILES_PER_REQUEST:
+        raise BadRequestError(
+            f"Upload between 1 and {settings.MAX_FILES_PER_REQUEST} files at a time"
+        )
 
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
@@ -65,7 +66,7 @@ def upload_files(
             raise TooManyRequestsError(
                 f"Free accounts can only have up to {settings.MAX_PROJECTS_PER_USER} projects"
             )
-        project = project_service.create_project(db, user.id, "New Project")
+        project = project_service.create_project(db, user.id, DEFAULT_PROJECT_NAME)
         project_id = project.id
         analytics.capture(
             "project_created",
@@ -75,15 +76,14 @@ def upload_files(
             project_count=len(projects) + 1,
         )
     else:
-        project = project_service.get_project(db, project_id)
-        if project.user_id != user.id:
-            raise NotAuthorisedError("You are not allowed to upload to this project")
+        project_service.get_owned_project(db, project_id, user.id)
 
     files = file_service.create_files(db, user.id, project_id, files_in)
     return {"files": file_service.get_presigned_post(files), "projectId": project_id}
 
 
-@router.post("/confirm")
+@router.post("/confirm", response_model=list[FileResponse])
+@block_demo
 def confirm_uploads(
     confirmed_files: list[ConfirmUploadRequest],
     background_tasks: BackgroundTasks,
@@ -91,19 +91,25 @@ def confirm_uploads(
     user: User = Depends(get_current_user),
 ):
     file_ids = [file.id for file in confirmed_files]
-    files = file_service.get_files_by_ids(db, file_ids)
+    files = [
+        file
+        for file in file_service.get_files_by_ids(db, file_ids)
+        if file.project.user_id == user.id
+    ]
     if len(files) != len(confirmed_files):
         missing = len(confirmed_files) - len(files)
         raise NotFoundError(f"{missing} file(s) could not be found")
 
-    for file in files:
-        if file.project.user_id != user.id:
-            raise NotAuthorisedError("Not allowed to edit this file")
-
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
     if settings.ENVIRONMENT == "production":
         logger.info("enqueuing files")
-        enqueue_files(files)
+        try:
+            enqueue_files(files)
+        except Exception:
+            logger.exception("Could not enqueue files")
+            file_service.mark_files_error(
+                db, files, "Could not start processing this file. Please upload it again."
+            )
     else:
         logger.info("local file processing")
         background_tasks.add_task(process_files_locally, files)
@@ -111,12 +117,11 @@ def confirm_uploads(
 
 
 @router.delete("/{file_id:int}")
+@block_demo
 def delete_file(
     file_id: int,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    file = file_service.get_file(db, file_id)
-    if file.project.user_id != user.id:
-        raise NotAuthorisedError("Not allowed to delete this file")
+    file_service.get_owned_file(db, file_id, user.id)
     return file_service.delete_file(db, file_id)

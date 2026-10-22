@@ -14,11 +14,17 @@ from src.features.project import project_routes
 from src.limiter import limiter
 from src.settings import settings
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 def create_app():
-    app = FastAPI()
+    production = settings.ENVIRONMENT == "production"
+    app = FastAPI(
+        docs_url=None if production else "/docs",
+        redoc_url=None if production else "/redoc",
+        openapi_url=None if production else "/openapi.json",
+    )
     create_exception_handlers(app)
     register_models()
     configure_app(app)
@@ -60,7 +66,8 @@ def register_models():
 def configure_app(app: FastAPI):
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000", settings.FRONTEND_URL],
+        allow_origins=[settings.FRONTEND_URL]
+        + ([] if settings.ENVIRONMENT == "production" else ["http://localhost:3000"]),
         allow_credentials=True,
         allow_headers=["*"],
         allow_methods=["*"],

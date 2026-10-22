@@ -12,6 +12,11 @@ class InvalidCredentialsError(AppError):
     default_message = "Invalid credentials."
 
 
+class ConflictError(AppError):
+    status_code = 409
+    default_message = "That already exists"
+
+
 class NotFoundError(AppError):
     status_code = 404
     default_message = "The item you were looking for was not found"
@@ -30,3 +35,16 @@ class NotAuthorisedError(AppError):
 class TooManyRequestsError(AppError):
     status_code = 429
     default_message = "Too many requests"
+
+
+class DemoReadOnlyError(AppError):
+    status_code = 403
+    default_message = (
+        "The shared demo is read-only. Register to upload and manage your own files."
+    )
+
+
+class ProcessingLimitError(Exception):
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)

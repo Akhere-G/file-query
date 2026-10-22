@@ -1,5 +1,5 @@
 "use server";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export async function getApiBaseUrl() {
   const baseUrl = process.env.BASE_URL;
@@ -24,4 +24,12 @@ export async function getToken() {
   const cookieStore = await cookies();
   const token = cookieStore.get("access_token")?.value;
   return token;
+}
+
+export async function getClientHeaders(): Promise<Record<string, string>> {
+  const secret = process.env.INTERNAL_API_SECRET;
+  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (!secret || !ip) return {};
+
+  return { "X-Client-IP": ip, "X-Internal-Secret": secret };
 }

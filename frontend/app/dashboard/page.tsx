@@ -1,13 +1,11 @@
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TrackedTabs from "@/components/common/TrackedTabs";
-import ChatTab from "@/features/files/components/ChatTab";
-import FilesTab from "@/features/files/components/FilesTabs";
 import ProjectSidebar from "@/features/files/components/ProjectSidebar";
 import { getProject, getProjects } from "@/features/project/server-actions";
-import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toast";
 import ProjectTabs from "@/features/files/components/ProjectTabs";
+import { isDemoSession } from "@/components/common/DemoBanner";
 
 interface DashboardPageProps {
   searchParams: Promise<{ projectId?: string }>;
@@ -18,6 +16,7 @@ export default async function DashboardPage({
   const params = await searchParams;
   const projectId = params.projectId ? Number(params.projectId) : null;
 
+  const isDemo = await isDemoSession();
   const res = await getProjects();
 
   const projects = res.success ? res.data : [];
@@ -32,7 +31,11 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-[90vh] flex">
-      <ProjectSidebar projects={projects} currentProjectId={projectId} />
+      <ProjectSidebar
+        projects={projects}
+        currentProjectId={projectId}
+        isDemo={isDemo}
+      />
       <TrackedTabs className="w-full flex-1">
         <TabsList className="w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="files">
@@ -42,7 +45,7 @@ export default async function DashboardPage({
             Chat
           </TabsTrigger>
         </TabsList>
-        <ProjectTabs projectId={projectId} />
+        <ProjectTabs projectId={projectId} isDemo={isDemo} />
         <Toaster />
       </TrackedTabs>
     </div>

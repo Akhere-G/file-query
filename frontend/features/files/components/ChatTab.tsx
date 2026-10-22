@@ -237,6 +237,7 @@ const ChatPanel = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
+          maxLength={2000}
           disabled={cannotSend}
         />
 
