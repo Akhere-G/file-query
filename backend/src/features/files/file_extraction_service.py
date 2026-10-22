@@ -7,6 +7,8 @@ from typing import cast
 import pymupdf
 import pymupdf4llm
 from docx import Document
+from src.exceptions import ProcessingLimitError
+from src.settings import settings
 
 
 def decode_text(file: bytes) -> str:
@@ -48,6 +50,10 @@ def clean_text(text: str) -> str:
 
 def extract_pdf(file: bytes) -> str:
     with pymupdf.open(stream=file, filetype="pdf") as document:
+        if document.page_count > settings.MAX_PDF_PAGES:
+            raise ProcessingLimitError(
+                f"This PDF has more than {settings.MAX_PDF_PAGES} pages, which is too many to process."
+            )
         text = cast(
             str,
             pymupdf4llm.to_markdown(
@@ -112,4 +118,9 @@ def extract_file(file: bytes, mime_type: str) -> str:
     if not extraction_method:
         raise ValueError(f"Unsupported file type: {mime_type}")
 
-    return extraction_method(file)
+    text = extraction_method(file)
+    if len(text) > settings.MAX_EXTRACTED_CHARS:
+        raise ProcessingLimitError(
+            "This file contains too much text to process. Split it into smaller files."
+        )
+    return text

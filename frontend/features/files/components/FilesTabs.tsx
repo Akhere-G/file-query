@@ -9,6 +9,7 @@ import { getFileIcon, getSizeStr } from "../utils";
 import { confirmUploads, uploadFiles } from "../server-actions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { sendFilesToS3 } from "../actions";
+import { MAX_FILE_SIZE_MB, MAX_FILES_PER_UPLOAD } from "../constants";
 
 import FileCard from "./FileCard";
 import {
@@ -69,7 +70,27 @@ const FilesTabs = ({
   };
 
   const addFiles = (newFiles: File[]) => {
-    setUploadedFiles((current) => [...current, ...newFiles]);
+    const tooBig = newFiles.filter(
+      (f) => f.size >= MAX_FILE_SIZE_MB * 1024 * 1024,
+    );
+    if (tooBig.length > 0) {
+      toast.add({
+        title: `${tooBig.map((f) => f.name).join(", ")} is larger than ${MAX_FILE_SIZE_MB}MB`,
+        type: "error",
+      });
+    }
+    setUploadedFiles((current) => {
+      const accepted = newFiles.filter((f) => !tooBig.includes(f));
+      const next = [...current, ...accepted];
+      if (next.length > MAX_FILES_PER_UPLOAD) {
+        toast.add({
+          title: `You can upload up to ${MAX_FILES_PER_UPLOAD} files at a time`,
+          type: "error",
+        });
+        return next.slice(0, MAX_FILES_PER_UPLOAD);
+      }
+      return next;
+    });
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -273,7 +294,7 @@ const FilesTabs = ({
             </Button>
 
             <p className="mt-3 text-xs text-muted-foreground">
-              PDF, DOC, DOCX, CSV, TXT, MD files up to 500MB
+              PDF, DOC, DOCX, CSV, TXT, MD files up to {MAX_FILE_SIZE_MB}MB
             </p>
           </>
         )}

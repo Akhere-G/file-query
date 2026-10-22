@@ -2,7 +2,12 @@ from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.orm import Session
 from src import analytics
 from src.database import get_db
-from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
+from src.exceptions import (
+    BadRequestError,
+    NotAuthorisedError,
+    NotFoundError,
+    TooManyRequestsError,
+)
 from src.features.auth.user_model import User
 from src.features.auth.user_service import get_current_user
 from src.features.demo.demo_guard import block_demo
@@ -54,6 +59,11 @@ def upload_files(
     user: User = Depends(get_current_user),
     project_id: int | None = None,
 ):
+    if not files_in or len(files_in) > settings.MAX_FILES_PER_REQUEST:
+        raise BadRequestError(
+            f"Upload between 1 and {settings.MAX_FILES_PER_REQUEST} files at a time"
+        )
+
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
         if len(projects) >= settings.MAX_PROJECTS_PER_USER:
