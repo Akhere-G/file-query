@@ -8,6 +8,7 @@ import { Project } from "@/features/project/types";
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/toast";
 import ProjectTabs from "@/features/files/components/ProjectTabs";
+import { isDemoSession } from "@/components/common/DemoBanner";
 
 interface DashboardPageProps {
   searchParams: Promise<{ projectId?: string }>;
@@ -18,6 +19,7 @@ export default async function DashboardPage({
   const params = await searchParams;
   const projectId = params.projectId ? Number(params.projectId) : null;
 
+  const isDemo = await isDemoSession();
   const res = await getProjects();
 
   const projects = res.success ? res.data : [];
@@ -32,7 +34,11 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-[90vh] flex">
-      <ProjectSidebar projects={projects} currentProjectId={projectId} />
+      <ProjectSidebar
+        projects={projects}
+        currentProjectId={projectId}
+        isDemo={isDemo}
+      />
       <TrackedTabs className="w-full flex-1">
         <TabsList className="w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="files">
@@ -42,7 +48,7 @@ export default async function DashboardPage({
             Chat
           </TabsTrigger>
         </TabsList>
-        <ProjectTabs projectId={projectId} />
+        <ProjectTabs projectId={projectId} isDemo={isDemo} />
         <Toaster />
       </TrackedTabs>
     </div>

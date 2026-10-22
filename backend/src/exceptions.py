@@ -30,3 +30,10 @@ class NotAuthorisedError(AppError):
 class TooManyRequestsError(AppError):
     status_code = 429
     default_message = "Too many requests"
+
+
+class DemoReadOnlyError(AppError):
+    status_code = 403
+    default_message = (
+        "The shared demo is read-only. Register to upload and manage your own files."
+    )
