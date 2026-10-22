@@ -1,4 +1,5 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TrackedTabs from "@/components/common/TrackedTabs";
 import ChatTab from "@/features/files/components/ChatTab";
 import FilesTab from "@/features/files/components/FilesTabs";
 import ProjectSidebar from "@/features/files/components/ProjectSidebar";
@@ -32,7 +33,7 @@ export default async function DashboardPage({
   return (
     <div className="min-h-[90vh] flex">
       <ProjectSidebar projects={projects} currentProjectId={projectId} />
-      <Tabs className="w-full flex-1">
+      <TrackedTabs className="w-full flex-1">
         <TabsList className="w-full flex justify-start">
           <TabsTrigger className="max-w-30" value="files">
             Files
@@ -43,7 +44,7 @@ export default async function DashboardPage({
         </TabsList>
         <ProjectTabs projectId={projectId} />
         <Toaster />
-      </Tabs>
+      </TrackedTabs>
     </div>
   );
 }

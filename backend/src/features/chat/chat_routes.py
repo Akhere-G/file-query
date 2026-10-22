@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
+from src import analytics
 from src.database import get_db
 from src.exceptions import NotAuthorisedError, TooManyRequestsError
 from src.features.auth import user_service
@@ -49,6 +50,9 @@ def send_chat_messsage(
     total_message_this_month = chat_service.get_messages_this_month(db, user.id)
     message_limit = settings.MAX_MONTHLY_MESSAGES
     if total_message_this_month > message_limit:
+        analytics.capture(
+            "usage_limit_reached", user.id, user.is_demo, limit="messages"
+        )
         if user.is_demo:
             raise TooManyRequestsError(
                 f"The shared demo has reached its limit of {message_limit} messages. Please try again later."
@@ -57,6 +61,6 @@ def send_chat_messsage(
             f"Free accounts can only send {settings.MAX_MONTHLY_MESSAGES} per month."
         )
     message_response = chat_service.send_user_message(
-        db, user.id, project_id, message.content
+        db, user.id, project_id, message.content, is_demo=user.is_demo
     )
     return message_response

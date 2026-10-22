@@ -12,6 +12,8 @@ import { getErrorMessage } from "@/lib/apiUtils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import DemoButton from "./DemoButton";
+import { track } from "@/lib/analytics/client";
+import { failureReason } from "@/lib/analytics/events";
 
 export default function LoginForm() {
   const [formError, setFormError] = useState<string | null>(null);
@@ -28,6 +30,9 @@ export default function LoginForm() {
       const result = await login(data.email, data.password);
 
       if (!result.success) {
+        track("login_failed", {
+          reason: failureReason(result.message ?? undefined, result.status),
+        });
         const unmatchedMessages: string[] = [];
 
         if (result.details) {
@@ -45,6 +50,7 @@ export default function LoginForm() {
 
         setFormError(result.message ?? (unmatchedMessages.join(" ") || null));
       } else {
+        track("login", { method: "password" });
         router.push("/dashboard");
       }
     } catch (error) {

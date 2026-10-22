@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getErrorMessage } from "@/lib/apiUtils";
 import { startDemo } from "../api/authApi";
+import { track } from "@/lib/analytics/client";
 
 interface DemoButtonProps {
   className?: string;
@@ -33,6 +34,7 @@ export default function DemoButton({
         return;
       }
 
+      track("demo_started");
       router.push("/dashboard");
     } catch (err) {
       setError(getErrorMessage(err));

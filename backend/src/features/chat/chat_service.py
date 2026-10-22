@@ -1,8 +1,10 @@
 import logging
 import re
+import time
 
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
+from src import analytics
 from src.features.chat.message_model import Citation, Message, MessageOwner
 from src.features.files.embedding_service import (
     NO_CONTEXT_RESPONSE,
@@ -10,6 +12,7 @@ from src.features.files.embedding_service import (
     get_response,
     rerank_chunks,
     rewrite_query,
+    usage_totals,
 )
 from src.features.files.file_model import Chunk, File, Project
 from src.settings import settings
@@ -86,29 +89,80 @@ def get_recent_conversation(
     )
 
 
-def send_user_message(db: Session, user_id: int, project_id: int, content: str):
-    conversation = get_recent_conversation(db, project_id)
-    create_message(db, project_id, MessageOwner.user, content)
+def send_user_message(
+    db: Session,
+    user_id: int,
+    project_id: int,
+    content: str,
+    is_demo: bool = False,
+    track: bool = True,
+):
+    started_at = time.monotonic()
+    stage = "history"
+    usage = {"input_tokens": 0, "output_tokens": 0}
+    usage_token = usage_totals.set(usage)
+    retrieval_counts: dict[str, int] = {}
 
-    search_query = rewrite_query(
-        content,
-        conversation,
-    )
-    chunks = get_relevant_chunks(db, project_id, search_query)
-    if not chunks:
-        response = "Sorry, I could not answer your question with the context provided."
-        ai_message = create_message(
-            db, project_id, MessageOwner.assistant, response, chunks
+    try:
+        conversation = get_recent_conversation(db, project_id)
+        stage = "save_message"
+        create_message(db, project_id, MessageOwner.user, content)
+        if track and not conversation:
+            analytics.capture("conversation_created", user_id, is_demo)
+
+        stage = "rewrite"
+        search_query = rewrite_query(
+            content,
+            conversation,
         )
-        return ai_message
-    else:
-        response = get_ai_response(content, chunks)
-        response = response or NO_CONTEXT_RESPONSE
-        citations = [] if NO_CONTEXT_RESPONSE.lower() in response.lower() else chunks
+        stage = "retrieval"
+        chunks = get_relevant_chunks(
+            db, project_id, search_query, stats=retrieval_counts
+        )
+        stage = "generation"
+        if not chunks:
+            response = (
+                "Sorry, I could not answer your question with the context provided."
+            )
+            citations = []
+        else:
+            response = get_ai_response(content, chunks)
+            response = response or NO_CONTEXT_RESPONSE
+            citations = (
+                [] if NO_CONTEXT_RESPONSE.lower() in response.lower() else chunks
+            )
+
+        stage = "save_response"
         ai_message = create_message(
             db, project_id, MessageOwner.assistant, response, citations
         )
-        return ai_message
+    except Exception as err:
+        if track:
+            analytics.capture(
+                "chat_response_failed",
+                user_id,
+                is_demo,
+                stage=stage,
+                error_type=type(err).__name__,
+            )
+        raise
+    finally:
+        usage_totals.reset(usage_token)
+
+    if track:
+        analytics.capture(
+            "chat_response_received",
+            user_id,
+            is_demo,
+            latency_ms=round((time.monotonic() - started_at) * 1000),
+            outcome="answered" if citations else "no_context",
+            citation_count=len(citations),
+            retrieved_semantic=retrieval_counts.get("semantic", 0),
+            retrieved_keyword=retrieval_counts.get("keyword", 0),
+            input_tokens=usage["input_tokens"],
+            output_tokens=usage["output_tokens"],
+        )
+    return ai_message
 
 
 def create_message(
@@ -142,6 +196,7 @@ def get_relevant_chunks(
     message: str,
     candidate_limit: int = settings.RAG_TOP_K,
     limit: int = settings.RAG_RERANK_K,
+    stats: dict[str, int] | None = None,
 ):
 
     semantic_chunks = get_relevant_chunks_by_semantics(
@@ -150,6 +205,10 @@ def get_relevant_chunks(
     keyword_chunks = get_relevant_chunks_by_keywords(
         db, project_id, message, candidate_limit
     )
+
+    if stats is not None:
+        stats["semantic"] = len(semantic_chunks)
+        stats["keyword"] = len(keyword_chunks)
 
     k = 60
     scores: dict[int, float] = {}

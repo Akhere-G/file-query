@@ -1,5 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.orm import Session
+from src import analytics
 from src.database import get_db
 from src.exceptions import NotAuthorisedError, NotFoundError, TooManyRequestsError
 from src.features.auth.user_model import User
@@ -58,11 +59,21 @@ def upload_files(
     if project_id is None:
         projects = project_service.get_projects(db, user.id)
         if len(projects) >= settings.MAX_PROJECTS_PER_USER:
+            analytics.capture(
+                "usage_limit_reached", user.id, user.is_demo, limit="projects"
+            )
             raise TooManyRequestsError(
                 f"Free accounts can only have up to {settings.MAX_PROJECTS_PER_USER} projects"
             )
         project = project_service.create_project(db, user.id, "New Project")
         project_id = project.id
+        analytics.capture(
+            "project_created",
+            user.id,
+            user.is_demo,
+            source="first_upload",
+            project_count=len(projects) + 1,
+        )
     else:
         project = project_service.get_project(db, project_id)
         if project.user_id != user.id:

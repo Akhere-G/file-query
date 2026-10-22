@@ -204,6 +204,14 @@ export default function PrivacyPage() {
               signed in and the service working. We do not use advertising or
               tracking cookies.
             </p>
+            <p>
+              We use PostHog (hosted in the EU) to understand how the service is
+              used, for example which pages are visited and whether uploads and
+              answers succeed. It runs in cookieless mode: it sets no cookies
+              and stores nothing on your device, and we do not link these events
+              to your account, email or name. We never send the content of your
+              documents or conversations to PostHog.
+            </p>
           </Section>
 
           <Section title="Your rights">

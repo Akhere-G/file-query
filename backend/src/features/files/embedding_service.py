@@ -1,5 +1,6 @@
 import json
 import logging
+from contextvars import ContextVar
 
 import boto3
 from mypy_boto3_bedrock_agent_runtime.client import (
@@ -21,6 +22,11 @@ def get_bedrock_agent_client() -> AgentsforBedrockRuntimeClient:
         "bedrock-agent-runtime",
         region_name="eu-central-1",
     )  # type: ignore
+
+
+usage_totals: ContextVar[dict[str, int] | None] = ContextVar(
+    "usage_totals", default=None
+)
 
 
 def get_bedrock_client() -> BedrockRuntimeClient:
@@ -50,6 +56,11 @@ def get_response(text: str) -> str | None:
         inferenceConfig={"maxTokens": 1000, "temperature": 0.2},
     )
     usage = response["usage"]
+
+    totals = usage_totals.get()
+    if totals is not None:
+        totals["input_tokens"] += usage["inputTokens"]
+        totals["output_tokens"] += usage["outputTokens"]
 
     logger.info(
         "Bedrock usage: input=%s, output=%s, total=%s",

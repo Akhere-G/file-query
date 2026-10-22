@@ -20,7 +20,12 @@ export type ApiResponse<T> =
 
 export type ActionResult =
   | { success: true }
-  | { success: false; message: string | null; details: FieldErrors | null };
+  | {
+      success: false;
+      message: string | null;
+      details: FieldErrors | null;
+      status?: number;
+    };
 
 const FALLBACK_ERROR_MESSAGE = "Something went wrong. Please try again.";
 

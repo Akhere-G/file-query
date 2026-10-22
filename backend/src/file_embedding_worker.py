@@ -1,6 +1,7 @@
 import json
 import logging
 
+from src import analytics
 from src.features.files.file_processing_service import process_file
 
 logger = logging.getLogger()
@@ -22,3 +23,7 @@ def handler(event, context):
             logger.exception("Failed to process SQS record")
 
             raise
+
+        finally:
+            # Lambda freezes after returning, so queued events must be sent now.
+            analytics.flush()

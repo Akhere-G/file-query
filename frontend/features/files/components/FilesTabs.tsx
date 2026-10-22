@@ -21,6 +21,8 @@ import {
 import { toast } from "@/components/ui/toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ProjectFile } from "../types";
+import { track } from "@/lib/analytics/client";
+import { failureReason, fileTypeLabel } from "@/lib/analytics/events";
 
 interface FileTabProps {
   files: ProjectFile[];
@@ -88,6 +90,18 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
       return;
     }
     setIsPending(true);
+
+    const startedAt = Date.now();
+    const uploadProps = {
+      file_count: uploadedFiles.length,
+      total_size_bytes: uploadedFiles.reduce((sum, f) => sum + f.size, 0),
+      file_types: [...new Set(uploadedFiles.map((f) => fileTypeLabel(f.type)))],
+      is_new_project: !projectId,
+    };
+    let stage: "presign" | "s3" | "confirm" = "presign";
+    let failureTracked = false;
+    track("file_upload_started", uploadProps);
+
     try {
       setErrorMessages({});
       const res = await uploadFiles(
@@ -96,6 +110,12 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
       );
 
       if (!res.success) {
+        failureTracked = true;
+        track("file_upload_failed", {
+          ...uploadProps,
+          stage,
+          reason: failureReason(res.message ?? undefined, res.status),
+        });
         setErrorMessages(
           res.details ?? { general: ["Something went wrong..."] },
         );
@@ -103,9 +123,35 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
       }
 
       const presignedFiles = res.data.files;
+      stage = "s3";
       const s3res = await sendFilesToS3(presignedFiles, uploadedFiles);
 
-      await confirmUploads(s3res);
+      stage = "confirm";
+      const confirmRes = await confirmUploads(s3res);
+
+      if (s3res.some((r) => r.error)) {
+        failureTracked = true;
+        track("file_upload_failed", {
+          ...uploadProps,
+          stage: "s3",
+          reason: "storage_error",
+        });
+      } else if (!confirmRes.success) {
+        failureTracked = true;
+        track("file_upload_failed", {
+          ...uploadProps,
+          stage,
+          reason: failureReason(
+            confirmRes.message ?? undefined,
+            confirmRes.status,
+          ),
+        });
+      } else {
+        track("file_upload_completed", {
+          ...uploadProps,
+          duration_ms: Date.now() - startedAt,
+        });
+      }
       setUploadedFiles([]);
       if (!projectId) {
         const params = new URLSearchParams(searchParams.toString());
@@ -114,6 +160,13 @@ const FilesTabs = ({ files, isLoading, error }: FileTabProps) => {
         router.push(path);
       }
     } catch (err) {
+      if (!failureTracked) {
+        track("file_upload_failed", {
+          ...uploadProps,
+          stage,
+          reason: "exception",
+        });
+      }
       if (err instanceof Error) {
         toast.add({ title: err.message, type: "error" });
       }

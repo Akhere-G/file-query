@@ -8,7 +8,9 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/common/Appsidebar";
 import { ThemeSync } from "@/components/common/ThemeSync";
 import { cookies } from "next/headers";
-import DemoBanner from "@/components/common/DemoBanner";
+import DemoBanner, { isDemoSession } from "@/components/common/DemoBanner";
+import AnalyticsProvider from "@/components/common/AnalyticsProvider";
+import { Suspense } from "react";
 
 const playfairDisplayHeading = Quicksand({
   subsets: ["latin"],
@@ -97,6 +99,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   ];
   const cookieStore = await cookies();
   const isAuth = !!cookieStore.get("access_token");
+  const isDemo = isAuth && (await isDemoSession());
   const links = isAuth
     ? defaultLinks.concat(authLinks)
     : defaultLinks.concat(guestLinks);
@@ -116,6 +119,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />
+        <Suspense fallback={null}>
+          <AnalyticsProvider isAuthenticated={isAuth} isDemo={isDemo} />
+        </Suspense>
         <SidebarProvider defaultOpen={false}>
           <div className="w-screen">
             <Header links={links} isAuth={isAuth} />

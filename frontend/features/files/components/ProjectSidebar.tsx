@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { track } from "@/lib/analytics/client";
 
 const ProjectSidebar = ({
   projects,
@@ -64,6 +65,7 @@ const ProjectSidebar = ({
     const res = await renameProject(selectedProject.id, newName.trim());
     setIsLoading(false);
     if (res.success) {
+      track("project_renamed");
       setRenameDialogOpen(false);
       router.refresh();
     } else {
@@ -78,6 +80,7 @@ const ProjectSidebar = ({
     const res = await deleteProject(selectedProject.id);
     setIsLoading(false);
     if (res.success) {
+      track("project_deleted");
       setDeleteDialogOpen(false);
       router.push("/dashboard");
     } else {

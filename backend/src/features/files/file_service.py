@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from mypy_boto3_s3.client import S3Client
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
+from src import analytics
 from src.exceptions import BadRequestError, NotFoundError
 from src.features.files.file_model import File, FileStatus, Project
 from src.features.files.file_schema import ConfirmUploadRequest, FileCreate
@@ -121,6 +122,7 @@ def create_files(
         upload_size += file.size
 
         if (used_storage + upload_size) > max_user_storage:
+            analytics.capture("usage_limit_reached", user_id, limit="storage")
             raise BadRequestError(
                 f"You can only upload a maximum of {max_user_storage_str}. You have used {convert_storage_to_GB(used_storage)} GB. Delete unused files to upload more."
             )

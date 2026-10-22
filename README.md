@@ -141,6 +141,22 @@ The frontend and backend are deployed independently, while document-processing j
 
 ---
 
+## Analytics (PostHog, EU cloud)
+
+Product analytics are optional and are disabled when the keys below are unset. The browser runs PostHog in cookieless mode (enable cookieless mode in the PostHog project settings too), so visitors are anonymous. The backend and Lambda worker send outcome events (processing results, chat latency, usage limits) under a salted hash of the user id with no person profile. No document text, file names, chat messages, retrieved text or emails are sent.
+
+| Variable | Where | Notes |
+| --- | --- | --- |
+| `NEXT_PUBLIC_POSTHOG_KEY` | frontend, build time | PostHog project API key (starts with `phc_`) |
+| `NEXT_PUBLIC_POSTHOG_HOST` | frontend, build time | defaults to `https://eu.i.posthog.com` |
+| `POSTHOG_API_KEY` | backend and Lambda worker | same project API key |
+| `POSTHOG_HOST` | backend and Lambda worker | defaults to `https://eu.i.posthog.com` |
+| `POSTHOG_ID_SALT` | backend and Lambda worker | long random secret; backend events are disabled without it |
+
+Only the project API key is used. Never put a personal/private PostHog key in any of these.
+
+---
+
 ## Goals
 
 FileQuery is designed to demonstrate practical full-stack and backend engineering alongside a production-style RAG architecture, including:

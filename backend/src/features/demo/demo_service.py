@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from src import analytics
 from src.exceptions import BadRequestError
 from src.features.auth.user_model import User
 from src.features.files.file_schema import FileCreate
@@ -19,6 +20,7 @@ def enforce_upload_limits(db: Session, user: User, files_in: list[FileCreate]):
     used_storage = get_used_storage(db, user.id)
     upload_size = sum(file.size for file in files_in)
     if used_storage + upload_size > settings.MAX_USER_STORAGE:
+        analytics.capture("usage_limit_reached", user.id, True, limit="demo_storage")
         raise BadRequestError(
             f"{DEMO_LIMIT_HINT} Its storage is full. Delete files to upload more."
         )
