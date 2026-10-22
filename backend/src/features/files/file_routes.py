@@ -16,6 +16,7 @@ from src.features.files.file_schema import (
     FileCreate,
     FileResponse,
 )
+from src.features.files.file_model import DEFAULT_PROJECT_NAME
 from src.features.project import project_service
 from src.limiter import limiter
 from src.settings import settings
@@ -65,7 +66,7 @@ def upload_files(
             raise TooManyRequestsError(
                 f"Free accounts can only have up to {settings.MAX_PROJECTS_PER_USER} projects"
             )
-        project = project_service.create_project(db, user.id, "New Project")
+        project = project_service.create_project(db, user.id, DEFAULT_PROJECT_NAME)
         project_id = project.id
         analytics.capture(
             "project_created",
