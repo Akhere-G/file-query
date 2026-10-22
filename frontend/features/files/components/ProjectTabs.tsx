@@ -8,8 +8,10 @@ import { InfoIcon } from "lucide-react";
 
 export default function ProjectTabs({
   projectId,
+  isDemo = false,
 }: {
   projectId: number | null;
+  isDemo?: boolean;
 }) {
   const { files, isLoading, error } = useGetFiles(Number(projectId));
 
@@ -52,7 +54,12 @@ export default function ProjectTabs({
         />
       </TabsContent>
       <TabsContent value="files">
-        <FilesTabs files={files} isLoading={isLoading} error={error} />
+        <FilesTabs
+          files={files}
+          isLoading={isLoading}
+          error={error}
+          isDemo={isDemo}
+        />
       </TabsContent>
     </>
   );

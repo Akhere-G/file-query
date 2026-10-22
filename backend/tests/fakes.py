@@ -59,9 +59,13 @@ class FakeBedrockRuntime:
 
     def converse(self, modelId, messages, **kwargs):
         self.converse_calls += 1
+        prompt = messages[0]["content"][0]["text"]
+        reply = self.answer
+        if "Search query:" in prompt:
+            reply = prompt.split("User question:")[1].split("Search query:")[0].strip()
         return {
             "usage": {"inputTokens": 1, "outputTokens": 1, "totalTokens": 2},
-            "output": {"message": {"content": [{"text": self.answer}]}},
+            "output": {"message": {"content": [{"text": reply}]}},
         }
 
 

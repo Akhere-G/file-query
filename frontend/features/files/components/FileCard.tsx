@@ -35,7 +35,13 @@ import { fileTypeLabel } from "@/lib/analytics/events";
 
 type ModalState = "delete" | null;
 
-export default function FileCard({ file }: { file: ProjectFile }) {
+export default function FileCard({
+  file,
+  isDemo = false,
+}: {
+  file: ProjectFile;
+  isDemo?: boolean;
+}) {
   const [modalState, setModalState] = useState<ModalState>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -130,9 +136,11 @@ export default function FileCard({ file }: { file: ProjectFile }) {
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => setModalState("delete")}>
-                  Delete
-                </DropdownMenuItem>
+                {!isDemo && (
+                  <DropdownMenuItem onClick={() => setModalState("delete")}>
+                    Delete
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={viewFileAction}>
                   View
                 </DropdownMenuItem>

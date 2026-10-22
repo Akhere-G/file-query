@@ -28,6 +28,7 @@ os.environ.update(
         "FRONTEND_URL": "http://localhost:3000",
         "POSTHOG_API_KEY": "",
         "POSTHOG_ID_SALT": "",
+        "INTERNAL_API_SECRET": "test-internal-secret",
     }
 )
 
@@ -59,7 +60,9 @@ def clean_state(request):
     from sqlalchemy import text
 
     from src.database import Base
+    from src.limiter import limiter
 
+    limiter.reset()
     with request.getfixturevalue("engine").begin() as conn:
         names = ", ".join(f'"{table.name}"' for table in Base.metadata.sorted_tables)
         conn.execute(text(f"TRUNCATE {names} RESTART IDENTITY CASCADE"))
@@ -81,11 +84,27 @@ def aws_fakes(monkeypatch):
     return install_fakes(monkeypatch)
 
 
+class FakeRedis:
+    def __init__(self):
+        self.counts = {}
+
+    def incr(self, key):
+        self.counts[key] = self.counts.get(key, 0) + 1
+        return self.counts[key]
+
+    def expire(self, key, seconds):
+        pass
+
+
 @pytest.fixture
-def client(engine, aws_fakes):
+def client(engine, aws_fakes, monkeypatch):
     from fastapi.testclient import TestClient
 
+    from src.features.demo import demo_service
     from src.main import app
+
+    fake_redis = FakeRedis()
+    monkeypatch.setattr(demo_service, "get_redis", lambda: fake_redis)
 
     with TestClient(app, raise_server_exceptions=False) as test_client:
         yield test_client
