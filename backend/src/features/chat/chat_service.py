@@ -89,26 +89,22 @@ def get_recent_conversation(
     )
 
 
-def send_user_message(
+def answer_question(
     db: Session,
     user_id: int,
     project_id: int,
     content: str,
+    conversation: str,
     is_demo: bool = False,
     track: bool = True,
 ):
     started_at = time.monotonic()
-    stage = "history"
+    stage = "rewrite"
     usage = {"input_tokens": 0, "output_tokens": 0}
     usage_token = usage_totals.set(usage)
     retrieval_counts: dict[str, int] = {}
 
     try:
-        conversation = get_recent_conversation(db, project_id)
-        if track and not conversation:
-            analytics.capture("conversation_created", user_id, is_demo)
-
-        stage = "rewrite"
         search_query = rewrite_query(
             content,
             conversation,
@@ -129,11 +125,6 @@ def send_user_message(
             citations = (
                 [] if NO_CONTEXT_RESPONSE.lower() in response.lower() else chunks
             )
-
-        stage = "save_response"
-        ai_message = create_message_pair(
-            db, project_id, content, response, citations
-        )
     except Exception as err:
         if track:
             analytics.capture(
@@ -160,7 +151,25 @@ def send_user_message(
             input_tokens=usage["input_tokens"],
             output_tokens=usage["output_tokens"],
         )
-    return ai_message
+    return response, citations
+
+
+def send_user_message(
+    db: Session,
+    user_id: int,
+    project_id: int,
+    content: str,
+    is_demo: bool = False,
+    track: bool = True,
+):
+    conversation = get_recent_conversation(db, project_id)
+    if track and not conversation:
+        analytics.capture("conversation_created", user_id, is_demo)
+
+    response, citations = answer_question(
+        db, user_id, project_id, content, conversation, is_demo, track
+    )
+    return create_message_pair(db, project_id, content, response, citations)
 
 
 def create_message_pair(

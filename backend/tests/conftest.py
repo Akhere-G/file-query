@@ -81,11 +81,27 @@ def aws_fakes(monkeypatch):
     return install_fakes(monkeypatch)
 
 
+class FakeRedis:
+    def __init__(self):
+        self.counts = {}
+
+    def incr(self, key):
+        self.counts[key] = self.counts.get(key, 0) + 1
+        return self.counts[key]
+
+    def expire(self, key, seconds):
+        pass
+
+
 @pytest.fixture
-def client(engine, aws_fakes):
+def client(engine, aws_fakes, monkeypatch):
     from fastapi.testclient import TestClient
 
+    from src.features.demo import demo_service
     from src.main import app
+
+    fake_redis = FakeRedis()
+    monkeypatch.setattr(demo_service, "get_redis", lambda: fake_redis)
 
     with TestClient(app, raise_server_exceptions=False) as test_client:
         yield test_client
