@@ -16,10 +16,7 @@ export async function getFiles(projectId: number) {
     },
   });
 
-  const data = await parseResponse<ProjectFile[]>(response);
-  revalidatePath("/dashboard");
-
-  return data;
+  return parseResponse<ProjectFile[]>(response);
 }
 export async function uploadFiles(files: File[], projectId?: number) {
   const fileData = files.map((file) => ({
