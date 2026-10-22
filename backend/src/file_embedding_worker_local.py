@@ -22,6 +22,8 @@ def main():
             "storage_key": file.storage_key,
             "mime_type": file.mime_type,
             "file_id": file.id,
+            "project_id": file.project_id,
+            "rename_project": False,
         }
         process_file(job)
     finally:

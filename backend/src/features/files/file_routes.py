@@ -16,6 +16,7 @@ from src.features.files.file_schema import (
     FileCreate,
     FileResponse,
 )
+from src.features.files.file_model import DEFAULT_PROJECT_NAME
 from src.features.project import project_service
 from src.limiter import limiter
 from src.settings import settings
@@ -62,7 +63,7 @@ def upload_files(
             raise TooManyRequestsError(
                 f"Free accounts can only have up to {settings.MAX_PROJECTS_PER_USER} projects"
             )
-        project = project_service.create_project(db, user.id, "New Project")
+        project = project_service.create_project(db, user.id, DEFAULT_PROJECT_NAME)
         project_id = project.id
         analytics.capture(
             "project_created",
@@ -99,12 +100,16 @@ def confirm_uploads(
             raise NotAuthorisedError("Not allowed to edit this file")
 
     files = file_service.confirm_uploads(db, user.id, confirmed_files)
+    # Only name projects that still have the placeholder name; never overwrite a user's name.
+    rename_project = bool(files) and files[0].project.name == DEFAULT_PROJECT_NAME
     if settings.ENVIRONMENT == "production":
         logger.info("enqueuing files")
-        enqueue_files(files)
+        enqueue_files(files, rename_project=rename_project)
     else:
         logger.info("local file processing")
-        background_tasks.add_task(process_files_locally, files)
+        background_tasks.add_task(
+            process_files_locally, files, rename_project=rename_project
+        )
     return files
 
 
