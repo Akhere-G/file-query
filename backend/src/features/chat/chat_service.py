@@ -198,7 +198,12 @@ def create_message_pair(
             ai_message.chunks = chunks
         db.add(ai_message)
         db.commit()
-        return ai_message
+        # Load citations and their files in two queries instead of one per citation.
+        return db.scalars(
+            select(Message)
+            .options(selectinload(Message.chunks).selectinload(Chunk.file))
+            .where(Message.id == ai_message.id)
+        ).one()
     except Exception:
         db.rollback()
         raise
