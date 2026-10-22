@@ -1,6 +1,7 @@
 import enum
 import json
 import logging
+import re
 import time
 from typing import TypedDict
 
@@ -13,6 +14,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from src import analytics, aws
 from src.database import SessionLocal, get_db
+from src.exceptions import ProcessingLimitError
 from src.features.auth.user_model import User
 from src.features.chat.message_model import Citation, Message
 from src.features.files.embedding_service import generate_embedding, get_response
@@ -83,11 +85,29 @@ def capture_file_event(db, file_id: int, event: str, **properties):
         logger.debug("Could not send analytics event %s", event, exc_info=True)
 
 
+READ_ERROR_MESSAGE = (
+    "We couldn't read this file. Check that it isn't corrupt or password-protected."
+)
+
+
+def mark_file_error(file_id: int, message: str):
+    with SessionLocal() as db:
+        file = db.get(File, file_id)
+        if file and file.status == FileStatus.processing:
+            file.status = FileStatus.error
+            file.error = message
+            db.commit()
+
+
 def process_file(job: FileJob):
     try:
         file_bytes = download_file(job["storage_key"])
         text = extract_file(file_bytes, job["mime_type"])
         chunks = chunk_text(text)
+        if len(chunks) > settings.MAX_CHUNKS_PER_FILE:
+            raise ProcessingLimitError(
+                "This file is too large to process. Split it into smaller files."
+            )
     except Exception as err:
         with SessionLocal() as db:
             capture_file_event(
@@ -98,7 +118,12 @@ def process_file(job: FileJob):
                 stage="extract",
                 error_type=type(err).__name__,
             )
-        raise
+        logger.exception("Could not read file %s", job["file_id"])
+        mark_file_error(
+            job["file_id"],
+            err.message if isinstance(err, ProcessingLimitError) else READ_ERROR_MESSAGE,
+        )
+        return
 
     process_embeddings(
         file_id=job["file_id"],
@@ -212,14 +237,22 @@ def chunk_markdown(
     return chunks
 
 
+def derive_chunk_title(content: str) -> str | None:
+    lines = [line.strip() for line in content.splitlines() if line.strip()]
+    heading = next((line for line in lines if re.match(r"^#{1,6}\s+\S", line)), None)
+    text = re.sub(r"^#{1,6}\s+", "", heading) if heading else (lines[0] if lines else "")
+    text = re.sub(r"[*_`>|#]", "", text).strip()
+    if not heading:
+        text = re.split(r"(?<=[.!?])\s", text)[0]
+    return text[:100].strip() or None
+
+
 def create_chunks(file_id: int, chunks: list[str]) -> list[Chunk]:
     return [
         Chunk(
             file_id=file_id,
             content=content,
-            title=get_response(
-                f"Create a title for this chunk based on its content. Just return the title with no quotes and no markdown and make sure it is one sentence, less than 100 characters. Content = {content}"
-            ),
+            title=derive_chunk_title(content),
             embedding=generate_embedding(content),
         )
         for content in chunks
