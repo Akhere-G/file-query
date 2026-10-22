@@ -3,6 +3,7 @@ import * as z from "zod";
 export const Password = z
   .string()
   .min(1, { error: "Password is required" })
+  .max(128, { error: "Password must be at most 128 characters." })
   .superRefine((val, ctx) => {
     if (!/[0-9]/.test(val)) {
       ctx.addIssue({
