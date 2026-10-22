@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     MAX_USER_STORAGE: int = 1024 * 1024 * 1024 * 2
     DEMO_USER_EMAIL: str = "demo@example.com"
     DEMO_SEED_TIMEOUT_SECONDS: int = 600
+    DEMO_TOKEN_EXPIRE_MINUTES: int = 120
+    DEMO_MAX_DAILY_MESSAGES: int = 100
     BEDROCK_RERANK_REGION: str = "eu-central-1"
     BEDROCK_RERANK_MODEL_ARN: str = (
         "arn:aws:bedrock:eu-central-1::foundation-model/cohere.rerank-v3-5:0"

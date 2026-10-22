@@ -113,7 +113,7 @@ def get_access_token(email: str):
 def get_demo_access_token(user: User):
     access_token = create_access_token(
         data={"sub": user.email, "demo": True},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        expires_delta=timedelta(minutes=settings.DEMO_TOKEN_EXPIRE_MINUTES),
     )
 
     return Token(access_token=access_token, token_type="bearer")

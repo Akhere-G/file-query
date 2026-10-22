@@ -1,26 +1,62 @@
-from sqlalchemy.orm import Session
-from src import analytics
-from src.exceptions import BadRequestError
-from src.features.auth.user_model import User
-from src.features.files.file_schema import FileCreate
-from src.features.files.file_service import get_used_storage
+import logging
+from datetime import datetime, timezone
+
+from src.exceptions import TooManyRequestsError
+from src.features.chat.chat_schema import MessageResponse
+from src.features.files.file_model import Chunk
+from src.features.files.file_schema import ChunkResponse
 from src.settings import settings
 
-DEMO_LIMIT_HINT = "This is a shared demo account."
+logger = logging.getLogger(__name__)
+
+_redis_client = None
 
 
-def enforce_upload_limits(db: Session, user: User, files_in: list[FileCreate]):
-    for file in files_in:
-        if file.size > settings.MAX_FILE_SIZE:
-            max_mb = settings.MAX_FILE_SIZE
-            raise BadRequestError(
-                f"{DEMO_LIMIT_HINT} Files must be {max_mb} MB or smaller."
-            )
+def _redis():
+    """Redis client, or None when REDIS_URI is not a redis URL (for example in tests)."""
+    global _redis_client
+    if not settings.REDIS_URI.startswith(("redis://", "rediss://", "unix://")):
+        return None
+    if _redis_client is None:
+        import redis
 
-    used_storage = get_used_storage(db, user.id)
-    upload_size = sum(file.size for file in files_in)
-    if used_storage + upload_size > settings.MAX_USER_STORAGE:
-        analytics.capture("usage_limit_reached", user.id, True, limit="demo_storage")
-        raise BadRequestError(
-            f"{DEMO_LIMIT_HINT} Its storage is full. Delete files to upload more."
+        _redis_client = redis.Redis.from_url(settings.REDIS_URI)
+    return _redis_client
+
+
+def enforce_daily_chat_limit():
+    """The demo is one shared account and its chats are not saved, so the usual
+    per-user monthly count in the database cannot cap it. Count in Redis instead."""
+    client = _redis()
+    if client is None:
+        return
+
+    key = f"demo:chat:{datetime.now(timezone.utc):%Y-%m-%d}"
+    try:
+        count = client.incr(key)
+        if count == 1:
+            client.expire(key, 2 * 24 * 60 * 60)
+    except Exception:
+        logger.warning("Could not check the demo chat limit", exc_info=True)
+        return
+
+    if count > settings.DEMO_MAX_DAILY_MESSAGES:
+        raise TooManyRequestsError(
+            "The shared demo has reached its daily limit of "
+            f"{settings.DEMO_MAX_DAILY_MESSAGES} questions. Please try again tomorrow."
         )
+
+
+def to_transient_message(
+    project_id: int, answer: str, chunks: list[Chunk]
+) -> MessageResponse:
+    """An answer that is returned to the visitor but never written to the database."""
+    now = datetime.now(timezone.utc)
+    return MessageResponse(
+        id=-int(now.timestamp() * 1000),
+        project_id=project_id,
+        owner="assistant",
+        content=answer,
+        created_at=now,
+        citations=[ChunkResponse.model_validate(chunk) for chunk in chunks],
+    )
