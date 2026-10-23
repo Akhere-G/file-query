@@ -38,6 +38,15 @@ os.environ.update(
 PASSWORD = "Passw0rdTest"
 
 
+@pytest.fixture(scope="session", autouse=True)
+def cheap_password_hashing():
+    """bcrypt at production cost dominates test time; correctness is unaffected."""
+    from src.features.auth import user_service
+
+    user_service.pwd_context.update(bcrypt_sha256__default_rounds=4)
+    user_service.DUMMY_HASH = user_service.pwd_context.hash("not-a-real-password")
+
+
 @pytest.fixture(scope="session")
 def engine():
     from sqlalchemy import text
