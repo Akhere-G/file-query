@@ -1,5 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 import { getApiBaseUrl, getClientHeaders } from "@/lib/api";
@@ -85,4 +86,7 @@ export async function startDemo(): Promise<ActionResult> {
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete("access_token");
+  // Redirecting stops Next from re-rendering the current (protected) page
+  // without a token, which throws in attachToken().
+  redirect("/login");
 }

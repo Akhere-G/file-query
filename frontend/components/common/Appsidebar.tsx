@@ -24,7 +24,6 @@ export function AppSidebar({ links, isAuth }: AppSidebarProps) {
 
   async function logoutFn() {
     await logout();
-    window.location.reload();
   }
 
   return (
