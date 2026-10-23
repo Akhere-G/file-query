@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 import pytest
 import sqlalchemy as sa
 
+pytestmark = pytest.mark.integration  # creates its own scratch database
+
 SCRATCH = "filequery_migration_test"
 INDEXES = {
     "ix_projects_user_id",

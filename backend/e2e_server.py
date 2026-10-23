@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
+from typing import Annotated
 from urllib.parse import urlparse
 
 BACKEND_DIR = Path(__file__).resolve().parent
@@ -32,7 +33,7 @@ if parsed.hostname not in {"localhost", "127.0.0.1"} or not parsed.path.endswith
 os.chdir(tempfile.mkdtemp(prefix="filequery-e2e-"))
 sys.path.insert(0, str(BACKEND_DIR))
 
-import dotenv  # noqa: E402
+import dotenv
 
 dotenv.load_dotenv = lambda *args, **kwargs: False
 
@@ -74,14 +75,15 @@ def recreate_database():
 
 recreate_database()
 
-from fastapi import File, Form, HTTPException, UploadFile  # noqa: E402
-from sqlalchemy import text  # noqa: E402
-from src import aws  # noqa: E402
-from src.database import Base, engine  # noqa: E402
-from src.features.demo import demo_service  # noqa: E402
-from src.main import app, register_models  # noqa: E402
-from src.settings import settings  # noqa: E402
-from tests.fakes import FakeS3, Fakes  # noqa: E402
+from fastapi import File, Form, HTTPException, UploadFile
+from sqlalchemy import text
+
+from src import aws
+from src.database import Base, engine
+from src.features.demo import demo_service
+from src.main import app, register_models
+from src.settings import settings
+from tests.fakes import Fakes, FakeS3
 
 assert settings.REDIS_URI == "memory://" and settings.DATABASE_URL == DATABASE_URL
 
@@ -144,12 +146,12 @@ demo_service.get_redis = lambda: _redis
 
 
 @app.post("/__fake_s3/upload", status_code=204)
-async def fake_s3_upload(key: str = Form(...), file: UploadFile = File(...)):
+async def fake_s3_upload(key: Annotated[str, Form()], file: Annotated[UploadFile, File()]):
     data = await file.read()
     for condition in fakes.s3.conditions.get(key, []):
-        if isinstance(condition, list) and condition[0] == "content-length-range":
-            if not condition[1] <= len(data) <= condition[2]:
-                raise HTTPException(status_code=403, detail="EntityTooLarge or EntityTooSmall")
+        is_size_rule = isinstance(condition, list) and condition[0] == "content-length-range"
+        if is_size_rule and not condition[1] <= len(data) <= condition[2]:
+            raise HTTPException(status_code=403, detail="EntityTooLarge or EntityTooSmall")
     fakes.s3.put(key, data)
 
 

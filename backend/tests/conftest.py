@@ -150,9 +150,11 @@ def make_user(client):
 
 
 def pytest_collection_modifyitems(items):
-    # Anything that touches the DB is an integration test unless it is explicitly marked.
+    # Tests that use a DB fixture are integration tests; everything else is a unit test that
+    # runs without TEST_DATABASE_URL. A test that needs the database some other way must say so
+    # with an explicit marker (see test_migrations.py).
     for item in items:
         if item.get_closest_marker("unit") or item.get_closest_marker("integration"):
             continue
-        if {"db", "client", "engine", "make_user"} & set(item.fixturenames):
-            item.add_marker(pytest.mark.integration)
+        uses_db = {"db", "client", "engine", "make_user"} & set(item.fixturenames)
+        item.add_marker(pytest.mark.integration if uses_db else pytest.mark.unit)

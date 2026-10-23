@@ -65,7 +65,7 @@ describe("proxy: bad tokens", () => {
     ["expired", tokenExpiringIn(-10)],
     ["missing an expiry", tokenExpiringIn(undefined)],
     ["malformed", "not-a-jwt"],
-  ])("treats an %s token as signed out and clears the cookie", (_, token) => {
+  ])("treats a token that is %s as signed out and clears the cookie", (_, token) => {
     const response = proxy(request("/dashboard", token));
 
     expect(location(response)).toContain("/login?callbackUrl=%2Fdashboard");

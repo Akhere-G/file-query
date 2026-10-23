@@ -6,9 +6,9 @@ export const PASSWORD = "Passw0rdTest";
 
 export const test = base.extend({
   // Analytics must never leave the machine during tests.
-  page: async ({ page }, use) => {
+  page: async ({ page }, provide) => {
     await page.route(/posthog\.com/, (route) => route.abort());
-    await use(page);
+    await provide(page);
   },
 });
 
