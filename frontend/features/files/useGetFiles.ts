@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getFiles } from "./server-actions";
 import { ProjectFile } from "./types";
 
@@ -13,6 +13,7 @@ export default function useGetFiles(projectId: number) {
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const isNewProject = oldProjectId.current !== projectId;
@@ -77,7 +78,9 @@ export default function useGetFiles(projectId: number) {
       cancelled = true;
       clearTimeout(timeoutId);
     };
-  }, [projectId]);
+  }, [projectId, refreshKey]);
 
-  return { files, isLoading, error };
+  const refetch = useCallback(() => setRefreshKey((key) => key + 1), []);
+
+  return { files, isLoading, error, refetch };
 }
