@@ -29,8 +29,14 @@ interface FileTabProps {
   isLoading: boolean;
   error: string;
   isDemo?: boolean;
+  onUploaded: () => void;
 }
-const FilesTabs = ({ files, error, isDemo = false }: FileTabProps) => {
+const FilesTabs = ({
+  files,
+  error,
+  isDemo = false,
+  onUploaded,
+}: FileTabProps) => {
   const [isPending, setIsPending] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
     {},
@@ -174,7 +180,7 @@ const FilesTabs = ({ files, error, isDemo = false }: FileTabProps) => {
         const path = pathname + "?" + params.toString();
         router.push(path);
       }
-      setTimeout(window.location.reload, 150);
+      onUploaded();
     } catch (err) {
       if (!failureTracked) {
         track("file_upload_failed", {
