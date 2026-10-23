@@ -39,7 +39,7 @@ class SimpleProject:
 
 class TestAnswersUseRetrievedEvidence:
     def test_answer_is_taken_from_the_document_and_cites_it(self, client, policy_project):
-        res = ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        res = ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         body = res.json()
         assert res.status_code == 200, res.text
@@ -50,18 +50,18 @@ class TestAnswersUseRetrievedEvidence:
     def test_generation_prompt_contains_the_evidence_and_the_original_question(
         self, client, policy_project, semantic_aws
     ):
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         (prompt,) = semantic_aws.bedrock.answer_prompts
         context = prompt.split("Context:")[1]
         assert "[Source 1]" in context
         assert "Refunds are accepted within thirty days" in context
-        assert "How many days do refunds take?" in prompt.split("Context:")[0]
+        assert "How many days are refunds accepted?" in prompt.split("Context:")[0]
 
     def test_the_model_is_told_to_refuse_when_the_context_is_insufficient(
         self, client, policy_project, semantic_aws
     ):
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
         (prompt,) = semantic_aws.bedrock.answer_prompts
         assert NO_CONTEXT_RESPONSE in prompt
         assert "ONLY information explicitly supported by the provided context" in prompt
@@ -77,7 +77,7 @@ class TestAnswersUseRetrievedEvidence:
         assert all(c["fileId"] for c in body["citations"])
 
     def test_citations_survive_a_reload_of_the_conversation(self, client, policy_project):
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         listing = client.get(
             f"/api/projects/{policy_project.id}/messages", headers=policy_project.headers
@@ -103,7 +103,7 @@ class TestQueryRewriting:
     def test_follow_up_is_rewritten_for_retrieval_but_answered_as_asked(
         self, client, policy_project, semantic_aws
     ):
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
         semantic_aws.bedrock.embedded_texts.clear()
         semantic_aws.bedrock.rewrites["And for shipping?"] = "How many days does shipping take?"
 
@@ -114,11 +114,11 @@ class TestQueryRewriting:
         assert "And for shipping?" in semantic_aws.bedrock.answer_prompts[-1]
 
     def test_rewrite_prompt_receives_the_previous_turns(self, client, policy_project, semantic_aws):
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
         ask(client, policy_project.id, policy_project.headers, "And for shipping?")
 
         rewrite_prompt = next(p for p in reversed(semantic_aws.bedrock.prompts) if "Search query:" in p)
-        assert "user: How many days do refunds take?" in rewrite_prompt
+        assert "user: How many days are refunds accepted?" in rewrite_prompt
         assert "assistant: " in rewrite_prompt
 
 
@@ -212,7 +212,7 @@ class TestSafetyAndFailure:
     ):
         semantic_aws.bedrock.converse_error = RuntimeError("bedrock down")
 
-        res = ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        res = ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         assert res.status_code == 500
         assert db.query(Message).count() == 0
@@ -223,7 +223,7 @@ class TestSafetyAndFailure:
     ):
         semantic_aws.bedrock.embed_error = RuntimeError("embedding down")
 
-        res = ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        res = ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         assert res.status_code == 500
         assert db.query(Message).count() == 0
@@ -255,7 +255,7 @@ class TestHistory:
 
     def test_conversations_are_kept_per_project(self, client, db, policy_project, semantic_aws):
         other = add_project(db, policy_project.user["id"], "Other")
-        ask(client, policy_project.id, policy_project.headers, "How many days do refunds take?")
+        ask(client, policy_project.id, policy_project.headers, "How many days are refunds accepted?")
 
         listing = client.get(f"/api/projects/{other}/messages", headers=policy_project.headers).json()
 

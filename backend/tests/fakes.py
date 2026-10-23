@@ -128,15 +128,17 @@ class FakeBedrockRuntime:
         question = prompt.split("User question:")[1].split("Context:")[0].strip()
         context = prompt.split("Context:")[1].rsplit("Answer:", 1)[0]
         wanted = set(content_terms(question))
-        needed = 1 if len(wanted) <= 2 else 2
         best, best_score = None, 0
         for sentence in re.split(r"(?<=[.!?])\s+|\n+", context):
-            if sentence.startswith("[Source"):
+            if sentence.strip().startswith(("[Source", "#")):
                 continue
             score = len(wanted & set(content_terms(sentence)))
             if score > best_score:
                 best, best_score = sentence.strip(), score
-        return best if best and best_score >= needed else NO_CONTEXT_RESPONSE
+        # Answer only when one sentence covers most of the question; otherwise refuse,
+        # like a model told to refuse when the context does not really answer the question.
+        covered = best_score / len(wanted) if wanted else 0
+        return best if best and best_score >= 1 and covered > 0.5 else NO_CONTEXT_RESPONSE
 
 
 class FakeBedrockAgent:

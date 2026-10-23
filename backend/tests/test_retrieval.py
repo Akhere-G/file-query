@@ -121,7 +121,7 @@ class TestHybridRanking:
 
         get_relevant_chunks(None, 1, "q")
 
-        assert [x.id for x in stubbed.reranked_with.chunks][0] == 2
+        assert stubbed.reranked_with.chunks[0].id == 2
 
     def test_rank_position_decides_between_single_list_hits(self, stubbed):
         a, b = self.chunk(1), self.chunk(2)

@@ -1,0 +1,21 @@
+{
+  "description": "Fixed RAG evaluation set. Each case names the file and the phrase the retrieved evidence must contain; answers are checked for properties (keywords, refusal), never for exact wording.",
+  "cases": [
+    {"id": "annual-leave", "question": "How many days of annual leave do employees get?", "expected_file": "hr_handbook.md", "expected_evidence": "twenty five days of paid annual leave", "answer_keywords": ["twenty five"]},
+    {"id": "sick-note", "question": "When do I need a doctor's note for sickness?", "expected_file": "hr_handbook.md", "expected_evidence": "doctor's note is required after three consecutive days", "answer_keywords": ["three consecutive days"]},
+    {"id": "remote-days", "question": "How many days per week can I work remotely?", "expected_file": "hr_handbook.md", "expected_evidence": "up to two days per week", "answer_keywords": ["two days per week"]},
+    {"id": "parental-leave", "question": "How long is parental leave?", "expected_file": "hr_handbook.md", "expected_evidence": "sixteen weeks of fully paid parental leave", "answer_keywords": ["sixteen weeks"]},
+    {"id": "password-rotation", "question": "How often must passwords be changed?", "expected_file": "it_security.md", "expected_evidence": "changed every ninety days", "answer_keywords": ["ninety days"]},
+    {"id": "vpn-mfa", "question": "Is multi-factor authentication required for the VPN?", "expected_file": "it_security.md", "expected_evidence": "Multi-factor authentication is required for the VPN", "answer_keywords": ["required"]},
+    {"id": "battery-life", "question": "How long does the Orbit Pro battery last?", "expected_file": "product_faq.md", "expected_evidence": "battery lasts fourteen hours", "answer_keywords": ["fourteen hours"]},
+    {"id": "warranty", "question": "How long is the Orbit Pro warranty?", "expected_file": "product_faq.md", "expected_evidence": "two year limited warranty", "answer_keywords": ["two year"]},
+    {"id": "hotel-limit", "question": "What is the hotel limit per night?", "expected_file": "travel_policy.md", "expected_evidence": "150 euros per night", "answer_keywords": ["150 euros"]},
+    {"id": "expense-deadline", "question": "Within how many days must receipts be submitted?", "expected_file": "travel_policy.md", "expected_evidence": "submitted within fourteen days", "answer_keywords": ["fourteen days"]}
+  ],
+  "unanswerable": [
+    {"id": "off-topic", "question": "Who won the football world cup in 2018?"},
+    {"id": "off-topic-science", "question": "How far away is the planet Neptune?"},
+    {"id": "related-but-absent", "question": "What dental insurance do employees receive?"},
+    {"id": "related-but-absent-product", "question": "What colour options does the Orbit Pro come in?"}
+  ]
+}
