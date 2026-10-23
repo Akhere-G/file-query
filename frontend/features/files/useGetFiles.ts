@@ -15,12 +15,13 @@ export default function useGetFiles(projectId: number) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (oldProjectId.current !== projectId) {
+    const isNewProject = oldProjectId.current !== projectId;
+    if (isNewProject) {
       setFiles([]);
       oldProjectId.current = projectId;
     }
     async function fetchFiles() {
-      setIsLoading(true);
+      if (isNewProject && polls === 1) setIsLoading(true);
 
       try {
         if (projectId <= 0) return [];
