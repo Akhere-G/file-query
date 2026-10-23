@@ -17,7 +17,6 @@ export default function Header({ links, isAuth }: HeaderProps) {
   async function logoutFn() {
     track("logout", undefined, { sendInstantly: true });
     await logout();
-    window.location.reload();
   }
 
   return (
