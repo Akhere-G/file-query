@@ -46,8 +46,7 @@ class FakeSQS:
 
 
 STOPWORDS = frozenset(
-    "a an and are as at be by do does for from how i in is it its of on or that the "
-    "this to was what when where which who why with you your".split()
+    ["a", "an", "and", "are", "as", "at", "be", "by", "do", "does", "for", "from", "how", "i", "in", "is", "it", "its", "of", "on", "or", "that", "the", "this", "to", "was", "what", "when", "where", "which", "who", "why", "with", "you", "your"]
 )
 EMBEDDING_DIMENSIONS = 1024
 
