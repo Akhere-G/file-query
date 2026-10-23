@@ -11,6 +11,7 @@ class FakeS3:
     def __init__(self):
         self.objects = {}
         self.deleted = []
+        self.presigned_posts = []
 
     def put(self, key, data):
         self.objects[key] = data
@@ -28,6 +29,7 @@ class FakeS3:
         self.objects.pop(Key, None)
 
     def generate_presigned_post(self, Bucket, Key, **kwargs):
+        self.presigned_posts.append({"Key": Key, **kwargs})
         return {"url": f"https://s3.test/{Bucket}", "fields": {"key": Key}}
 
     def generate_presigned_url(self, ClientMethod, Params, ExpiresIn):
