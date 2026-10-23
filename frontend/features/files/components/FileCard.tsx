@@ -38,9 +38,11 @@ type ModalState = "delete" | null;
 export default function FileCard({
   file,
   isDemo = false,
+  onDeleted,
 }: {
   file: ProjectFile;
   isDemo?: boolean;
+  onDeleted?: () => void;
 }) {
   const [modalState, setModalState] = useState<ModalState>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -63,6 +65,7 @@ export default function FileCard({
         });
         toast.add({ title: "Deleted file" });
         setModalState(null);
+        onDeleted?.();
       } else {
         toast.add({ title: "Could not delete file", type: "error" });
       }

@@ -13,7 +13,7 @@ export default function ProjectTabs({
   projectId: number | null;
   isDemo?: boolean;
 }) {
-  const { files, isLoading, error } = useGetFiles(Number(projectId));
+  const { files, isLoading, error, refetch } = useGetFiles(Number(projectId));
 
   const someFilesProcessing =
     files.length > 0 &&
@@ -59,6 +59,7 @@ export default function ProjectTabs({
           isLoading={isLoading}
           error={error}
           isDemo={isDemo}
+          onFilesChanged={refetch}
         />
       </TabsContent>
     </>
