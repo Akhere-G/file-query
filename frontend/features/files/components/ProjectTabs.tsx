@@ -59,7 +59,7 @@ export default function ProjectTabs({
           isLoading={isLoading}
           error={error}
           isDemo={isDemo}
-          onUploaded={refetch}
+          onFilesChanged={refetch}
         />
       </TabsContent>
     </>
