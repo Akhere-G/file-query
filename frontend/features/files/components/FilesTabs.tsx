@@ -29,13 +29,13 @@ interface FileTabProps {
   isLoading: boolean;
   error: string;
   isDemo?: boolean;
-  onUploaded: () => void;
+  onFilesChanged: () => void;
 }
 const FilesTabs = ({
   files,
   error,
   isDemo = false,
-  onUploaded,
+  onFilesChanged,
 }: FileTabProps) => {
   const [isPending, setIsPending] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Record<string, string[]>>(
@@ -180,7 +180,7 @@ const FilesTabs = ({
         const path = pathname + "?" + params.toString();
         router.push(path);
       }
-      onUploaded();
+      onFilesChanged();
     } catch (err) {
       if (!failureTracked) {
         track("file_upload_failed", {
@@ -231,7 +231,7 @@ const FilesTabs = ({
 
           <div className="space-y-2 flex flex-wrap gap-2">
             {files.map((file) => (
-              <FileCard key={file.id} file={file} />
+              <FileCard key={file.id} file={file} onDeleted={onFilesChanged} />
             ))}
           </div>
         </div>
