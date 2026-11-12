@@ -5,16 +5,19 @@ import pytest
 
 TEST_DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
 
-if not TEST_DATABASE_URL:
-    pytest.exit("Set TEST_DATABASE_URL to a local Postgres database ending in _test")
+if TEST_DATABASE_URL:
+    parsed = urlparse(TEST_DATABASE_URL)
+    if parsed.hostname not in {"localhost", "127.0.0.1"} or not parsed.path.endswith("_test"):
+        pytest.exit("TEST_DATABASE_URL must point at localhost and a database ending in _test")
 
-parsed = urlparse(TEST_DATABASE_URL)
-if parsed.hostname not in {"localhost", "127.0.0.1"} or not parsed.path.endswith("_test"):
-    pytest.exit("TEST_DATABASE_URL must point at localhost and a database ending in _test")
+# Unit tests (-m unit) never touch the database, so the engine is only created lazily.
+# Without TEST_DATABASE_URL this placeholder is never connected to; the `engine`
+# fixture below stops the run before any DB-backed test can use it.
+UNIT_ONLY_DATABASE_URL = "postgresql://unused@localhost:1/unit_only_test"
 
 os.environ.update(
     {
-        "DATABASE_URL": TEST_DATABASE_URL,
+        "DATABASE_URL": TEST_DATABASE_URL or UNIT_ONLY_DATABASE_URL,
         "AWS_REGION": "eu-north-1",
         "AWS_BUCKET_NAME": "test-bucket",
         "AWS_ACCESS_KEY_ID": "",
@@ -35,9 +38,21 @@ os.environ.update(
 PASSWORD = "Passw0rdTest"
 
 
+@pytest.fixture(scope="session", autouse=True)
+def cheap_password_hashing():
+    """bcrypt at production cost dominates test time; correctness is unaffected."""
+    from src.features.auth import user_service
+
+    user_service.pwd_context.update(bcrypt_sha256__default_rounds=4)
+    user_service.DUMMY_HASH = user_service.pwd_context.hash("not-a-real-password")
+
+
 @pytest.fixture(scope="session")
 def engine():
     from sqlalchemy import text
+
+    if not TEST_DATABASE_URL:
+        pytest.exit("Set TEST_DATABASE_URL to a local Postgres database ending in _test")
 
     from src.database import Base, engine
     from src.main import register_models
@@ -84,6 +99,12 @@ def aws_fakes(monkeypatch):
     return install_fakes(monkeypatch)
 
 
+@pytest.fixture
+def semantic_aws(aws_fakes):
+    """Bag-of-words embeddings, overlap reranker and an extractive fake LLM."""
+    return aws_fakes.use_semantic()
+
+
 class FakeRedis:
     def __init__(self):
         self.counts = {}
@@ -126,3 +147,14 @@ def make_user(client):
         return client.get("/api/auth/me", headers=headers).json(), headers
 
     return make
+
+
+def pytest_collection_modifyitems(items):
+    # Tests that use a DB fixture are integration tests; everything else is a unit test that
+    # runs without TEST_DATABASE_URL. A test that needs the database some other way must say so
+    # with an explicit marker (see test_migrations.py).
+    for item in items:
+        if item.get_closest_marker("unit") or item.get_closest_marker("integration"):
+            continue
+        uses_db = {"db", "client", "engine", "make_user"} & set(item.fixturenames)
+        item.add_marker(pytest.mark.integration if uses_db else pytest.mark.unit)

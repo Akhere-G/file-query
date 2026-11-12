@@ -133,6 +133,45 @@ This allows conversational questions to be resolved using both the current messa
 
 ---
 
+## Testing
+
+The suite has three levels. None of them call AWS or any AI service: S3, SQS and Bedrock are replaced by deterministic in-memory fakes (`backend/tests/fakes.py`), and tests only ever touch a throwaway Postgres database.
+
+| Level | Where | What it covers |
+| --- | --- | --- |
+| Unit | `backend/tests` (`-m unit`), `frontend/**/*.test.ts(x)` | Text extraction (TXT, MD, CSV, PDF, DOC, DOCX), chunking, query rewriting, reranking, input validation, API response parsing, the auth redirect rules, the file-polling hook |
+| Integration | `backend/tests` (`-m integration`), component tests in `frontend` | API endpoints, database behaviour, project/user isolation, hybrid retrieval and ranking, grounded answers and citations, the SQS/Lambda worker (duplicates, retries, failures), upload/chat/citation UI states |
+| End to end | `frontend/e2e` (Playwright) | Register, upload a document, wait for processing, ask a question, open the cited source; refusal without evidence; project isolation; auth guards |
+
+### Running the tests
+
+Prerequisites: Docker, a Python virtualenv at `backend/venv` with `requirements-dev.txt` installed, Node 22+.
+
+```bash
+make test-db-up          # throwaway Postgres + pgvector on localhost:5433
+make test-backend        # all backend tests
+make test-backend-unit   # backend unit tests only, no database needed
+make test-rag-eval       # only the fixed RAG evaluation set
+make test-frontend       # vitest unit + component tests
+npx --prefix frontend playwright install chromium   # first time only
+make test-e2e            # Playwright journeys (builds and starts both apps)
+make lint typecheck
+make test-db-down
+```
+
+Without `make`, set `TEST_DATABASE_URL=postgresql://test@localhost:5433/filequery_test` and run `python -m pytest` in `backend`, or `npm test` / `npm run test:e2e` in `frontend`. The test database must be on localhost and its name must end in `_test`; the test setup refuses to run otherwise.
+
+### How the fakes work
+
+* `FakeBedrockRuntime` / `FakeBedrockAgent` have a "semantic" mode (`semantic_aws` fixture): bag-of-words embeddings, a reranker that orders by term overlap, and an extractive stand-in for the LLM that answers with the best-matching sentence of the retrieved context or refuses. This makes retrieval ranking, citations and "not enough evidence" behaviour testable without exact model wording.
+* The end-to-end tests run `backend/e2e_server.py`, which boots the real FastAPI app on a `*_test` database with the same fakes and a fake S3 upload endpoint that enforces the presigned-POST size rule.
+
+### RAG evaluation set
+
+`backend/tests/data/rag_corpus/*.md` is ingested through the real upload pipeline and `backend/tests/data/rag_eval.json` lists questions with the file and evidence phrase that must be retrieved and cited, plus unanswerable questions that must be refused without citations. To add a case, add the fact to a corpus document and an entry to `rag_eval.json`. Answers are checked for required keywords, never exact wording.
+
+Tests marked `xfail(strict=True)` document known bugs or gaps (the reason is in the marker). Fixing one makes its test fail loudly so the marker gets removed.
+
 ## Deployment
 
 The application is deployed using Google Cloud Run, while AWS services are used for document storage, asynchronous processing, embeddings, and AI inference.
