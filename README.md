@@ -182,7 +182,7 @@ The frontend and backend are deployed independently, while document-processing j
 
 ## Analytics (PostHog, EU cloud)
 
-Product analytics are optional and are disabled when the keys below are unset. The browser runs PostHog in cookieless mode (enable cookieless mode in the PostHog project settings too), so visitors are anonymous. The backend and Lambda worker send outcome events (processing results, chat latency, usage limits) under a salted hash of the user id with no person profile. No document text, file names, chat messages, retrieved text or emails are sent.
+Product analytics are optional and are disabled when the keys below are unset. The browser runs PostHog in cookieless mode until a visitor accepts analytics cookies. After consent, PostHog uses cookies and local storage to recognize the same anonymous browser across visits and enables session replay; users can withdraw consent from Cookie settings. Replays mask all text, inputs, and element attributes, block file inputs, redact URL query strings, and do not capture network bodies, headers, or canvases. Enable cookieless mode and Session Replay in the PostHog project settings too. The backend and Lambda worker send outcome events (processing results, chat latency, usage limits) under a salted hash of the user id with no person profile. No document text, file names, chat messages, retrieved text or emails are sent.
 
 | Variable | Where | Notes |
 | --- | --- | --- |

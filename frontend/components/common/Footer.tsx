@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookiePreferencesButton } from "@/components/common/CookieConsent";
 
 type FooterLink = {
   name: string;
@@ -39,10 +40,14 @@ export default function Footer({ groups }: FooterProps) {
           ))}
         </div>
 
-        <div className="mt-10 border-t pt-6">
+        <div className="mt-10 flex flex-col gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} FileQuery. All rights reserved.
           </p>
+          <CookiePreferencesButton
+            variant="link"
+            className="h-auto justify-start p-0 text-xs sm:justify-center"
+          />
         </div>
       </div>
     </footer>

@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/settings/ThemeToggle";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { CookiePreferencesButton } from "@/components/common/CookieConsent";
 
 export default function SettingsPage() {
   return (
@@ -34,8 +35,18 @@ export default function SettingsPage() {
             </div>
           </CardContent>
         </Card>
-        
-        {/* Additional settings sections can be added here in the future */}
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Cookies and analytics</CardTitle>
+            <CardDescription>
+              Review or change which optional cookies FileQuery may use.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <CookiePreferencesButton />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
