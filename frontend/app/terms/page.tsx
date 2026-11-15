@@ -40,7 +40,7 @@ export default function TermsPage() {
           Terms of use
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Last updated: 7 October 2026
+          Last updated: 15 November 2026
         </p>
 
         <div className="mt-10 space-y-10">
@@ -158,6 +158,27 @@ export default function TermsPage() {
               hosting and AI services. We are not responsible for failures or
               changes outside our reasonable control, including those of these
               providers.
+            </p>
+          </Section>
+
+          <Section title="Cookies and analytics choices">
+            <p>
+              We use required cookies and similar storage to provide the
+              service. Optional PostHog analytics cookies are used only if you
+              consent. With consent, analytics includes privacy-masked session
+              replays used to diagnose usability problems. Before you consent,
+              or if you reject optional cookies, PostHog runs in cookieless mode
+              and session replay stays off.
+            </p>
+            <p>
+              You can accept all cookies or choose your options in the cookie
+              banner. You can change or withdraw your analytics choice later
+              from Cookie settings in the app Settings page or site footer.
+              Our{" "}
+              <Link href="/privacy" className="underline hover:text-foreground">
+                privacy policy
+              </Link>{" "}
+              explains the cookies, analytics data, and how we use them.
             </p>
           </Section>
 

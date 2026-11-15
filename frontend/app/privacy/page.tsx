@@ -40,7 +40,7 @@ export default function PrivacyPage() {
           Privacy policy
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Last updated: 7 October 2026
+          Last updated: 15 November 2026
         </p>
 
         <div className="mt-10 space-y-10">
@@ -74,8 +74,13 @@ export default function PrivacyPage() {
                 <strong className="text-foreground">
                   Usage and technical data:
                 </strong>{" "}
-                how many messages you send each month, and standard server logs
-                such as timestamps and error details.
+                how many messages you send each month, standard server logs such
+                as timestamps and error details, and product analytics such as
+                pages visited, browser and device information, and whether
+                uploads and answers succeed. If you accept analytics cookies,
+                PostHog also assigns a persistent random browser identifier and
+                records privacy-masked replays of how you interact with the
+                service.
               </li>
             </ul>
           </Section>
@@ -102,6 +107,14 @@ export default function PrivacyPage() {
                   To meet legal obligations
                 </strong>{" "}
                 and respond to lawful requests.
+              </li>
+              <li>
+                <strong className="text-foreground">
+                  To understand and improve the service using optional analytics
+                  cookies.
+                </strong>{" "}
+                Our basis is your consent. You can withdraw it at any time
+                without affecting earlier processing.
               </li>
             </ul>
             <p>
@@ -141,6 +154,9 @@ export default function PrivacyPage() {
                 Amazon Web Services (AWS) for AI processing through Amazon
                 Bedrock, and for encrypted file storage in eu-north-1
                 (Stockholm).
+              </li>
+              <li>
+                PostHog for product analytics, hosted in the European Union.
               </li>
             </ul>
             <p>
@@ -200,17 +216,38 @@ export default function PrivacyPage() {
 
           <Section title="Cookies">
             <p>
-              We only use cookies or similar storage that are needed to keep you
-              signed in and the service working. We do not use advertising or
-              tracking cookies.
+              We use required cookies and similar browser storage to keep you
+              signed in, remember essential interface state, and save your
+              cookie choice. These are necessary to provide the service and
+              cannot be switched off through our controls.
             </p>
             <p>
               We use PostHog (hosted in the EU) to understand how the service is
               used, for example which pages are visited and whether uploads and
-              answers succeed. It runs in cookieless mode: it sets no cookies
-              and stores nothing on your device, and we do not link these events
-              to your account, email or name. We never send the content of your
-              documents or conversations to PostHog.
+              answers succeed. Before you accept analytics cookies, PostHog runs
+              in cookieless mode and does not use cookies or browser storage to
+              recognize your device. If you accept, PostHog stores a random
+              identifier in a cookie and local storage so it can recognize the
+              same browser across visits. PostHog cookies may last for up to one
+              year.
+            </p>
+            <p>
+              With analytics enabled, PostHog also records session replays to
+              help us understand navigation and diagnose usability problems. We
+              mask all page text, input values, and element attributes; block
+              file inputs; remove query strings from recorded network URLs; and
+              do not record request or response bodies, headers, or canvas
+              content. This is designed to prevent document text, chat content,
+              credentials, and uploaded files from appearing in a replay.
+            </p>
+            <p>
+              Analytics is not used for advertising, and we do not link these
+              events to your account, email or name. We never send the content
+              of your documents or conversations to PostHog. You can reject
+              optional cookies in the banner, or change your choice later using
+              Cookie settings in the app Settings page or site footer. Turning
+              analytics off removes PostHog&apos;s analytics persistence from your
+              browser and returns future analytics to cookieless mode.
             </p>
           </Section>
 

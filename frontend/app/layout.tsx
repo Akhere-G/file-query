@@ -10,6 +10,7 @@ import { ThemeSync } from "@/components/common/ThemeSync";
 import { cookies } from "next/headers";
 import DemoBanner, { isDemoSession } from "@/components/common/DemoBanner";
 import AnalyticsProvider from "@/components/common/AnalyticsProvider";
+import { CookieConsentProvider } from "@/components/common/CookieConsent";
 import { Suspense } from "react";
 
 const playfairDisplayHeading = Quicksand({
@@ -118,20 +119,22 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeSync />
-        <Suspense fallback={null}>
-          <AnalyticsProvider isAuthenticated={isAuth} isDemo={isDemo} />
-        </Suspense>
-        <SidebarProvider defaultOpen={false}>
-          <div className="w-screen">
-            <Header links={links} isAuth={isAuth} />
-            <DemoBanner />
+        <CookieConsentProvider>
+          <ThemeSync />
+          <Suspense fallback={null}>
+            <AnalyticsProvider isAuthenticated={isAuth} isDemo={isDemo} />
+          </Suspense>
+          <SidebarProvider defaultOpen={false}>
+            <div className="w-screen">
+              <Header links={links} isAuth={isAuth} />
+              <DemoBanner />
 
-            {children}
-            <AppSidebar links={links} isAuth={isAuth} />
-            <Footer groups={footerLinks} />
-          </div>
-        </SidebarProvider>
+              {children}
+              <AppSidebar links={links} isAuth={isAuth} />
+              <Footer groups={footerLinks} />
+            </div>
+          </SidebarProvider>
+        </CookieConsentProvider>
       </body>
     </html>
   );
