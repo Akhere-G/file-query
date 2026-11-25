@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { SCREENSHOTS } from "@/lib/screenshots";
 import DemoButton from "@/features/auth/components/DemoButton";
 import {
   BrainCircuit,
@@ -72,7 +74,7 @@ export default async function Home() {
         <div className="space-y-6 max-w-4xl mx-auto">
           <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm text-primary">
             <span className="flex h-2 w-2 rounded-full bg-primary mr-2"></span>
-            Production-Ready AI Search
+            Answers that show their sources
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground">
@@ -128,8 +130,9 @@ export default async function Home() {
               Platform Features
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Engineered from the ground up to provide a robust, accurate, and
-              scalable document query experience.
+              Ask questions about your own documents. Each answer links back to
+              the passages it came from, and says so when your files do not
+              contain the answer.
             </p>
           </div>
 
@@ -149,6 +152,38 @@ export default async function Home() {
                   {feature.description}
                 </p>
               </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-32 w-full max-w-6xl text-left">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              See it working
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Upload files into a project, ask a question, then open the exact
+              passage an answer was based on.{" "}
+              <Link href="/about" className="text-primary underline">
+                How it&apos;s built
+              </Link>
+              .
+            </p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {SCREENSHOTS.map((shot) => (
+              <figure key={shot.src} className="m-0">
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  width={1440}
+                  height={900}
+                  className="w-full h-auto rounded-2xl border border-border"
+                />
+                <figcaption className="mt-2 text-sm text-muted-foreground">
+                  {shot.caption}
+                </figcaption>
+              </figure>
             ))}
           </div>
         </div>
