@@ -74,10 +74,6 @@ flowchart LR
 | A fixed RAG evaluation set run in CI | Retrieval changes are checked against a corpus of questions with required evidence, plus unanswerable questions that must be refused. | 14 cases, run against the fakes, so it catches pipeline regressions and not model quality. | [`test_rag_eval.py`](backend/tests/test_rag_eval.py) |
 | Postgres with pgvector, not a separate vector database | One database holds users, files, chunks and vectors, so project and user scoping is a normal SQL filter. | Search is an exact scan with no approximate index, which will not scale to very large collections. | [`embedding_service.py`](backend/src/features/files/embedding_service.py) |
 
-### A harder one: a rate limiter that did nothing
-
-My own security review found that the rate limits were silently ineffective, because of the order the decorators were applied in. I reproduced it before changing anything, made the limits effective, keyed them per signed-in user or visitor, and moved the shared limit state to Redis. The lesson was that a limit needs a test proving it triggers. See [`limiter.py`](backend/src/limiter.py).
-
 ## Supported file types
 
 | Format | Purpose |
